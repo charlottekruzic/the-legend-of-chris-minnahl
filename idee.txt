@@ -29,6 +29,9 @@ gameplay:
     -un petit (lorsque le joueur entre dans celui-la, le joueur est immédiatement repéré et signalé)
     Si le joueur reste trop longtemps dans le grand cône (mettre un timer), il sera signalé également
 
+- mini map (directement affichée, ou seulement où on est déjà passé)
+- socles pour faire la statue
+- ajouter item souris qu'on peut teleguider, que les gardes ne voient pas et qui a une camera.
 
 
 idées thème : 
