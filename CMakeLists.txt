@@ -5,9 +5,14 @@ project(Commando
 )
  
 find_package(gf REQUIRED)
+find_package(box2d REQUIRED)
+
  
 add_executable(Commando
   main.cc
+  local/player.cc
+  local/level.cc
+  local/wall.cc
   # and the rest of your sources
 )
  
@@ -15,4 +20,5 @@ target_link_libraries(Commando
   PRIVATE
     gf::graphics
     gf::net
+    box2d::box2d
 )
