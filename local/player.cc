@@ -9,6 +9,26 @@ Player::Player(gf::Vector2f spawn):m_velocity(0,0),shape(PLAYER_SIZE){
     this->shape.setAnchor(gf::Anchor::TopLeft);
 }
 
+gf::Vector2f Player::getPosition(){
+    return this->m_position;
+}
+
+gf::Vector2f Player::getVelocity(){
+    return this->m_velocity;
+}
+
+void Player::setPosition(gf::Vector2f position){
+    this->m_position=position;
+}
+
+void Player::setVelocity(gf::Vector2f velocity){
+    this->m_velocity=velocity;
+}
+
+gf::RectI Player::getRect(){
+    return this->rect;
+}
+
 void Player::onKeyPress(gf::Event e){
     switch (e.key.keycode){
         case gf::Keycode::Right:

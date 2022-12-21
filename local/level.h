@@ -5,14 +5,15 @@
 #include <gf/Shapes.h>
 #include <gf/RenderWindow.h>
 #include "wall.h"
+#include "player.h"
 
 class Level{
     private:
         std::vector<std::vector<Wall>> map;
-        
         int width,height;
+        Player player;
     public:
-        Level(gf::Vector2f size);
+        Level(gf::Vector2f size, Player player);
         /**
          * @brief Adds a wall to the level at the given position
          * @param position grid position of the wall
@@ -23,6 +24,12 @@ class Level{
         bool removeWall(gf::Vector2i position);
 
         void prettyPrint();
+
+        Wall* checkCollisions();
+
+        void handleCollisionX();
+
+        void handleCollisionY();
         
         void update(float dt);
 

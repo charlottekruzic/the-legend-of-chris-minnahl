@@ -19,7 +19,7 @@ class Game{
         Game() :
         window("My awesome game",{ 1280, 720}),
         renderer(window),player({128,128}),
-        level({WORLD_SIZE,WORLD_SIZE}){
+        level({WORLD_SIZE,WORLD_SIZE}, player){
         	for(int y = 0; y<WORLD_SIZE ; y++){
         		for(int x : {0,WORLD_SIZE-1}){
             		this->level.addWall({x,y});

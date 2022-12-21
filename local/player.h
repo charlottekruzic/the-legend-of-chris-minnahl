@@ -21,6 +21,11 @@ class Player : public gf::Entity{
 
     public:
         Player(gf::Vector2f spawn);
+        gf::Vector2f getPosition();
+        gf::Vector2f getVelocity();
+        gf::RectI getRect();
+        void setPosition(gf::Vector2f position);
+        void setVelocity(gf::Vector2f velocity);
         void onKeyPress(gf::Event e);
         void onKeyRelease(gf::Event e);
         virtual void update(float dt);
