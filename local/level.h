@@ -9,10 +9,10 @@
 class Level{
     private:
         std::vector<std::vector<Wall>> map;
-        
+        gf::Vector2i start,end;
         int width,height;
     public:
-        Level(gf::Vector2f size);
+        Level(gf::Vector2f size,gf::Vector2i start, gf::Vector2i end);
         /**
          * @brief Adds a wall to the level at the given position
          * @param position grid position of the wall
@@ -23,7 +23,13 @@ class Level{
         bool removeWall(gf::Vector2i position);
 
         void prettyPrint();
+
+		bool isFreeSpace(gf::Vector2i position);
         
+		bool setStart(gf::Vector2i position);
+
+		bool setEnd(gf::Vector2i position);
+
         void update(float dt);
 
         void render(gf::RenderTarget& target);
