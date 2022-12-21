@@ -11,6 +11,7 @@
 //Include external classes
 #include "local/player.h"
 #include "local/level.h"
+#include "local/guard.h"
 
 constexpr int WORLD_SIZE = 20;
 
@@ -18,7 +19,7 @@ class Game{
     public:
         Game() :
         window("My awesome game",{ 1280, 720}),
-        renderer(window),player({128,128}),
+        renderer(window),player({128,128}),guard1({90,90}),guard2({200,200}),
         level({WORLD_SIZE,WORLD_SIZE}){
         	for(int y = 0; y<WORLD_SIZE ; y++){
         		for(int x : {0,WORLD_SIZE-1}){
@@ -34,6 +35,8 @@ class Game{
         gf::Window window;
         gf::RenderWindow renderer;
         Level level;
+        Guard guard1;
+        Guard guard2;
 
         void gameloop(){
             this->renderer.clear(gf::Color::Gray(0.3));
@@ -72,11 +75,15 @@ class Game{
                 //Update
                 float dt = clock.restart().asSeconds();
                 this->player.update(dt);
+                this->guard1.update(dt);
+                this->guard2.update(dt);
 
                 // Draw the entities
                 this->renderer.clear();
                 this->level.render(this->renderer);
                 this->player.render(this->renderer);
+                this->guard1.render(this->renderer);
+                this->guard2.render(this->renderer);
                 //this->renderer.draw(gameOverText);
                 this->renderer.display();
                 
