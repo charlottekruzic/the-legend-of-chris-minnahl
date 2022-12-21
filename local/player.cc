@@ -1,9 +1,9 @@
 #include "player.h"
 
-Player::Player(gf::Vector2f spawn):m_velocity(0,0),shape({ PLAYER_SIZE,PLAYER_SIZE}){
-    this->speed = 100;
+Player::Player(gf::Vector2f spawn):m_velocity(0,0),shape(PLAYER_SIZE){
+    this->speed = 200;
     this->m_position = spawn;
-    this->rect = gf::RectI().fromPositionSize(this->m_position,{PLAYER_SIZE,PLAYER_SIZE});  
+    this->rect = gf::RectI().fromPositionSize(this->m_position,PLAYER_SIZE);  
     this->color = gf::Color::Azure;
     this->shape.setColor(this->color);
     this->shape.setAnchor(gf::Anchor::TopLeft);
@@ -48,11 +48,12 @@ void Player::onKeyRelease(gf::Event e){
 
 void Player::update(float dt){
     this->m_position += this->m_velocity  * dt;
-    this->rect = gf::RectI().fromPositionSize(this->m_position,{PLAYER_SIZE,PLAYER_SIZE});
+    this->rect = this->rect.fromPositionSize(this->m_position,PLAYER_SIZE);
+    this->shape.setPosition(this->m_position);
+
 }
 
 void Player::render(gf::RenderTarget& target){
-    this->shape.setPosition(m_position);
-    target.draw(shape);
+    target.draw(this->shape);
 };
 

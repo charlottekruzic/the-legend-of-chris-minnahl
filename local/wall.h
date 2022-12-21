@@ -4,18 +4,43 @@
 #include <gf/Sprite.h>
 #include <gf/Shapes.h>
 #include <gf/RenderWindow.h>
+#include <iostream>
+constexpr gf::Vector2f WALL_SIZE = {32.0,32.0};
 
-#define WALL_SIZE 32
+/** 
+ * @brief Abstract class for all types of walls
+*/
+enum class WallType {Solid,Empty};
 
 class Wall : public gf::Entity{
-    private:
+    protected:
         gf::Vector2f m_position;
         gf::RectI rect;
         gf::RectangleShape shape;
         gf::Color4f color;
+        bool solid;
+        WallType type;
+
+
 
     public:
-        Wall(gf::Vector2f position);
+
+        /**
+         * @brief Default constructor
+         * @param position world coordinates of the wall (topleft)
+        */
+        Wall(gf::Vector2f position,WallType type);
+
+
         void render(gf::RenderTarget& target);
+
+        /** 
+         * @brief checks if the wall has collisions
+        * @return true if the wall has collision, false otherwise
+        */
+        bool isSolid();
+
+        bool setType(WallType type);
 };
+
 #endif

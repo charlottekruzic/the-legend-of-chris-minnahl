@@ -6,9 +6,11 @@
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
 
-#define PLAYER_SIZE 32
+constexpr gf::Vector2i PLAYER_SIZE = {32,32};
+
 
 class Player : public gf::Entity{
+
     private:
         gf::Vector2f m_position;
         gf::Vector2f m_velocity;
