@@ -11,9 +11,9 @@ class Level{
     private:
         std::vector<std::vector<Wall>> map;
         int width,height;
-        Player player;
+        Player* player;
     public:
-        Level(gf::Vector2f size, Player player);
+        Level(gf::Vector2f size, Player* player);
         /**
          * @brief Adds a wall to the level at the given position
          * @param position grid position of the wall
