@@ -45,6 +45,14 @@ bool Wall::setType(WallType type){
     return true;
 }
 
+gf::RectI Wall::getRect(){
+    return this->rect;
+}
+
+gf::Vector2f Wall::getPosition(){
+    return this->m_position;
+}
+
 bool Wall::isSolid(){
     return this->solid;
 }

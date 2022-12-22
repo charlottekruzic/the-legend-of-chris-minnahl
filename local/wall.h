@@ -29,8 +29,11 @@ class Wall : public gf::Entity{
         */
         Wall(gf::Vector2f position,WallType type);
 
+        gf::RectI getRect();
 
-		WallType getType()const;
+        gf::Vector2f getPosition();
+        
+		    WallType getType()const;
 
         void render(gf::RenderTarget& target);
 

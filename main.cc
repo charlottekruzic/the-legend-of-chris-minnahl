@@ -20,7 +20,7 @@ class Game{
         Game() :
         window("My awesome game",{ 1280, 720}),
         renderer(window),player({128,128}),guard1({90,90}),guard2({200,200}),
-        level({WORLD_SIZE,WORLD_SIZE},{2,2},{2,3}){
+        level({WORLD_SIZE,WORLD_SIZE}, &player,{2,2},{2,3}){
         	for(int y = 0; y<WORLD_SIZE ; y++){
         		for(int x : {0,WORLD_SIZE-1}){
             		this->level.addWall({x,y});
@@ -75,6 +75,7 @@ class Game{
                 //Update
                 float dt = clock.restart().asSeconds();
                 this->player.update(dt);
+                this->level.update(dt);
                 this->guard1.update(dt);
                 this->guard2.update(dt);
 
