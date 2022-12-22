@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Level::Level(gf::Vector2f size, Player* player): width(size.x),height(size.y) , player(player){
+Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end): width(size.x),height(size.y) , player(player){
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
         
