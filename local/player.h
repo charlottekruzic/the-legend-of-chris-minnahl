@@ -8,9 +8,7 @@
 
 constexpr gf::Vector2i PLAYER_SIZE = {32,32};
 
-
 class Player : public gf::Entity{
-
     private:
         gf::Vector2f m_position;
         gf::Vector2f m_velocity;
@@ -18,7 +16,6 @@ class Player : public gf::Entity{
         gf::RectI rect;
         gf::RectangleShape shape;
         gf::Color4f color;
-
     public:
         Player(gf::Vector2f spawn);
         gf::Vector2f getPosition();

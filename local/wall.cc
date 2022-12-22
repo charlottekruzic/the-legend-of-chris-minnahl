@@ -13,6 +13,9 @@ Wall::Wall(gf::Vector2f position,WallType type){
 	//Sets the type of wall, (solid ?, color?)
     this->setType(type);
 }
+WallType Wall::getType()const{
+	return this->type;
+}
 
 bool Wall::setType(WallType type){
     switch(type){
@@ -23,8 +26,15 @@ bool Wall::setType(WallType type){
         case WallType::Solid:
             this->solid = true;
             this->color = gf::Color::Green;
-
             break;
+        case WallType::Start:
+        	this->solid = false;
+        	this->color = gf::Color::Yellow;
+        	break;
+        case WallType::End:
+        	this->solid = false;
+        	this->color = gf::Color::White;
+        	break;
         default:
             return false;
     }
@@ -47,8 +57,5 @@ bool Wall::isSolid(){
     return this->solid;
 }
 void Wall::render(gf::RenderTarget& target){
-    if(this->type == WallType::Empty){
-        return;
-    }
     target.draw(this->shape);
 }

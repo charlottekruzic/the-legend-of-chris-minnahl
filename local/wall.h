@@ -10,7 +10,7 @@ constexpr gf::Vector2f WALL_SIZE = {32.0,32.0};
 /** 
  * @brief Abstract class for all types of walls
 */
-enum class WallType {Solid,Empty};
+enum class WallType {Solid,Empty,Start,End};
 
 class Wall : public gf::Entity{
     protected:
@@ -22,9 +22,7 @@ class Wall : public gf::Entity{
         WallType type;
 
 
-
     public:
-
         /**
          * @brief Default constructor
          * @param position world coordinates of the wall (topleft)
@@ -35,6 +33,8 @@ class Wall : public gf::Entity{
 
         gf::Vector2f getPosition();
         
+		    WallType getType()const;
+
         void render(gf::RenderTarget& target);
 
         /** 

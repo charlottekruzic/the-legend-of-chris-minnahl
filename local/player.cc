@@ -1,12 +1,23 @@
 #include "player.h"
 
-Player::Player(gf::Vector2f spawn):m_velocity(0,0),shape(PLAYER_SIZE){
+Player::Player(gf::Vector2f spawn) : m_velocity(0,0),shape(PLAYER_SIZE) {
     this->speed = 200;
-    this->m_position = spawn;
-    this->rect = gf::RectI().fromPositionSize(this->m_position,PLAYER_SIZE);  
     this->color = gf::Color::Azure;
+
+	//Position du joueur
+    this->m_position = spawn;
+
+	//Utilisé pour les collisions (Après)
+    this->rect = gf::RectI().fromPositionSize(this->m_position,PLAYER_SIZE);  
+
+
+
+
+	//Shape = la forme visuelle qui va apparaitre a l'ecran
     this->shape.setColor(this->color);
     this->shape.setAnchor(gf::Anchor::TopLeft);
+    this->shape.setPosition(this->m_position);
+
 }
 
 gf::Vector2f Player::getPosition(){
