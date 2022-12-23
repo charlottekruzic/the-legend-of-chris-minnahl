@@ -30,8 +30,11 @@ gf::Vector2f Player::getVelocity(){
 
 void Player::setPosition(gf::Vector2f position){
     this->m_position=position;
-}
+    this->shape.setPosition(this->m_position);
+    this->rect = this->rect.fromPositionSize(this->m_position,PLAYER_SIZE);
 
+
+}
 void Player::setVelocity(gf::Vector2f velocity){
     this->m_velocity=velocity;
 }
@@ -61,21 +64,23 @@ void Player::onKeyPress(gf::Event e){
 void Player::onKeyRelease(gf::Event e){
     switch (e.key.keycode){
         case gf::Keycode::Right:
-            this->m_velocity.x -= this->speed;
+            this->m_velocity.x -=this->speed;
             break;
         case gf::Keycode::Left:
-            this->m_velocity.x += this->speed;
+            this->m_velocity.x  +=this->speed;
             break;
         case gf::Keycode::Up:
-            this->m_velocity.y += this->speed;
+            this->m_velocity.y  += this->speed;
             break;
         case gf::Keycode::Down:
-            this->m_velocity.y -= this->speed;
+            this->m_velocity.y -= this->speed ;
             break;
         default:
             break;
     }
 }
+
+
 
 void Player::update(float dt){
     this->m_position += this->m_velocity  * dt;

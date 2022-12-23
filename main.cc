@@ -25,7 +25,6 @@ class Game{
         		for(int x : {0,WORLD_SIZE-1}){
             		this->level.addWall({x,y});
             		this->level.addWall({y,x});
-
         		}
         	}
             this->gameloop();
@@ -41,7 +40,6 @@ class Game{
         void gameloop(){
             this->renderer.clear(gf::Color::Gray(0.3));
             gf::Clock clock;
-            
             gf::Font font("arial.ttf");
             gf::Text gameOverText("GAME OVER", font);           
             gameOverText.setCharacterSize(30);
@@ -75,9 +73,9 @@ class Game{
                 //Update
                 float dt = clock.restart().asSeconds();
                 this->player.update(dt);
-                this->level.update(dt);
                 this->guard1.update(dt);
                 this->guard2.update(dt);
+                this->level.update(dt);
 
                 // Draw the entities
                 this->renderer.clear();
