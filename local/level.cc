@@ -13,6 +13,8 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
     }
     if(!this->setStart(start)){exit(1);}
     if(!this->setEnd(end)){exit(1);}
+
+    this->player->setPosition(this->start * WALL_SIZE);
 }
 
 
@@ -57,8 +59,10 @@ void Level::prettyPrint(){
 }
 
 void Level::update(float dt){
-    this->handleCollisionX();
-    this->handleCollisionY();
+	this->player->moveX(dt);
+    this->player->handleCollisionX(this->checkCollisions());
+	this->player->moveY(dt);
+    this->player->handleCollisionY(this->checkCollisions());
 }
 
 bool Level::setEnd(gf::Vector2i pos){
@@ -105,35 +109,3 @@ Wall* Level::checkCollisions(){
     return nullptr;
 }
 
-void Level::handleCollisionX(){
-    Wall* ptr_collider = this->checkCollisions();
-    if(ptr_collider==nullptr){return;}
-    gf::Vector2f playerVel = this->player->getVelocity();
-    if(playerVel.x==0){return;}
-    float x = this->player->getPosition()[0];
-    float y = this->player->getPosition()[1];
-    if(playerVel.x>0){
-        //right
-        this->player->setPosition({(ptr_collider->getPosition()[0]-PLAYER_SIZE[0]), y});
-    }else{
-        //left
-        this->player->setPosition({(ptr_collider->getPosition()[0]+WALL_SIZE[0]), y});
-    }
-}
-
-
-void Level::handleCollisionY(){
-    Wall* ptr_collider = this->checkCollisions();
-    if(ptr_collider==nullptr){return;}
-    gf::Vector2f playerVel = this->player->getVelocity();
-    if(playerVel.y==0){return;}
-    float x = this->player->getPosition()[0];
-    float y = this->player->getPosition()[1];
-    if(playerVel.y>0){
-        //right
-        this->player->setPosition( { x , (ptr_collider->getPosition()[1]-PLAYER_SIZE[1])} );
-    }else{
-        //left
-        this->player->setPosition( { x , (ptr_collider->getPosition()[1]+WALL_SIZE[1]) } );
-    }
-}

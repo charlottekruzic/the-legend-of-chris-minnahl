@@ -12,21 +12,27 @@
 #include "local/player.h"
 #include "local/level.h"
 #include "local/guard.h"
-
+#include "gui/panel.h"
 constexpr int WORLD_SIZE = 20;
 
 class Game{
     public:
         Game() :
         window("My awesome game",{ 1280, 720}),
-        renderer(window),player({128,128}),guard1({90,90}),guard2({200,200}),
-        level({WORLD_SIZE,WORLD_SIZE}, &player,{2,2},{2,3}){
-        	for(int y = 0; y<WORLD_SIZE ; y++){
+        renderer(window),
+        player({128,128}),//Initialize player
+        guard1({260,90}),//Initialize guard1
+        guard2({400,200}),//initialize guard2
+        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15})//initialize level with set size, pointer to player and start/end grid coordinates
+        {
+        	for(int y = 0; y<WORLD_SIZE ; y++){//fill the level borders with walls
         		for(int x : {0,WORLD_SIZE-1}){
             		this->level.addWall({x,y});
             		this->level.addWall({y,x});
         		}
         	}
+        	this->level.addWall({5,5});
+        	this->level.addWall({5,6});
             this->gameloop();
         }
     private: 
@@ -36,6 +42,7 @@ class Game{
         Level level;
         Guard guard1;
         Guard guard2;
+        
 
         void gameloop(){
             this->renderer.clear(gf::Color::Gray(0.3));
@@ -45,6 +52,10 @@ class Game{
             gameOverText.setCharacterSize(30);
             gameOverText.setPosition({100,100});
             gameOverText.setColor(gf::Color::Red);
+            // Panel p;
+            // p.setSize({300,300});
+            // p.setPosition({600,200});
+            // p.setColor(gf::Color::Cyan);
             
             while (this->window.isOpen()) {
                 // Process events
@@ -60,14 +71,10 @@ class Game{
                                 this->level.prettyPrint();
                                 break;
                             }
-                            this->player.onKeyPress(event);
-                            break;
-                        case gf::EventType::KeyReleased:
-                            this->player.onKeyRelease(event);
-                            break;
-                        default:
-                        break;
+						default:
+							break;
                     }
+                    this->player.processEvent(event);
                 }
 
                 //Update
@@ -83,6 +90,7 @@ class Game{
                 this->player.render(this->renderer);
                 this->guard1.render(this->renderer);
                 this->guard2.render(this->renderer);
+                //p.render(this->renderer);
                 //this->renderer.draw(gameOverText);
                 this->renderer.display();
             }

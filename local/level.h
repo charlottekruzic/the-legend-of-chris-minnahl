@@ -30,10 +30,6 @@ class Level{
 
         Wall* checkCollisions();
 
-        void handleCollisionX();
-
-        void handleCollisionY();
-
         bool isFreeSpace(gf::Vector2i position);
 
         bool setStart(gf::Vector2i position);

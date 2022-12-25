@@ -14,6 +14,7 @@ add_executable(Commando
   local/level.cc
   local/wall.cc
   local/guard.cc
+  gui/panel.cc
   # and the rest of your sources
 )
  
