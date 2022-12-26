@@ -1,6 +1,9 @@
 #include "label.h"
 
-Label::Label() : Panel(), font("../arial.ttf"){
+Label::Label() : 
+	Panel()
+	//font("../arial.ttf")
+	{
 	this->text.setFont(this->font);
 	this->text.setAnchor(gf::Anchor::TopLeft);
 	this->setText("");
