@@ -15,6 +15,8 @@
 #include "gui/panel.h"
 #include "gui/label.h"
 constexpr int WORLD_SIZE = 20;
+bool isFinished = true;
+bool win = true;
 
 class Game{
     public:
@@ -50,6 +52,14 @@ class Game{
             gameOverText.setCharacterSize(30);
             gameOverText.setPosition({100,100});
             gameOverText.setColor(gf::Color::Red);
+            gf::Text winText("Won", font);           
+            winText.setCharacterSize(30);
+            winText.setPosition({100,100});
+            winText.setColor(gf::Color::Red);
+            gf::Text pressSpaceText("Press space to start over", font);           
+            pressSpaceText.setCharacterSize(30);
+            pressSpaceText.setPosition({250,600});
+            pressSpaceText.setColor(gf::Color::Red);
             Label p("HELLO");
             p.setSize({300,300});
             p.setPosition({600,200});
@@ -76,12 +86,14 @@ class Game{
                     this->player.processEvent(event);
                 }
 
-                //Update
-                float dt = clock.restart().asSeconds();
-                this->player.update(dt);
-               	guard1.update(dt);
-                guard2.update(dt);
-                this->level.update(dt);
+                if(isFinished == false){
+                    //Update
+                    float dt = clock.restart().asSeconds();
+                    this->player.update(dt);
+                    guard1.update(dt);
+                    guard2.update(dt);
+                    this->level.update(dt);
+                }
 
                 // Draw the entities
                 this->renderer.clear();
@@ -90,10 +102,37 @@ class Game{
                 guard1.render(this->renderer);
                 guard2.render(this->renderer);
                 p.render(this->renderer);
-                //this->renderer.draw(gameOverText);
+                //if the game is over
+                if(isFinished == true){
+                    //if he lost
+                    if(win == false){
+                        this->renderer.draw(gameOverText);
+                    }else{
+                        this->renderer.draw(winText);
+                    }
+                    this->renderer.draw(pressSpaceText);
+                    while (window.pollEvent(event)) {
+                        switch (event.type) {
+                        case gf::EventType::Closed:
+                            this->window.close();
+                            break;
+                        case gf::EventType::KeyPressed:
+                            if(event.key.keycode == gf::Keycode::Space){
+                                //startGame();
+                                std::cout << "touche espace" << std::endl; 
+                                break;
+                            }
+						default:
+							break;
+                    }
+                    
+                    }
+                }
+                
                 this->renderer.display();
             }
         }
+
 };
 
 int main() {
