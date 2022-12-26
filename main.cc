@@ -13,6 +13,7 @@
 #include "local/level.h"
 #include "local/guard.h"
 #include "gui/panel.h"
+#include "gui/label.h"
 constexpr int WORLD_SIZE = 20;
 
 class Game{
@@ -21,8 +22,7 @@ class Game{
         window("My awesome game",{ 1280, 720}),
         renderer(window),
         player({128,128}),//Initialize player
-        guard1({260,90}),//Initialize guard1
-        guard2({400,200}),//initialize guard2
+
         level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15})//initialize level with set size, pointer to player and start/end grid coordinates
         {
         	for(int y = 0; y<WORLD_SIZE ; y++){//fill the level borders with walls
@@ -39,9 +39,7 @@ class Game{
         Player player;
         gf::Window window;
         gf::RenderWindow renderer;
-        Level level;
-        Guard guard1;
-        Guard guard2;
+        Level level;;
         
 
         void gameloop(){
@@ -52,11 +50,12 @@ class Game{
             gameOverText.setCharacterSize(30);
             gameOverText.setPosition({100,100});
             gameOverText.setColor(gf::Color::Red);
-            // Panel p;
-            // p.setSize({300,300});
-            // p.setPosition({600,200});
-            // p.setColor(gf::Color::Cyan);
-            
+            Label p("HELLO");
+            p.setSize({300,300});
+            p.setPosition({600,200});
+            p.setColor(gf::Color::Cyan);
+           	Guard guard1({260,90});//Initialize guard1
+        	Guard guard2({400,200});//initialize guard2
             while (this->window.isOpen()) {
                 // Process events
                 gf::Event event;
@@ -80,17 +79,17 @@ class Game{
                 //Update
                 float dt = clock.restart().asSeconds();
                 this->player.update(dt);
-                this->guard1.update(dt);
-                this->guard2.update(dt);
+               	guard1.update(dt);
+                guard2.update(dt);
                 this->level.update(dt);
 
                 // Draw the entities
                 this->renderer.clear();
                 this->level.render(this->renderer);
                 this->player.render(this->renderer);
-                this->guard1.render(this->renderer);
-                this->guard2.render(this->renderer);
-                //p.render(this->renderer);
+                guard1.render(this->renderer);
+                guard2.render(this->renderer);
+                p.render(this->renderer);
                 //this->renderer.draw(gameOverText);
                 this->renderer.display();
             }
