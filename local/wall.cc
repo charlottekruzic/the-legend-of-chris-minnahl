@@ -56,6 +56,7 @@ gf::Vector2f Wall::getPosition(){
 bool Wall::isSolid(){
     return this->solid;
 }
+
 void Wall::render(gf::RenderTarget& target){
     target.draw(this->shape);
 }

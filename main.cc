@@ -15,8 +15,6 @@
 #include "gui/panel.h"
 #include "gui/label.h"
 constexpr int WORLD_SIZE = 20;
-bool isFinished = true;
-bool win = true;
 
 class Game{
     public:
@@ -27,6 +25,8 @@ class Game{
 
         level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15})//initialize level with set size, pointer to player and start/end grid coordinates
         {
+            this->isFinished = false;
+            this->win = false;
         	for(int y = 0; y<WORLD_SIZE ; y++){//fill the level borders with walls
         		for(int x : {0,WORLD_SIZE-1}){
             		this->level.addWall({x,y});
@@ -41,7 +41,9 @@ class Game{
         Player player;
         gf::Window window;
         gf::RenderWindow renderer;
-        Level level;;
+        Level level;
+        bool isFinished = true;
+        bool win = true;
         
 
         void gameloop(){
@@ -86,6 +88,10 @@ class Game{
                     this->player.processEvent(event);
                 }
 
+                if(this->level.isWin()){
+                    this->endgame();
+                }
+
                 if(isFinished == false){
                     //Update
                     float dt = clock.restart().asSeconds();
@@ -103,9 +109,9 @@ class Game{
                 guard2.render(this->renderer);
                 p.render(this->renderer);
                 //if the game is over
-                if(isFinished == true){
+                if(this->isFinished == true){
                     //if he lost
-                    if(win == false){
+                    if(this->win == false){
                         this->renderer.draw(gameOverText);
                     }else{
                         this->renderer.draw(winText);
@@ -118,8 +124,7 @@ class Game{
                             break;
                         case gf::EventType::KeyPressed:
                             if(event.key.keycode == gf::Keycode::Space){
-                                //startGame();
-                                std::cout << "touche espace" << std::endl; 
+                                this->startgame();
                                 break;
                             }
 						default:
@@ -131,6 +136,19 @@ class Game{
                 
                 this->renderer.display();
             }
+        }
+
+        void startgame(){
+            this->level.reset();
+            //printf("main APRES velocity x : %f",this->player.getVelocity()[0]);
+            //printf("main APRES velocity y : %f",this->player.getVelocity()[1]);
+            this->isFinished=false;
+        }
+        
+        void endgame(){
+            //printf("main AVANT velocity x : %f",this->player.getVelocity()[0]);
+            //printf("main AVANT velocity y : %f",this->player.getVelocity()[1]);
+            this->isFinished=true;
         }
 
 };
