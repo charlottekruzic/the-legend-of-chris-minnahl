@@ -13,6 +13,7 @@ class Level{
         gf::Vector2i start,end;
         int width,height;
         Player* player;
+        bool win;
     public:
 
         Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end);
@@ -21,14 +22,20 @@ class Level{
          * @param position grid position of the wall
          * @return true if a wall was created
         */
+
+        void reset();
+
+        bool isWin();
+
         bool addWall(gf::Vector2i position);
 
         bool removeWall(gf::Vector2i position);
 
         void prettyPrint();
 
-
         Wall* checkCollisions();
+
+        void checkWin();
 
         bool isFreeSpace(gf::Vector2i position);
 

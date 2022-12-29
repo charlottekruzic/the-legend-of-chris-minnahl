@@ -2,6 +2,7 @@
 #include <iostream>
 
 Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end): width(size.x),height(size.y) , player(player){
+    this->win=false; 
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
         
@@ -13,8 +14,22 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
     }
     if(!this->setStart(start)){exit(1);}
     if(!this->setEnd(end)){exit(1);}
-
     this->player->setPosition(this->start * WALL_SIZE);
+}
+
+void Level::reset(){
+    //printf("AVANT velocity x : %f",this->player->getVelocity()[0]);
+    //printf("AVANT velocity y : %f",this->player->getVelocity()[1]);
+    gf::Vector2f velocity = {0.0,0.0};
+    this->player->setVelocity(velocity);
+    //printf("APRES velocity x : %f",this->player->getVelocity()[0]);
+    //printf("APRES velocity y : %f",this->player->getVelocity()[1]);
+    this->player->setPosition(this->start * WALL_SIZE);
+    this->win=false;;
+}
+
+bool Level::isWin(){
+    return this->win;
 }
 
 
@@ -63,12 +78,13 @@ void Level::update(float dt){
     this->player->handleCollisionX(this->checkCollisions());
 	this->player->moveY(dt);
     this->player->handleCollisionY(this->checkCollisions());
+    this->checkWin();
 }
 
 bool Level::setEnd(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
-		this->map[pos.y][pos.x].setType(WallType::End);
-		this->end = pos;
+		this->map[pos.x][pos.y].setType(WallType::End);
+		this->end = pos;  
 		return true;
 	}
 	return false;
@@ -77,7 +93,7 @@ bool Level::setEnd(gf::Vector2i pos){
 bool Level::setStart(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
 		this->start = pos;
-		this->map[pos.y][pos.x].setType(WallType::Start);
+		this->map[pos.x][pos.y].setType(WallType::Start);
 		return true;
 	}
 	return false;	
@@ -98,6 +114,7 @@ Wall* Level::checkCollisions(){
     for(int i=0;i<this->map.size();i++){
         for(int j=0;j<this->map[i].size();j++){
             gf::Rect<int> intersection;
+            
             if(!this->map[i][j].isSolid()){
                 continue;
             }
@@ -108,4 +125,14 @@ Wall* Level::checkCollisions(){
     }
     return nullptr;
 }
+
+void Level::checkWin(){
+    Wall square_end = this->map[end[0]][end[1]];
+    gf::Rect<int> rect_intersection;
+    if(square_end.getRect().intersects(this->player->getRect(),rect_intersection)==true){
+        this->win=true;
+    }
+}
+
+
 
