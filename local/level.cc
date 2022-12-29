@@ -20,8 +20,7 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
 void Level::reset(){
     //printf("AVANT velocity x : %f",this->player->getVelocity()[0]);
     //printf("AVANT velocity y : %f",this->player->getVelocity()[1]);
-    gf::Vector2f velocity = {0.0,0.0};
-    this->player->setVelocity(velocity);
+    this->player->stop();
     //printf("APRES velocity x : %f",this->player->getVelocity()[0]);
     //printf("APRES velocity y : %f",this->player->getVelocity()[1]);
     this->player->setPosition(this->start * WALL_SIZE);

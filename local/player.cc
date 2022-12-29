@@ -39,15 +39,17 @@ Player::Player(gf::Vector2f spawn) :
 
 }
 
-
-
-
 gf::Vector2f Player::getPosition(){
     return this->position;
 }
 
 gf::Vector2f Player::getVelocity(){
     return this->velocity;
+}
+
+void Player::stop(){
+	this->velocity={0.0,0.0};
+	this->actions.reset();
 }
 
 void Player::setPosition(gf::Vector2f position){

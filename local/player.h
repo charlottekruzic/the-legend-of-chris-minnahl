@@ -30,6 +30,8 @@ class Player : public gf::Entity{
         void setPosition(gf::Vector2f position);
         void setVelocity(gf::Vector2f velocity);
 
+        void stop();
+
 		void processEvent(gf::Event);
 
 		void moveX(float dt);
