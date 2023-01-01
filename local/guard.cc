@@ -1,35 +1,70 @@
 #include "guard.h"
 
-Guard::Guard(gf::Vector2f spawn):m_velocity(0,0),shape(GUARD_SIZE){
-    this->speed = 200;
-    this->m_position = spawn;
-    this->m_velocity.y = this->speed;
-    this->rect = gf::RectI().fromPositionSize(this->m_position,GUARD_SIZE);  
-    this->color = gf::Color::Red;
-    this->shape.setColor(this->color);
-    this->shape.setAnchor(gf::Anchor::TopLeft);
-    this->shape.setPosition(this->m_position);
+Guard::Guard():velocity(0,0),shape(GUARD_SIZE){
+    speed = 200;
+    route_index = 0;
+    position = {0,0};
+    velocity.y = speed;
+    rect = gf::RectI().fromPositionSize(position,GUARD_SIZE);  
+    color = gf::Color::Red;
+   	shape.setColor(color);
+    shape.setAnchor(gf::Anchor::TopLeft);
+    shape.setPosition(position);
+}
+
+void Guard::setRoute(std::vector<RouteAction> new_route){
+	route = new_route;
+	route_index = 0;
+	
 }
 
 
+void Guard::nextAction(){
+	route_index ++;
+   	if(route_index > route.size()){
+   		route_index = 0;
+   	}
+    RouteAction *currentAction = &route[route_index];
+
+   	switch(currentAction->type){
+   		case actionType::WAIT:
+			currentAction->cumulated_time = 0;
+   			break;
+   	
+   	   	case actionType::GO:
+			currentAction->cumulated_time = 0;
+   			break;
+   		default:
+   			break;
+   	}
+}
 
 void Guard::update(float dt){
-    
-    
-    if(this->m_position.y<10){
-        this->m_position.y=10;
-        this->m_velocity.y = this->speed;
-    } else if(this->m_position.y>300){
-        this->m_position.y=300;
-        this->m_velocity.y = -this->speed;
+    RouteAction currentAction = route[route_index];
+
+    switch(currentAction.type){
+    	case actionType::WAIT:
+    		break;
+    	case actionType::GO:
+    		break;
+    	default:
+    		break;
     }
-    this->m_position += this->m_velocity  * dt;
-    this->rect = this->rect.fromPositionSize(this->m_position,GUARD_SIZE);
-    this->shape.setPosition(this->m_position);
+    currentAction.cumulated_time += dt;
+    if (currentAction.cumulated_time > currentAction.time){
+		nextAction();
+    }
+    
+
+
+	//unchanged
+    position += velocity  * dt;
+   	rect = rect.fromPositionSize(position,GUARD_SIZE);
+    shape.setPosition(position);
 
 }
 
 void Guard::render(gf::RenderTarget& target){
-    target.draw(this->shape);
+    target.draw(shape);
 };
 

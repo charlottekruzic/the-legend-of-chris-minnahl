@@ -19,19 +19,19 @@ WallType Wall::getType()const{
 
 bool Wall::setType(WallType type){
     switch(type){
-        case WallType::Empty:
+        case WallType::EMPTY:
             this->solid = false;
             this->color = gf::Color::Red;
             break;
-        case WallType::Solid:
+        case WallType::SOLID:
             this->solid = true;
             this->color = gf::Color::Green;
             break;
-        case WallType::Start:
+        case WallType::START:
         	this->solid = false;
         	this->color = gf::Color::Yellow;
         	break;
-        case WallType::End:
+        case WallType::END:
         	this->solid = false;
         	this->color = gf::Color::White;
         	break;

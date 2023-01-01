@@ -36,6 +36,10 @@ class Game{
         	this->level.addWall({5,5});
         	this->level.addWall({5,6});
             this->gameloop();
+
+
+			//Set actions
+			
         }
     private: 
         Player player;
@@ -48,56 +52,71 @@ class Game{
 
         void gameloop(){
             this->renderer.clear(gf::Color::Gray(0.3));
+
+
+			gf::ActionContainer actions;
+
+			gf::Action closeWindowAction("Close window");
+			closeWindowAction.addCloseControl();
+			closeWindowAction.addKeycodeKeyControl(gf::Keycode::Escape);
+			actions.addAction(closeWindowAction);
+
+			gf::Action spaceAction("Press Space");
+			spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
+			actions.addAction(spaceAction);
+
+            
             gf::Clock clock;
             gf::Font font("arial.ttf");
+
+            //Text 
             gf::Text gameOverText("GAME OVER", font);           
+            gf::Text pressSpaceText("Press space to start over", font);
+            gf::Text winText("Won", font);           
+			
+            //Set
             gameOverText.setCharacterSize(30);
             gameOverText.setPosition({100,100});
             gameOverText.setColor(gf::Color::Red);
-            gf::Text winText("Won", font);           
+            
             winText.setCharacterSize(30);
             winText.setPosition({100,100});
             winText.setColor(gf::Color::Red);
-            gf::Text pressSpaceText("Press space to start over", font);           
+            
             pressSpaceText.setCharacterSize(30);
             pressSpaceText.setPosition({250,600});
             pressSpaceText.setColor(gf::Color::Red);
-            Label p("HELLO");
-            p.setSize({300,300});
-            p.setPosition({600,200});
-            p.setColor(gf::Color::Cyan);
-           	Guard guard1({260,90});//Initialize guard1
-        	Guard guard2({400,200});//initialize guard2
+            
+        	float dt;
+        	
             while (this->window.isOpen()) {
                 // Process events
                 gf::Event event;
             
                 while (this->window.pollEvent(event)) {
-                    switch (event.type) {
-                        case gf::EventType::Closed:
-                            this->window.close();
-                            break;
-                        case gf::EventType::KeyPressed:
-                            if(event.key.keycode == gf::Keycode::P){
-                                this->level.prettyPrint();
-                                break;
-                            }
-						default:
-							break;
-                    }
+                    actions.processEvent(event);
                     this->player.processEvent(event);
                 }
 
+                
+			    if(closeWindowAction.isActive()) {
+			      this->window.close();
+			 	}
+
+			    if(spaceAction.isActive() && isFinished) {
+			      this->startGame();
+			 	}
+
+			 	
                 if(this->level.isWin()){
                     this->endgame();
                 }
+                
+                dt = clock.restart().asSeconds();
 
                 if(isFinished == false){
                     //Update
-                    float dt = clock.restart().asSeconds();
                     this->player.update(dt);
-                    guard1.update(dt);
-                    guard2.update(dt);
                     this->level.update(dt);
                 }
 
@@ -105,9 +124,8 @@ class Game{
                 this->renderer.clear();
                 this->level.render(this->renderer);
                 this->player.render(this->renderer);
-                guard1.render(this->renderer);
-                guard2.render(this->renderer);
-                p.render(this->renderer);
+
+                
                 //if the game is over
                 if(this->isFinished == true){
                     //if he lost
@@ -117,28 +135,16 @@ class Game{
                         this->renderer.draw(winText);
                     }
                     this->renderer.draw(pressSpaceText);
-                    while (window.pollEvent(event)) {
-                        switch (event.type) {
-                        case gf::EventType::Closed:
-                            this->window.close();
-                            break;
-                        case gf::EventType::KeyPressed:
-                            if(event.key.keycode == gf::Keycode::Space){
-                                this->startgame();
-                                break;
-                            }
-						default:
-							break;
-                    }
-                    
-                    }
                 }
                 
                 this->renderer.display();
+                actions.reset();
+
             }
+            
         }
 
-        void startgame(){
+        void startGame(){
             this->level.reset();
             //printf("main APRES velocity x : %f",this->player.getVelocity()[0]);
             //printf("main APRES velocity y : %f",this->player.getVelocity()[1]);

@@ -9,12 +9,12 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
         for(float j = 0; j<this->width;j++){
             gf::Vector2f pos = {j,i};
             pos = pos*WALL_SIZE;
-            this->map[i].push_back(Wall(pos,WallType::Empty));
+            this->map[i].push_back(Wall(pos,WallType::EMPTY));
         }
     }
     if(!this->setStart(start)){exit(1);}
     if(!this->setEnd(end)){exit(1);}
-    this->player->setPosition(this->start * WALL_SIZE);
+    this->reset();
 }
 
 void Level::reset(){
@@ -28,9 +28,16 @@ bool Level::isWin(){
 }
 
 
+Guard * Level::addGuard(std::vector<RouteAction> newRoute){
+	Guard newGuard;
+	newGuard.setRoute(newRoute);
+	guards.push_back(newGuard);
+	return &newGuard;
+}
+
 bool Level::addWall(gf::Vector2i position){
 	if(this->isFreeSpace(position)){
-        this->map[position.y][position.x].setType(WallType::Solid);
+        this->map[position.y][position.x].setType(WallType::SOLID);
 		return true;
     }
     return false;
@@ -43,7 +50,7 @@ bool Level::isFreeSpace(gf::Vector2i position){
     if(position.x < 0 || position.x >= this->width){
         return false;
     }
-    if(this->map[position.y][position.x].getType() == WallType::Empty){
+    if(this->map[position.y][position.x].getType() == WallType::EMPTY){
     	return true;
     }
     return false;
@@ -78,7 +85,7 @@ void Level::update(float dt){
 
 bool Level::setEnd(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
-		this->map[pos.x][pos.y].setType(WallType::End);
+		this->map[pos.x][pos.y].setType(WallType::END);
 		this->end = pos;  
 		return true;
 	}
@@ -88,7 +95,7 @@ bool Level::setEnd(gf::Vector2i pos){
 bool Level::setStart(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
 		this->start = pos;
-		this->map[pos.x][pos.y].setType(WallType::Start);
+		this->map[pos.x][pos.y].setType(WallType::START);
 		return true;
 	}
 	return false;	
@@ -97,7 +104,7 @@ bool Level::setStart(gf::Vector2i pos){
 void Level::render(gf::RenderTarget& target){
     for(auto line : this->map){
         for(auto& item : line){
-        	if(item.getType()!=WallType::Empty){
+        	if(item.getType()!=WallType::EMPTY){
             	item.render(target);
         	}
         }
