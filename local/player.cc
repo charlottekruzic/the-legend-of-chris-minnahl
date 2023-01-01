@@ -21,20 +21,20 @@ Player::Player(gf::Vector2f spawn) :
 	//Add actions
 	
 	rightAction.addKeycodeKeyControl(gf::Keycode::Right);
-	rightAction.setContinuous();
+	rightAction.setInstantaneous();
 	actions.addAction(rightAction);
 
 	leftAction.addKeycodeKeyControl(gf::Keycode::Left);
-	leftAction.setContinuous();
+	leftAction.setInstantaneous();
 	actions.addAction(leftAction);
 
 	upAction.addKeycodeKeyControl(gf::Keycode::Up);
-	upAction.setContinuous();
+	upAction.setInstantaneous();
 
 	actions.addAction(upAction);
 
 	downAction.addKeycodeKeyControl(gf::Keycode::Down);
-	downAction.setContinuous();
+	downAction.setInstantaneous();
 	actions.addAction(downAction);
 
 }
@@ -48,7 +48,6 @@ gf::Vector2f Player::getVelocity(){
 }
 
 void Player::stop(){
-	this->velocity={0.0,0.0};
 	this->actions.reset();
 }
 
@@ -120,7 +119,6 @@ void Player::update(float dt){
 	if(this->downAction.isActive()){
 		this->velocity.y += this->speed;
 	}
-	this->actions.reset();
 }
 
 void Player::render(gf::RenderTarget& target){
