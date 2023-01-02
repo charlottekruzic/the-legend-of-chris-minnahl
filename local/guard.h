@@ -11,7 +11,6 @@ constexpr gf::Vector2i GUARD_SIZE = {32,32};
 enum class actionType{GO,WAIT};
 
 struct RouteAction{
-	std::string name;
 	actionType type;
 	float time;
 	float cumulated_time;
@@ -19,10 +18,12 @@ struct RouteAction{
 	
 };
 
+struct RouteAction * generateRouteAction(actionType type,float time,gf::Vector2i position);
+
 class Guard : public gf::Entity{
 
     private:
-    	std::vector<struct RouteAction> route;
+    	std::vector<struct RouteAction *> route;
     	int route_index;
     	
         gf::Vector2f position;
@@ -33,11 +34,12 @@ class Guard : public gf::Entity{
         gf::Color4f color;
         gf::RectI detectorRect;
         gf::RectangleShape detectorShape;
+        struct RouteAction * currentAction;
 
     public:
         Guard();
 		void nextAction();
-        void setRoute(std::vector<struct RouteAction> route);
+        void setRoute(std::vector<struct RouteAction *> route);
         virtual void update(float dt);
         virtual void render(gf::RenderTarget& target);
 };

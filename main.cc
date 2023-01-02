@@ -8,7 +8,7 @@
 #include <gf/Entity.h>
 #include <gf/Shapes.h>
 #include <Box2D/Box2D.h>
-//Include external classes
+//Include local headers
 #include "local/player.h"
 #include "local/level.h"
 #include "local/guard.h"
@@ -86,6 +86,15 @@ class Game{
             pressSpaceText.setCharacterSize(30);
             pressSpaceText.setPosition({250,600});
             pressSpaceText.setColor(gf::Color::Red);
+
+            level.addGuard(
+				{
+            	generateRouteAction(actionType::WAIT,2.0,{1,1}),
+            	generateRouteAction(actionType::GO,1.0,{1,1}),
+            	generateRouteAction(actionType::WAIT,2.0,{1,1}),
+
+				}
+            );
             
         	float dt;
         	

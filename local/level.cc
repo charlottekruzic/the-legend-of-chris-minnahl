@@ -28,11 +28,11 @@ bool Level::isWin(){
 }
 
 
-Guard * Level::addGuard(std::vector<RouteAction> newRoute){
-	Guard newGuard;
-	newGuard.setRoute(newRoute);
-	guards.push_back(newGuard);
-	return &newGuard;
+Guard * Level::addGuard(std::vector<RouteAction *> newRoute){
+	Guard *newGuard = new Guard;
+	newGuard->setRoute(newRoute);
+	guards.push_back(*newGuard);
+	return newGuard;
 }
 
 bool Level::addWall(gf::Vector2i position){
@@ -76,10 +76,14 @@ void Level::prettyPrint(){
 }
 
 void Level::update(float dt){
+    for (auto guard : guards){
+    	guard.update(dt);
+    }
 	this->player->moveX(dt);
     this->player->handleCollisionX(this->checkCollisions());
 	this->player->moveY(dt);
     this->player->handleCollisionY(this->checkCollisions());
+
     this->checkWin();
 }
 
@@ -108,6 +112,9 @@ void Level::render(gf::RenderTarget& target){
             	item.render(target);
         	}
         }
+    }
+    for (auto& guard : guards){
+    	guard.render(target);
     }
 
 }
