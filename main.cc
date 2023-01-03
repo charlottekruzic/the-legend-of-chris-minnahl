@@ -14,6 +14,9 @@
 #include "local/guard.h"
 #include "gui/panel.h"
 #include "gui/label.h"
+#include "gui/button.h"
+#include <gf/Widgets.h>
+
 constexpr int WORLD_SIZE = 20;
 
 class Game{
@@ -87,6 +90,8 @@ class Game{
             pressSpaceText.setPosition({250,600});
             pressSpaceText.setColor(gf::Color::Red);
 
+            Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
+
             level.addGuard(
 				{
             	generateRouteAction(actionType::WAIT,2.0,{1,1}),
@@ -116,7 +121,6 @@ class Game{
 			      this->startGame();
 			 	}
 
-			 	
                 if(this->level.isWin()){
                     this->endgame();
                 }
@@ -134,7 +138,10 @@ class Game{
                 this->level.render(this->renderer);
                 this->player.render(this->renderer);
 
-                
+                //Test button
+                gf::TextButtonWidget aff_button = buttonTest.getButton();
+                this->renderer.draw(aff_button);
+
                 //if the game is over
                 if(this->isFinished == true){
                     //if he lost
@@ -155,14 +162,10 @@ class Game{
 
         void startGame(){
             this->level.reset();
-            //printf("main APRES velocity x : %f",this->player.getVelocity()[0]);
-            //printf("main APRES velocity y : %f",this->player.getVelocity()[1]);
             this->isFinished=false;
         }
         
         void endgame(){
-            //printf("main AVANT velocity x : %f",this->player.getVelocity()[0]);
-            //printf("main AVANT velocity y : %f",this->player.getVelocity()[1]);
             this->isFinished=true;
         }
 
