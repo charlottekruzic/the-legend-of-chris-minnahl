@@ -15,7 +15,7 @@ class Level{
         int width,height;
         Player* player;
         bool win;
-        std::vector<Guard> guards;
+        std::vector<Guard*> guards;
     public:
         Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end);
         /**
