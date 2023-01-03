@@ -97,6 +97,7 @@ class Game{
             	generateRouteAction(actionType::WAIT,2.0,{1,1}),
             	generateRouteAction(actionType::GO,1.0,{1,1}),
             	generateRouteAction(actionType::WAIT,2.0,{1,1}),
+            	generateRouteAction(actionType::GO,1.0,{1,1})
 
 				}
             );

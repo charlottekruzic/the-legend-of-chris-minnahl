@@ -12,7 +12,7 @@ struct RouteAction* generateRouteAction(actionType type,float time,gf::Vector2i 
 Guard::Guard():velocity(0,0),shape(GUARD_SIZE){
     speed = 200;
     position = {0,0};
-    velocity.y = speed;
+    velocity = {0,0};
     rect = gf::RectI().fromPositionSize(position,GUARD_SIZE);  
     color = gf::Color::Red;
    	shape.setColor(color);
@@ -32,29 +32,29 @@ void Guard::setRoute(std::vector<RouteAction *> new_route){
 
 void Guard::nextAction(){
 	route_index ++;
-   	if(route_index > route.size()){
+   	if(route_index >= route.size()){
    		route_index = 0;
    	}
-   	if(currentAction){
-   		std::cout << "Previous ! "<< (currentAction->type == actionType::GO ?  "GO" : "WAIT") <<"\n";	
-   	}
+
 
     currentAction = route[route_index];
    	currentAction->cumulated_time = 0;
 
     std::cout << "Route index : "<< route_index <<"\n";
-	std::cout << "Next action ! "<< (currentAction->type == actionType::GO ?  "GO" : "WAIT") <<"\n";
+	std::cout << "New action ! "<< (currentAction->type == actionType::GO ?  "GO" : "WAIT") <<"\n";
 	std::cout << "time : " << currentAction->time << "\n";
 	
-   	// switch(currentAction->type){
-   		// case actionType::WAIT:
-   			// break;
-   	   	// case actionType::GO:
-   			// break;
-   		// default:
-   			// break;
-   	// }
-   	std::cout << "cumul_time : " << currentAction->cumulated_time << "\n";
+   	switch(currentAction->type){
+   		case actionType::WAIT:
+   			shape.setColor(gf::Color::Azure);
+   			break;
+   	   	case actionType::GO:
+   	   	   	shape.setColor(gf::Color::Red);
+
+   			break;
+   		default:
+   			break;
+   	}
 
 }
 
@@ -68,8 +68,6 @@ void Guard::update(float dt){
     	default:
     		break;
     }
-
-   	std::cout << "cumul_time : " << currentAction->cumulated_time << "\n";
 
     currentAction->cumulated_time += dt;
 
