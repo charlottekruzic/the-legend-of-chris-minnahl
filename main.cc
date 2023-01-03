@@ -14,6 +14,9 @@
 #include "local/guard.h"
 #include "gui/panel.h"
 #include "gui/label.h"
+#include "gui/button.h"
+#include <gf/Widgets.h>
+
 constexpr int WORLD_SIZE = 20;
 
 class Game{
@@ -66,6 +69,9 @@ class Game{
             p.setSize({300,300});
             p.setPosition({600,200});
             p.setColor(gf::Color::Cyan);
+
+            Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
+
            	Guard guard1({260,90});//Initialize guard1
         	Guard guard2({400,200});//initialize guard2
             while (this->window.isOpen()) {
@@ -88,6 +94,7 @@ class Game{
                     this->player.processEvent(event);
                 }
 
+
                 if(this->level.isWin()){
                     this->endgame();
                 }
@@ -108,6 +115,12 @@ class Game{
                 guard1.render(this->renderer);
                 guard2.render(this->renderer);
                 p.render(this->renderer);
+
+                //Test button
+                gf::TextButtonWidget aff_button = buttonTest.getButton();
+                this->renderer.draw(aff_button);
+
+
                 //if the game is over
                 if(this->isFinished == true){
                     //if he lost
@@ -140,14 +153,10 @@ class Game{
 
         void startgame(){
             this->level.reset();
-            //printf("main APRES velocity x : %f",this->player.getVelocity()[0]);
-            //printf("main APRES velocity y : %f",this->player.getVelocity()[1]);
             this->isFinished=false;
         }
         
         void endgame(){
-            //printf("main AVANT velocity x : %f",this->player.getVelocity()[0]);
-            //printf("main AVANT velocity y : %f",this->player.getVelocity()[1]);
             this->isFinished=true;
         }
 
