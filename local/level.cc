@@ -31,7 +31,7 @@ bool Level::isWin(){
 Guard * Level::addGuard(std::vector<RouteAction *> newRoute){
 	Guard *newGuard = new Guard;
 	newGuard->setRoute(newRoute);
-	guards.push_back(*newGuard);
+	guards.push_back(newGuard);
 	return newGuard;
 }
 
@@ -77,7 +77,7 @@ void Level::prettyPrint(){
 
 void Level::update(float dt){
     for (auto guard : guards){
-    	guard.update(dt);
+    	(*guard).update(dt);
     }
 	this->player->moveX(dt);
     this->player->handleCollisionX(this->checkCollisions());
@@ -114,7 +114,7 @@ void Level::render(gf::RenderTarget& target){
         }
     }
     for (auto& guard : guards){
-    	guard.render(target);
+    	(*guard).render(target);
     }
 
 }
