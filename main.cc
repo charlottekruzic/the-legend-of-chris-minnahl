@@ -123,6 +123,7 @@ class Game{
 			 	}
 
                 if(this->level.isWin()){
+                    this->win=true;
                     this->endgame();
                 }
                 
@@ -150,6 +151,7 @@ class Game{
                         this->renderer.draw(gameOverText);
                     }else{
                         this->renderer.draw(winText);
+                        this->win=false;
                     }
                     this->renderer.draw(pressSpaceText);
                 }
