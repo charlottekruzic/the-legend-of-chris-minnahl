@@ -11,13 +11,13 @@
 class Level{
     private:
         std::vector<std::vector<Wall>> map;
-        gf::Vector2i start,end;
+        gf::Vector2i start,end,object;
         int width,height;
         Player* player;
         bool win;
         std::vector<Guard*> guards;
     public:
-        Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end);
+        Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object);
         /**
          * @brief Adds a wall to the level at the given position
          * @param position grid position of the wall
@@ -41,11 +41,15 @@ class Level{
 
         void checkWin();
 
+        void checkTakeObject();
+
         bool isFreeSpace(gf::Vector2i position);
 
         bool setStart(gf::Vector2i position);
 
         bool setEnd(gf::Vector2i position);
+
+        bool setObject(gf::Vector2i pos);
 
         void update(float dt);
 

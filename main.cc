@@ -26,7 +26,7 @@ class Game{
         renderer(window),
         player({128,128}),//Initialize player
 
-        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15})//initialize level with set size, pointer to player and start/end grid coordinates
+        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12})//initialize level with set size, pointer to player and start/end grid coordinates
         {
             this->isFinished = false;
             this->win = false;

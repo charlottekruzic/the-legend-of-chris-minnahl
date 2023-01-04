@@ -37,6 +37,7 @@ Player::Player(gf::Vector2f spawn) :
 	downAction.setInstantaneous();
 	actions.addAction(downAction);
 
+	this->hasObject=false;
 }
 
 gf::Vector2f Player::getPosition(){
@@ -47,8 +48,9 @@ gf::Vector2f Player::getVelocity(){
     return this->velocity;
 }
 
-void Player::stop(){
+void Player::reset(){
 	this->actions.reset();
+	this->hasObject=false;
 }
 
 void Player::setPosition(gf::Vector2f position){
@@ -62,6 +64,14 @@ void Player::setVelocity(gf::Vector2f vel){
 
 gf::RectI Player::getRect(){
     return this->rect;
+}
+
+void Player::findObject(){
+	this->hasObject=true;
+}
+
+bool Player::stoleTheObject(){
+	return this->hasObject;
 }
 
 
