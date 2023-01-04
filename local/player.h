@@ -20,6 +20,7 @@ class Player : public gf::Entity{
         gf::Color4f color;
         gf::Action leftAction, rightAction, upAction, downAction;
         gf::ActionContainer actions;
+        bool hasObject;
         
     public:
         Player(gf::Vector2f spawn);
@@ -27,10 +28,13 @@ class Player : public gf::Entity{
         gf::Vector2f getVelocity();
         gf::RectI getRect();
 
+        void findObject();
+        bool stoleTheObject();
+
         void setPosition(gf::Vector2f position);
         void setVelocity(gf::Vector2f velocity);
 
-        void stop();
+        void reset();
 
 		void processEvent(gf::Event);
 

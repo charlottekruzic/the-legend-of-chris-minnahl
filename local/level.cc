@@ -1,7 +1,7 @@
 #include "level.h"
 #include <iostream>
 
-Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end): width(size.x),height(size.y) , player(player){
+Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object): width(size.x),height(size.y) , player(player){
     this->win=false; 
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
@@ -14,12 +14,14 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
     }
     if(!this->setStart(start)){exit(1);}
     if(!this->setEnd(end)){exit(1);}
+    if(!this->setObject(object)){exit(1);}
     this->reset();
 }
 
 void Level::reset(){
-    this->player->stop();
+    this->player->reset();
     this->player->setPosition(this->start * WALL_SIZE);
+    this->setObject(object);
     this->win=false;
 }
 
@@ -83,7 +85,7 @@ void Level::update(float dt){
     this->player->handleCollisionX(this->checkCollisions());
 	this->player->moveY(dt);
     this->player->handleCollisionY(this->checkCollisions());
-
+    this->checkTakeObject();
     this->checkWin();
 }
 
@@ -100,6 +102,16 @@ bool Level::setStart(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
 		this->start = pos;
 		this->map[pos.x][pos.y].setType(WallType::START);
+        
+		return true;
+	}
+	return false;	
+}
+
+bool Level::setObject(gf::Vector2i pos){
+	if(this->isFreeSpace(pos)){
+		this->object = pos;
+		this->map[pos.x][pos.y].setType(WallType::OBJECT);
 		return true;
 	}
 	return false;	
@@ -138,8 +150,17 @@ Wall* Level::checkCollisions(){
 void Level::checkWin(){
     Wall square_end = this->map[end[0]][end[1]];
     gf::Rect<int> rect_intersection;
-    if(square_end.getRect().intersects(this->player->getRect(),rect_intersection)==true){
+    if(square_end.getRect().intersects(this->player->getRect(),rect_intersection)==true && this->player->stoleTheObject()==true){
         this->win=true;
+    }
+}
+
+void Level::checkTakeObject(){
+    Wall square_object = this->map[object[0]][object[1]];
+    gf::Rect<int> rect_intersection;
+    if(square_object.getRect().intersects(this->player->getRect(),rect_intersection)==true){
+        this->player->findObject();
+        this->map[object[0]][object[1]].setType(WallType::EMPTY);
     }
 }
 
