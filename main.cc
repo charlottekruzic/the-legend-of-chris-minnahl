@@ -222,7 +222,7 @@ class Game{
 
             gf::Text titleText("Steal museum", font); 
             titleText.setCharacterSize(50);
-            titleText.setPosition({500,100});
+            titleText.setPosition({300,100});
             titleText.setColor(gf::Color::Cyan);
             this->renderer.draw(titleText);
 
@@ -231,21 +231,21 @@ class Game{
             button1.setDefaultBackgroundColor(gf::Color::Cyan);
             button1.setPadding(20.0);
             button1.setRadius(12.0);
-            button1.setPosition({600,300});
+            button1.setPosition({400,300});
 
             gf::TextButtonWidget button2 = gf::TextButtonWidget ("Rules", font, 30.0);
             button2.setBackgroundOutlineThickness(2);
             button2.setDefaultBackgroundColor(gf::Color::Cyan);
             button2.setPadding(20.0);
             button2.setRadius(12.0);
-            button2.setPosition({600,400});
+            button2.setPosition({400,400});
 
             gf::TextButtonWidget button3 = gf::TextButtonWidget ("Exit", font,  30.0);
             button3.setBackgroundOutlineThickness(2);
             button3.setDefaultBackgroundColor(gf::Color::Cyan);
             button3.setPadding(20.0);
             button3.setRadius(12.0);
-            button3.setPosition({600,500});
+            button3.setPosition({400,500});
 
             gf::TextButtonWidget aff_button1 = button1;
             this->renderer.draw(aff_button1);
