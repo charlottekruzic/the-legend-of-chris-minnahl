@@ -7,6 +7,8 @@
 #include <gf/Window.h>
 #include <gf/Entity.h>
 #include <gf/Shapes.h>
+#include <gf/View.h>
+#include <gf/Rect.h>
 #include <Box2D/Box2D.h>
 //Include local headers
 #include "local/player.h"
@@ -22,12 +24,12 @@ constexpr int WORLD_SIZE = 20;
 class Game{
     public:
         Game() :
-        window("My awesome game",{ 1280, 720}),
+        window("My awesome game",{800, 800}),
         renderer(window),
         player({128,128}),//Initialize player
-
         level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12})//initialize level with set size, pointer to player and start/end grid coordinates
         {
+            this->window.setPosition({this->player.getPosition()});
             this->isFinished = false;
             this->win = false;
         	for(int y = 0; y<WORLD_SIZE ; y++){//fill the level borders with walls
@@ -38,9 +40,8 @@ class Game{
         	}
         	this->level.addWall({5,5});
         	this->level.addWall({5,6});
+            
             this->gameloop();
-
-
 			//Set actions
 			
         }
@@ -51,6 +52,8 @@ class Game{
         Level level;
         bool isFinished = true;
         bool win = true;
+        gf::View camera;
+        
         
 
         void gameloop(){
@@ -135,10 +138,16 @@ class Game{
                     this->level.update(dt);
                 }
 
+                //Update and draw View
+                this->viewUpdate();
+                this->renderer.setView(this->camera);
+
+
                 // Draw the entities
                 this->renderer.clear();
                 this->level.render(this->renderer);
                 this->player.render(this->renderer);
+                
 
                 //Test button
                 gf::TextButtonWidget aff_button = buttonTest.getButton();
@@ -170,6 +179,14 @@ class Game{
         
         void endgame(){
             this->isFinished=true;
+        }
+
+        void viewUpdate(){
+            gf::Vector2f position = this->player.getPosition();
+            gf::Vector2f size(500.0, 500.0);
+            gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
+            this->camera.reset(rect_camera);
+            this->camera.setCenter(this->player.getPosition());
         }
 
 };
