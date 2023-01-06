@@ -51,6 +51,7 @@ class Game{
         Level level;
         bool isFinished = true;
         bool win = true;
+        bool menuPage = true;
         
 
         void gameloop(){
@@ -91,6 +92,7 @@ class Game{
             pressSpaceText.setColor(gf::Color::Red);
 
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
+          
 
             level.addGuard(
 				{
@@ -105,59 +107,93 @@ class Game{
         	float dt;
         	
             while (this->window.isOpen()) {
-                // Process events
-                gf::Event event;
-            
-                while (this->window.pollEvent(event)) {
-                    actions.processEvent(event);
-                    this->player.processEvent(event);
-                }
 
+                // homepage display
+                if(menuPage == true){
+                    
+                     // Process events
+                    gf::Event event;
                 
-			    if(closeWindowAction.isActive()) {
-			      this->window.close();
-			 	}
-
-			    if(spaceAction.isActive() && isFinished) {
-			      this->startGame();
-			 	}
-
-                if(this->level.isWin()){
-                    this->win=true;
-                    this->endgame();
-                }
-                
-                dt = clock.restart().asSeconds();
-
-                if(isFinished == false){
-                    //Update
-                    this->player.update(dt);
-                    this->level.update(dt);
-                }
-
-                // Draw the entities
-                this->renderer.clear();
-                this->level.render(this->renderer);
-                this->player.render(this->renderer);
-
-                //Test button
-                gf::TextButtonWidget aff_button = buttonTest.getButton();
-                this->renderer.draw(aff_button);
-
-                //if the game is over
-                if(this->isFinished == true){
-                    //if he lost
-                    if(this->win == false){
-                        this->renderer.draw(gameOverText);
-                    }else{
-                        this->renderer.draw(winText);
-                        this->win=false;
+                    while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                        this->player.processEvent(event);
+                        
+                        if(event.type == gf::EventType::MouseButtonPressed){
+                        this->startGame();
+                        std::cout <<"mouse boutton pressed" << std::endl;
+                        menuPage =false;
                     }
-                    this->renderer.draw(pressSpaceText);
-                }
+                        
+                    }
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    }
+
+                    dt = clock.restart().asSeconds();
+
+                    this->renderer.clear();
+                    displayMenuPage();
+
+                    
+
+                    this->renderer.display();
+                }else{
+
+
+                    // Process events
+                    gf::Event event;
                 
-                this->renderer.display();
-                actions.reset();
+                    while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                        this->player.processEvent(event);
+                    }
+
+                    
+                    if(closeWindowAction.isActive()) {
+                    this->window.close();
+                    }
+
+                    if(spaceAction.isActive() && isFinished) {
+                    this->startGame();
+                    }
+
+                    if(this->level.isWin()){
+                        this->win=true;
+                        this->endgame();
+                    }
+                    
+                    dt = clock.restart().asSeconds();
+
+                    if(isFinished == false){
+                        //Update
+                        this->player.update(dt);
+                        this->level.update(dt);
+                    }
+
+                    // Draw the entities
+                    this->renderer.clear();
+                    this->level.render(this->renderer);
+                    this->player.render(this->renderer);
+
+                    //Test button
+                    gf::TextButtonWidget aff_button = buttonTest.getButton();
+                    this->renderer.draw(aff_button);
+
+                    //if the game is over
+                    if(this->isFinished == true){
+                        //if he lost
+                        if(this->win == false){
+                            this->renderer.draw(gameOverText);
+                        }else{
+                            this->renderer.draw(winText);
+                            this->win=false;
+                        }
+                        this->renderer.draw(pressSpaceText);
+                    }
+                    
+                    this->renderer.display();
+                    actions.reset();
+                }
 
             }
             
@@ -170,6 +206,46 @@ class Game{
         
         void endgame(){
             this->isFinished=true;
+        }
+
+        void displayMenuPage(){
+            gf::Font font("arial.ttf");
+
+            gf::Text titleText("Steal museum", font); 
+            titleText.setCharacterSize(50);
+            titleText.setPosition({500,100});
+            titleText.setColor(gf::Color::Cyan);
+            this->renderer.draw(titleText);
+
+            gf::TextButtonWidget button1 = gf::TextButtonWidget ("Start", font, 30.0);
+            button1.setBackgroundOutlineThickness(2);
+            button1.setDefaultBackgroundColor(gf::Color::Cyan);
+            button1.setPadding(20.0);
+            button1.setRadius(12.0);
+            button1.setPosition({600,300});
+
+            gf::TextButtonWidget button2 = gf::TextButtonWidget ("Rules", font, 30.0);
+            button2.setBackgroundOutlineThickness(2);
+            button2.setDefaultBackgroundColor(gf::Color::Cyan);
+            button2.setPadding(20.0);
+            button2.setRadius(12.0);
+            button2.setPosition({600,400});
+
+            gf::TextButtonWidget button3 = gf::TextButtonWidget ("Exit", font,  30.0);
+            button3.setBackgroundOutlineThickness(2);
+            button3.setDefaultBackgroundColor(gf::Color::Cyan);
+            button3.setPadding(20.0);
+            button3.setRadius(12.0);
+            button3.setPosition({600,500});
+
+            gf::TextButtonWidget aff_button1 = button1;
+            this->renderer.draw(aff_button1);
+
+            gf::TextButtonWidget aff_button2 = button2;
+            this->renderer.draw(aff_button2);
+
+            gf::TextButtonWidget aff_button3 = button3;
+            this->renderer.draw(aff_button3);
         }
 
 };
