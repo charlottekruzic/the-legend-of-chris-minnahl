@@ -157,7 +157,7 @@ class Game{
                     this->startGame();
                     }
 
-                    if(this->level.isWin()){
+                    if(this->level.isWin()){ 
                         this->win=true;
                         this->endgame();
                     }
