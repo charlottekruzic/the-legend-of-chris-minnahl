@@ -146,16 +146,16 @@ class Game{
             gf::Text winText("Won", font);           
 			
             //Set
-            gameOverText.setCharacterSize(30);
-            gameOverText.setPosition({100,100});
+            gameOverText.setCharacterSize(60);
+            gameOverText.setPosition({350,300});
             gameOverText.setColor(gf::Color::Red);
             
-            winText.setCharacterSize(30);
-            winText.setPosition({100,100});
+            winText.setCharacterSize(60);
+            winText.setPosition({350,300});
             winText.setColor(gf::Color::Red);
             
-            pressSpaceText.setCharacterSize(30);
-            pressSpaceText.setPosition({250,600});
+            pressSpaceText.setCharacterSize(25);
+            pressSpaceText.setPosition({280,320});
             pressSpaceText.setColor(gf::Color::Red);
 
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
