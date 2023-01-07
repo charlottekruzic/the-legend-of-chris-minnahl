@@ -56,7 +56,65 @@ class Game{
         gf::View camera;
         
         
+        void startGame(){
+            this->level.reset();
+            this->isFinished=false;
+        }
+        
+        void endgame(){
+            this->isFinished=true;
+        }
 
+        void displayMenuPage(){
+            gf::Font font("arial.ttf");
+
+            gf::Text titleText("Steal museum", font); 
+            titleText.setCharacterSize(50);
+            titleText.setPosition({300,100});
+            titleText.setColor(gf::Color::Cyan);
+            this->renderer.draw(titleText);
+
+            gf::TextButtonWidget button1 = gf::TextButtonWidget ("Start", font, 30.0);
+            button1.setBackgroundOutlineThickness(2);
+            button1.setDefaultBackgroundColor(gf::Color::Cyan);
+            button1.setPadding(20.0);
+            button1.setRadius(12.0);
+            button1.setPosition({400,300});
+
+            gf::TextButtonWidget button2 = gf::TextButtonWidget ("Rules", font, 30.0);
+            button2.setBackgroundOutlineThickness(2);
+            button2.setDefaultBackgroundColor(gf::Color::Cyan);
+            button2.setPadding(20.0);
+            button2.setRadius(12.0);
+            button2.setPosition({400,400});
+
+            gf::TextButtonWidget button3 = gf::TextButtonWidget ("Exit", font,  30.0);
+            button3.setBackgroundOutlineThickness(2);
+            button3.setDefaultBackgroundColor(gf::Color::Cyan);
+            button3.setPadding(20.0);
+            button3.setRadius(12.0);
+            button3.setPosition({400,500});
+
+            gf::TextButtonWidget aff_button1 = button1;
+            this->renderer.draw(aff_button1);
+
+            gf::TextButtonWidget aff_button2 = button2;
+            this->renderer.draw(aff_button2);
+
+            gf::TextButtonWidget aff_button3 = button3;
+            this->renderer.draw(aff_button3);
+        }
+        
+        void viewUpdate(){
+            gf::Vector2f position = this->player.getPosition();
+            gf::Vector2f size(500.0, 500.0);
+            gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
+            this->camera.reset(rect_camera);
+            this->camera.setCenter(this->player.getPosition());
+
+        }
+
+        
         void gameloop(){
             this->renderer.clear(gf::Color::Gray(0.3));
 
@@ -98,11 +156,16 @@ class Game{
           
 
             level.addGuard(
+            	{10,1},
 				{
-            	generateRouteAction(actionType::WAIT,2.0,{1,1}),
-            	generateRouteAction(actionType::GO,1.0,{1,1}),
-            	generateRouteAction(actionType::WAIT,2.0,{1,1}),
-            	generateRouteAction(actionType::GO,1.0,{1,1})
+            	generateRouteAction(actionType::WAIT	,1.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{6,1}),
+            	generateRouteAction(actionType::WAIT	,2.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{6,5}),
+            	generateRouteAction(actionType::WAIT	,1.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{6,1}),
+            	generateRouteAction(actionType::WAIT	,2.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{10,1}),
 
 				}
             );
@@ -208,63 +271,7 @@ class Game{
             
         }
 
-        void startGame(){
-            this->level.reset();
-            this->isFinished=false;
-        }
-        
-        void endgame(){
-            this->isFinished=true;
-        }
 
-        void displayMenuPage(){
-            gf::Font font("arial.ttf");
-
-            gf::Text titleText("Steal museum", font); 
-            titleText.setCharacterSize(50);
-            titleText.setPosition({300,100});
-            titleText.setColor(gf::Color::Cyan);
-            this->renderer.draw(titleText);
-
-            gf::TextButtonWidget button1 = gf::TextButtonWidget ("Start", font, 30.0);
-            button1.setBackgroundOutlineThickness(2);
-            button1.setDefaultBackgroundColor(gf::Color::Cyan);
-            button1.setPadding(20.0);
-            button1.setRadius(12.0);
-            button1.setPosition({400,300});
-
-            gf::TextButtonWidget button2 = gf::TextButtonWidget ("Rules", font, 30.0);
-            button2.setBackgroundOutlineThickness(2);
-            button2.setDefaultBackgroundColor(gf::Color::Cyan);
-            button2.setPadding(20.0);
-            button2.setRadius(12.0);
-            button2.setPosition({400,400});
-
-            gf::TextButtonWidget button3 = gf::TextButtonWidget ("Exit", font,  30.0);
-            button3.setBackgroundOutlineThickness(2);
-            button3.setDefaultBackgroundColor(gf::Color::Cyan);
-            button3.setPadding(20.0);
-            button3.setRadius(12.0);
-            button3.setPosition({400,500});
-
-            gf::TextButtonWidget aff_button1 = button1;
-            this->renderer.draw(aff_button1);
-
-            gf::TextButtonWidget aff_button2 = button2;
-            this->renderer.draw(aff_button2);
-
-            gf::TextButtonWidget aff_button3 = button3;
-            this->renderer.draw(aff_button3);
-        }
-        
-        void viewUpdate(){
-            gf::Vector2f position = this->player.getPosition();
-            gf::Vector2f size(500.0, 500.0);
-            gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
-            this->camera.reset(rect_camera);
-            this->camera.setCenter(this->player.getPosition());
-
-        }
 
 };
 

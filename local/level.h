@@ -26,7 +26,7 @@ class Level{
         bool addWall(gf::Vector2i position);
 
 
-		Guard * addGuard(std::vector<RouteAction *> route);
+		Guard * addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> route);
 
         void reset();
 

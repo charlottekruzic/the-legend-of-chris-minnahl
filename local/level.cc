@@ -30,8 +30,8 @@ bool Level::isWin(){
 }
 
 
-Guard * Level::addGuard(std::vector<RouteAction *> newRoute){
-	Guard *newGuard = new Guard;
+Guard * Level::addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> newRoute){
+	Guard *newGuard = new Guard(grid_pos);
 	newGuard->setRoute(newRoute);
 	guards.push_back(newGuard);
 	return newGuard;
