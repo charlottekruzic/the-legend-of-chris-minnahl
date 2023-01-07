@@ -20,11 +20,12 @@
 #include <gf/Widgets.h>
 
 constexpr int WORLD_SIZE = 20;
+constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
 
 class Game{
     public:
         Game() :
-        window("My awesome game",{800, 800}),
+        window("My awesome game",WINDOW_SIZE),
         renderer(window),
         player({128,128}),//Initialize player
         level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12})//initialize level with set size, pointer to player and start/end grid coordinates
@@ -106,12 +107,17 @@ class Game{
         }
         
         void viewUpdate(){
-            gf::Vector2f position = this->player.getPosition();
-            gf::Vector2f size(500.0, 500.0);
-            gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
-            this->camera.reset(rect_camera);
-            this->camera.setCenter(this->player.getPosition());
-
+            if(this->menuPage || this->isFinished){
+                gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, WINDOW_SIZE);
+                this->camera.reset(rect_camera);
+            }else{
+                gf::Vector2f position = this->player.getPosition();
+                gf::Vector2f size(500.0, 500.0);
+                gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
+                this->camera.reset(rect_camera);
+                this->camera.setCenter(this->player.getPosition());
+            }
+            this->renderer.setView(this->camera);
         }
 
         
@@ -256,11 +262,10 @@ class Game{
                             this->win=false;
                         }
                         this->renderer.draw(pressSpaceText);
-                      }
+                    }
 
-                      //Update and draw View
-                      this->viewUpdate();
-                      this->renderer.setView(this->camera);
+                    //Update and draw View
+                    this->viewUpdate();
 
                     
                     this->renderer.display();
