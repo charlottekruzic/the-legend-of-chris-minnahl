@@ -147,15 +147,15 @@ class Game{
 			
             //Set
             gameOverText.setCharacterSize(60);
-            gameOverText.setPosition({350,300});
+            gameOverText.setPosition({(WINDOW_SIZE[0]/2)-60,WINDOW_SIZE[1]/2});
             gameOverText.setColor(gf::Color::Red);
             
             winText.setCharacterSize(60);
-            winText.setPosition({350,300});
+            winText.setPosition({(WINDOW_SIZE[0]/2)-60,WINDOW_SIZE[1]/2});
             winText.setColor(gf::Color::Red);
             
             pressSpaceText.setCharacterSize(25);
-            pressSpaceText.setPosition({280,320});
+            pressSpaceText.setPosition({(WINDOW_SIZE[0]/2)-140,(WINDOW_SIZE[1]/2)+20});
             pressSpaceText.setColor(gf::Color::Red);
 
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
