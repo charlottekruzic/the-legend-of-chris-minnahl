@@ -197,10 +197,6 @@ class Game{
                     
                     gf::Event event;
 
-                    while (this->window.pollEvent(event)) {
-                        actions.processEvent(event);
-                    }
-
                     if(closeWindowAction.isActive()) {
                         this->window.close();
                     }     
@@ -242,6 +238,7 @@ class Game{
                         this->renderer.draw(this->buttons[i]);
                     }
                     this->renderer.display();
+
 
                 }else{
 
