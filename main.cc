@@ -156,7 +156,7 @@ class Game{
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
           
 
-            level.addGuard( 
+            level.addGuard(
             	{15,1},
 				{
             	generateRouteAction(actionType::GO		,1.0,{8,1}),
@@ -190,19 +190,20 @@ class Game{
         	
             while (this->window.isOpen()) {
                 dt = clock.restart().asSeconds();
-               	gf::Event event;
 
-                while (this->window.pollEvent(event)) {
-                    actions.processEvent(event);
-                }
-                if(closeWindowAction.isActive()) {
-                    this->window.close();
-                }             
+                        
                 // homepage display
                 if(menuPage == true){
                     
+                    gf::Event event;
 
+                    while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                    }
 
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    }     
 
                     while (this->window.pollEvent(event)) {
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
@@ -244,8 +245,16 @@ class Game{
 
                 }else{
 
-                    
+                    gf::Event event;
 
+                    while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                        this->player.processEvent(event);
+                    }
+                    
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    }  
 
                     if(spaceAction.isActive() && isFinished) {
                         this->startGame();
