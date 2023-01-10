@@ -43,6 +43,12 @@ class Game{
         	}
         	this->level.addWall({5,5});
         	this->level.addWall({5,6});
+        	this->level.addWall({6,6});
+        	this->level.addWall({1,10});
+        	this->level.addWall({18,19});
+        	this->level.addWall({17,19});
+        	this->level.addWall({16,19});
+
 
             //Création du menu
             gf::Font font("arial.ttf");
@@ -79,8 +85,8 @@ class Game{
         gf::Window window;
         gf::RenderWindow renderer;
         Level level;
-        bool isFinished = true;
-        bool win = true;
+        bool isFinished;
+        bool win;
         bool menuPage = true;
         gf::View camera;
         std::vector<gf::TextButtonWidget> buttons;
@@ -151,23 +157,39 @@ class Game{
           
 
             level.addGuard(
-            	{10,1},
+            	{15,1},
 				{
-            	generateRouteAction(actionType::WAIT	,1.0,{0,0}),
-            	generateRouteAction(actionType::GO		,1.0,{6,1}),
+            	generateRouteAction(actionType::GO		,1.0,{8,1}),
             	generateRouteAction(actionType::WAIT	,2.0,{0,0}),
-            	generateRouteAction(actionType::GO		,1.0,{6,5}),
+            	generateRouteAction(actionType::GO		,1.0,{8,5}),
             	generateRouteAction(actionType::WAIT	,1.0,{0,0}),
-            	generateRouteAction(actionType::GO		,1.0,{6,1}),
+            	generateRouteAction(actionType::GO		,1.0,{8,1}),
             	generateRouteAction(actionType::WAIT	,2.0,{0,0}),
-            	generateRouteAction(actionType::GO		,1.0,{10,1}),
+            	generateRouteAction(actionType::GO		,1.0,{15,1}),
+            	generateRouteAction(actionType::WAIT	,1.0,{0,0})
+
 
 				}
             );
-            
+            level.addGuard(
+            	{5,18},
+				{
+            	generateRouteAction(actionType::GO		,1.0,{15,18}),
+            	generateRouteAction(actionType::WAIT	,2.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{15,10}),
+            	generateRouteAction(actionType::WAIT	,1.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{5,10}),
+            	generateRouteAction(actionType::WAIT	,2.0,{0,0}),
+            	generateRouteAction(actionType::GO		,1.0,{5,18}),
+            	generateRouteAction(actionType::WAIT	,1.0,{0,0})
+
+
+				}
+            );            
         	float dt;
         	
             while (this->window.isOpen()) {
+                dt = clock.restart().asSeconds();
 
                 // homepage display
                 if(menuPage == true){
@@ -240,9 +262,10 @@ class Game{
                     if(this->level.isWin()){ 
                         this->win=true;
                         this->endgame();
+                    }else if(level.isLoose()){
+                    	this->win=false;
+                        this->endgame();
                     }
-                    
-                    dt = clock.restart().asSeconds();
 
                     if(isFinished == false){
                         //Update
@@ -257,8 +280,8 @@ class Game{
 
 
                     //Test button
-                    gf::TextButtonWidget aff_button = buttonTest.getButton();
-                    this->renderer.draw(aff_button);
+                    // gf::TextButtonWidget aff_button = buttonTest.getButton();
+                    // this->renderer.draw(aff_button);
 
                     //if the game is over
                     if(this->isFinished == true){

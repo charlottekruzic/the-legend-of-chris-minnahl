@@ -7,7 +7,7 @@
 #include <gf/RenderWindow.h>
 
 constexpr gf::Vector2i GUARD_SIZE = {32,32};
-constexpr gf::Vector2i DETECTOR_SIZE = {200,200};
+constexpr gf::Vector2i DETECTOR_SIZE = {150,150};
 
 
 enum class actionType{GO,WAIT};
@@ -28,7 +28,7 @@ class Guard : public gf::Entity{
     	std::vector<struct RouteAction *> route;
     	int route_index;
     	
-        gf::Vector2f position, velocity, last_position;
+        gf::Vector2f position, last_position, spawn_position;
         double speed;
         gf::RectI rect;
         gf::RectangleShape shape;
@@ -38,9 +38,11 @@ class Guard : public gf::Entity{
         struct RouteAction * currentAction;
     public:
         Guard(gf::Vector2i grid_pos);
+        void reset();
 		void nextAction();
         void setRoute(std::vector<struct RouteAction *> route);
         virtual void update(float dt);
         virtual void render(gf::RenderTarget& target);
+        gf::RectI * getRect();
 };
 #endif

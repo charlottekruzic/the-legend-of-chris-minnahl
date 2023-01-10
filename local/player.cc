@@ -62,8 +62,8 @@ void Player::setVelocity(gf::Vector2f vel){
     this->velocity=vel;
 }
 
-gf::RectI Player::getRect(){
-    return this->rect;
+gf::RectI * Player::getRect(){
+    return &this->rect;
 }
 
 void Player::findObject(){

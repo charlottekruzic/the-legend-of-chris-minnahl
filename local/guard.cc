@@ -16,33 +16,48 @@ struct RouteAction* generateRouteAction(actionType type,float time,gf::Vector2i 
 	return newRoute;
 }
 
-Guard::Guard(gf::Vector2i grid_pos):velocity(0,0),shape(GUARD_SIZE),detectorShape(DETECTOR_SIZE){
+Guard::Guard(gf::Vector2i grid_pos):shape(GUARD_SIZE),detectorShape(DETECTOR_SIZE){
     speed = 200;
     position = grid_pos * WALL_SIZE;
-    last_position = position;
-    velocity = {0,0};
+    spawn_position = position;
     rect = gf::RectI().fromPositionSize(position,GUARD_SIZE);  
     color = gf::Color::Red;
    	shape.setColor(color);
     shape.setAnchor(gf::Anchor::TopLeft);
     shape.setPosition(position);
-    detectorShape.setColor(gf::Color::Yellow);
-    detectorShape.setAnchor(gf::Anchor::Center);
+    detectorShape.setColor(gf::Color4f({0.7,0.7,0,0.5}));
+    detectorShape.setAnchor(gf::Anchor::TopLeft);
    	detectorShape.setPosition(position);    		
 
 }
 
+void Guard::reset(){
+	position = spawn_position;
+
+    rect = gf::RectI().fromPositionSize(position,GUARD_SIZE);  
+    shape.setPosition(position);
+    detectorShape.setColor(gf::Color4f({0.7,0.7,0,0.5}));
+   	detectorShape.setPosition(position);
+   	detectorRect = detectorRect.fromPositionSize(detectorShape.getPosition(),DETECTOR_SIZE);
+
+	route_index = -1;
+	nextAction();//initialize first action
+}
 
 void Guard::setRoute(std::vector<RouteAction *> new_route){
 	route = new_route;
 	route_index = -1;
-	nextAction();//initialize first action
 
 	
 }
 
+gf::RectI * Guard::getRect(){
+	return &detectorRect;
+}
+
 
 void Guard::nextAction(){
+
 	route_index ++;
    	if(route_index >= route.size()){
    		route_index = 0;
@@ -51,11 +66,13 @@ void Guard::nextAction(){
 
     currentAction = route[route_index];
    	currentAction->cumulated_time = 0;
+// 
+    // std::cout << "Route index : "<< route_index <<"\n";
+	// std::cout << "New action ! "<< (currentAction->type == actionType::GO ?  "GO" : "WAIT") <<"\n";
+	// std::cout << "time : " << currentAction->time << "\n";
+	// std::cout << "Cumul time : " << currentAction->cumulated_time << "\n";
 
-    std::cout << "Route index : "<< route_index <<"\n";
-	std::cout << "New action ! "<< (currentAction->type == actionType::GO ?  "GO" : "WAIT") <<"\n";
-	std::cout << "time : " << currentAction->time << "\n";
-	
+	// 
    	switch(currentAction->type){
    		case actionType::WAIT:
    			shape.setColor(gf::Color::Azure);
@@ -73,13 +90,10 @@ void Guard::nextAction(){
 
 
 void Guard::update(float dt){
-	velocity = {0,0};
 	gf::Vector2f target;
 	float time_proportion,deltaX,deltaY,upper,lower;
-	bool h_move;
     switch(currentAction->type){
     	case actionType::WAIT:
-
     		break;
     	case actionType::GO:
     		time_proportion = currentAction->cumulated_time / currentAction->time;
@@ -91,6 +105,7 @@ void Guard::update(float dt){
 				round(last_position.y + deltaY * time_proportion ),
 
 			};
+			//std::cout << "target : " << target[0] << ", " << target[1] << std::endl;
 			lower = std::min(last_position.x,currentAction->grid_position.x * WALL_SIZE.x);	
 			upper = std::max(last_position.x,currentAction->grid_position.x * WALL_SIZE.x);	
 
@@ -105,44 +120,40 @@ void Guard::update(float dt){
 			lower = std::min(last_position.y,currentAction->grid_position.y * WALL_SIZE.y);	
 			upper = std::max(last_position.y,currentAction->grid_position.y * WALL_SIZE.y);	
 
+			//CLAMP VALUES
     		if ( is_between(target.y,lower,upper)){
     		 	position.y =target.y;
 			}else{
     			position.y =  (currentAction->grid_position.y * WALL_SIZE.y);
     		}
-    		
 
-			detectorShape.setPosition(position);
+    	   	rect = rect.fromPositionSize(position,GUARD_SIZE);
+    		shape.setPosition(position);
 
-			std::cout << "X : " << deltaX << ", Y : " << deltaY << "\n";			
-			
-			if (deltaX > 0 ){
-				//going right
-				detectorShape.setScale({1.3,0.7});
-				detectorShape.setAnchor(gf::Anchor::CenterLeft);
-				detectorShape.move({GUARD_SIZE.x,0});
-			}
-			if (deltaX < 0){
-				//going left
-				//detectorShape.setScale({2,0.5});
-				detectorShape.setAnchor(gf::Anchor::CenterRight);
+			detectorShape.setPosition(rect.getTopLeft());
 
-			}
-			if(deltaY > 0){
-				//going down
-				//detectorShape.setScale({0.5,2});
-				detectorShape.setAnchor(gf::Anchor::TopCenter);
-				detectorShape.move({0,GUARD_SIZE.y});
+			deltaX = round(deltaX);
+			deltaY = round(deltaY);
+			if (abs(deltaX) > abs(deltaY)){
+				if (deltaX > 0 ){
+					//going right
+					detectorShape.move({0,+(GUARD_SIZE.y * 0.5) - (DETECTOR_SIZE.y * 0.5)});
+				}else if (deltaX <0){
+					//going left
+					detectorShape.move({-DETECTOR_SIZE.x +GUARD_SIZE.x,+(GUARD_SIZE.y * 0.5) - (DETECTOR_SIZE.y * 0.5)});
+				}
+			}else{
+				if(deltaY > 0){
+					//going down
+					detectorShape.move({(GUARD_SIZE.x * 0.5) - (DETECTOR_SIZE.x * 0.5),0});
+				}else if(deltaY <0){
+					//going up
+					detectorShape.move({(GUARD_SIZE.x * 0.5) - (DETECTOR_SIZE.x * 0.5),-DETECTOR_SIZE.y + GUARD_SIZE.y});
+				}
+			}		
 
-			}
-			if(deltaY < 0){
-				//going up
-				//detectorShape.setScale({0.5,2});
-				detectorShape.setAnchor(gf::Anchor::BottomCenter);
+    		detectorRect = detectorRect.fromPositionSize(detectorShape.getPosition(),DETECTOR_SIZE);
 
-				
-			}
-    		
 
     		break;
     	default:
@@ -154,16 +165,18 @@ void Guard::update(float dt){
 	currentAction->cumulated_time += dt;
 
 	//unchanged
-   	rect = rect.fromPositionSize(position,GUARD_SIZE);
-    shape.setPosition(position);
+
     
     if (currentAction->cumulated_time >= currentAction->time){
+    	//std::cout << "dt : "<< dt << std::endl;
 		nextAction();
     }
 }
 
 void Guard::render(gf::RenderTarget& target){
-    target.draw(shape);
+//    target.draw(detectorShape);
     target.draw(detectorShape);
+
+    target.draw(shape);
 };
 
