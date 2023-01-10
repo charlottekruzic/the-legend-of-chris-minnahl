@@ -40,6 +40,7 @@ class Guard(pygame.sprite.Sprite):
     def next_action(self):
         self.current_route_index = (self.current_route_index + 1)% len(self.route)
         self.set_action(self.route[self.current_route_index])
+        
     def update(self,dt:float):
         if self.current_action == "wait":
             self.current_route_data["cumulTime"] += dt
@@ -56,9 +57,7 @@ class Guard(pygame.sprite.Sprite):
 
             target = self.current_route_data["initialPos"][1] + (position_differenceY * time_proportion)
 
-
             self.truePos[1] = target if (is_between(self.rect.y,target,self.current_route_data["position"][1])) else self.current_route_data["position"][1]
-
 
  
             # if(int(self.truePos[0]) in range(self.rect.x,self.current_route_data["position"][0])):

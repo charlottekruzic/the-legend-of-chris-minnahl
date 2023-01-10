@@ -26,7 +26,7 @@ class Player : public gf::Entity{
         Player(gf::Vector2f spawn);
         gf::Vector2f getPosition();
         gf::Vector2f getVelocity();
-        gf::RectI getRect();
+        gf::RectI * getRect();
 
         void findObject();
         bool stoleTheObject();

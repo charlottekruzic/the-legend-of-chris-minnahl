@@ -3,6 +3,7 @@
 
 Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object): width(size.x),height(size.y) , player(player){
     this->win=false; 
+    this->loose = false;
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
         
@@ -14,24 +15,29 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
     }
     if(!this->setStart(start)){exit(1);}
     if(!this->setEnd(end)){exit(1);}
-    if(!this->setObject(object)){exit(1);}
-    this->reset();
+    if(!this->setObject(object)){exit(1);}	
 }
 
-void Level::reset(){
+void Level::reset(){	
     this->player->reset();
     this->player->setPosition(this->start * WALL_SIZE);
     this->setObject(object);
     this->win=false;
+    this->loose = false;
+    for (auto guard : guards){
+    	guard->reset();
+    }
 }
 
 bool Level::isWin(){
     return this->win;
 }
+bool Level::isLoose(){
+    return this->loose;
+}
 
-
-Guard * Level::addGuard(std::vector<RouteAction *> newRoute){
-	Guard *newGuard = new Guard;
+Guard * Level::addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> newRoute){
+	Guard *newGuard = new Guard(grid_pos);
 	newGuard->setRoute(newRoute);
 	guards.push_back(newGuard);
 	return newGuard;
@@ -86,7 +92,10 @@ void Level::update(float dt){
 	this->player->moveY(dt);
     this->player->handleCollisionY(this->checkCollisions());
     this->checkTakeObject();
-    this->checkWin();
+    if (!this->checkWin()){
+    	this->checkLoose();
+    }
+
 }
 
 bool Level::setEnd(gf::Vector2i pos){
@@ -139,26 +148,43 @@ Wall* Level::checkCollisions(){
             if(!this->map[i][j].isSolid()){
                 continue;
             }
-            if(this->map[i][j].getRect().intersects(this->player->getRect(),intersection)){
+            if(this->map[i][j].getRect().intersects(*(player->getRect()),intersection)){
             	return &this->map[i][j];
             }
         }
     }
     return nullptr;
 }
-
-void Level::checkWin(){
+bool Level::checkWin(){
     Wall square_end = this->map[end[0]][end[1]];
     gf::Rect<int> rect_intersection;
-    if(square_end.getRect().intersects(this->player->getRect(),rect_intersection)==true && this->player->stoleTheObject()==true){
+   	gf::Rect<int> *  playerRect = player->getRect();
+
+    if(this->player->stoleTheObject()==true && square_end.getRect().intersects(*playerRect,rect_intersection)==true){
         this->win=true;
+        return true;
     }
+    return false;
 }
+
+bool Level::checkLoose(){
+    gf::Rect<int> rect_intersection;
+	gf::Rect<int>* playerRect = player->getRect();
+	for (auto& guard : guards){
+
+		if(playerRect->intersects(*guard->getRect(),rect_intersection)){
+			this->loose = true;
+			return true;
+		}
+	}
+	return false;
+}
+
 
 void Level::checkTakeObject(){
     Wall square_object = this->map[object[0]][object[1]];
     gf::Rect<int> rect_intersection;
-    if(square_object.getRect().intersects(this->player->getRect(),rect_intersection)==true){
+    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true){
         this->player->findObject();
         this->map[object[0]][object[1]].setType(WallType::EMPTY);
     }

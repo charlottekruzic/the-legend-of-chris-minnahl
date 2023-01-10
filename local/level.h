@@ -14,7 +14,7 @@ class Level{
         gf::Vector2i start,end,object;
         int width,height;
         Player* player;
-        bool win;
+        bool win, loose;
         std::vector<Guard*> guards;
     public:
         Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object);
@@ -26,11 +26,13 @@ class Level{
         bool addWall(gf::Vector2i position);
 
 
-		Guard * addGuard(std::vector<RouteAction *> route);
+		Guard * addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> route);
 
         void reset();
 
         bool isWin();
+
+        bool isLoose();
 
 
         bool removeWall(gf::Vector2i position);
@@ -39,7 +41,10 @@ class Level{
 
         Wall* checkCollisions();
 
-        void checkWin();
+        bool checkWin();
+
+        bool checkLoose();
+
 
         void checkTakeObject();
 
