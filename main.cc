@@ -190,16 +190,19 @@ class Game{
         	
             while (this->window.isOpen()) {
                 dt = clock.restart().asSeconds();
+               	gf::Event event;
 
+                while (this->window.pollEvent(event)) {
+                    actions.processEvent(event);
+                }
+                if(closeWindowAction.isActive()) {
+                    this->window.close();
+                }             
                 // homepage display
                 if(menuPage == true){
                     
-                    // Process events
-                    gf::Event event;
 
-                    if(closeWindowAction.isActive()) {
-                        this->window.close();
-                    }
+
 
                     while (this->window.pollEvent(event)) {
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
@@ -241,19 +244,8 @@ class Game{
 
                 }else{
 
-
-                    // Process events
-                    gf::Event event;
-                
-                    while (this->window.pollEvent(event)) {
-                        actions.processEvent(event);
-                        this->player.processEvent(event);
-                    }
-
                     
-                    if(closeWindowAction.isActive()) {
-                        this->window.close();
-                    }
+
 
                     if(spaceAction.isActive() && isFinished) {
                         this->startGame();
