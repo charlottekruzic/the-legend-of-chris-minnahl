@@ -156,7 +156,7 @@ class Game{
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
           
 
-            level.addGuard(
+            level.addGuard( 
             	{15,1},
 				{
             	generateRouteAction(actionType::GO		,1.0,{8,1}),
