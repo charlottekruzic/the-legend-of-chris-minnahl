@@ -118,7 +118,6 @@ class Game{
 
         
         void gameloop(){
-            this->renderer.clear(gf::Color::Gray(0.3));
 
 			gf::ActionContainer actions;
 
@@ -189,19 +188,15 @@ class Game{
         	float dt;
         	
             while (this->window.isOpen()) {
-                dt = clock.restart().asSeconds();
-
-                        
+        
                 // homepage display
                 if(menuPage == true){
                     
-                    gf::Event event;
-
-                    if(closeWindowAction.isActive()) {
-                        this->window.close();
-                    }     
+                    gf::Event event;     
 
                     while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
                         switch (event.type) {
                             case gf::EventType::MouseButtonPressed:
@@ -228,9 +223,14 @@ class Game{
                             default:
                                 break;
                         }
-                    }                 
+                    }   
+                    
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    }              
 
                     this->renderer.clear();
+                    this->renderer.clear(gf::Color::Gray(0.3));
 
                     //Affichage éléments de l'écran d'accueil
                     this->renderer.draw(this->titleText);
@@ -239,7 +239,7 @@ class Game{
                     }
                     this->renderer.display();
 
-
+                    actions.reset();
                 }else{
 
                     gf::Event event;
@@ -264,6 +264,8 @@ class Game{
                     	this->win=false;
                         this->endgame();
                     }
+
+                    dt = clock.restart().asSeconds();
 
                     if(isFinished == false){
                         //Update
