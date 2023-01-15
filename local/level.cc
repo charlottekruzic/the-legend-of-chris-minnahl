@@ -1,22 +1,15 @@
 #include "level.h"
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 
-
-Level::Level( Player* player_ptr){
-    this->win=false;
+Level::Level( Player* player_ptr,std::string path){
+	load(path);
     player = player_ptr;
+    this->win=false;
     this->loose = false;
-    for(float i = 0; i<this->height;i++){
-        this->map.push_back({});
-        
-        for(float j = 0; j<this->width;j++){
-            gf::Vector2f pos = {j,i};
-            pos = pos*WALL_SIZE;
-            this->map[i].push_back(Wall(pos,WallType::EMPTY));
-        }
-    }
+
     this->background = gf::RectangleShape({width*WALL_SIZE[0], height*WALL_SIZE[1]});
     this->background.setColor(gf::Color::Black);
     this->background.setAnchor(gf::Anchor::TopLeft);
@@ -32,18 +25,69 @@ void Level::load(std::string path){
 		exit(1);
 		return;
 	}
+
+	
+	height = 0;
+	char line[128];
+
+	while (fgets(line,128,f)){
+		std::cout<< line<<std::endl;
+
+		width = strlen(line)-1;
+		height++;
+	}
+
+	std::cout << "width : " << width << std::endl;
+	std::cout << "height : " << height << std::endl;
+	
+	rewind(f);
+
+
+	//fill level with empty walls
+    for(float i = 0; i<this->height;i++){
+        this->map.push_back({});
+        
+        for(float j = 0; j<this->width;j++){
+            gf::Vector2f pos = {j,i};
+            pos = pos*WALL_SIZE;
+            this->map[i].push_back(Wall(pos,WallType::EMPTY));
+        }
+    }
+
 	char c;
+	int row = 0;
+	int col = 0;
 	while(!feof(f)){
 		c = getc(f);
-		if(c == '\n'){
-			std::cout << "ENDL" << std::endl;
-			
-		}else{
-			std::cout << c << std::endl;
+		switch(c){
+			case '\0':
+				break;
+			case '\n':
+				row++;
+				col = -1;
+				break;
+			case 's':
+				setStart({col,row});
+				break;
+			case 'e':
+				setEnd({col,row});
+				break;
+			case 'o':
+				setObject({col,row});
+				break;
+			case 't':
+				setStatue({col,row});
+				break;
+			case '#':
+				addWall({col,row});
+				break;
 		}
+		col++;
 	}
+			
 	fclose(f);
->>>>>>> 35cbf79 (adding level loader (not working))
+	std::cout << "FILE READ END" << std::endl; 
+
 }
 
 void Level::reset(){	

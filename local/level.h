@@ -19,7 +19,7 @@ class Level{
         gf::RectangleShape background;
         std::string level_path;
     public:
-        Level(Player* player);
+        Level(Player* player,std::string path);
         /**
          * @brief Adds a wall to the level at the given position
          * @param position grid position of the wall
