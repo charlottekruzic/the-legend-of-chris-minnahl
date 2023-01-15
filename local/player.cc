@@ -4,7 +4,8 @@ Player::Player(gf::Vector2f spawn) :
 	leftAction("left"),
 	upAction("up"),
 	downAction("down"),
-	rightAction("right")
+	rightAction("right"),
+	spaceAction("space")
 	 {
     this->speed = 200;
     this->color = gf::Color::Azure;
@@ -37,7 +38,12 @@ Player::Player(gf::Vector2f spawn) :
 	downAction.setInstantaneous();
 	actions.addAction(downAction);
 
+    spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
+    spaceAction.setInstantaneous();
+    actions.addAction(spaceAction);
+
 	this->hasObject=false;
+	this->isStatue=false;
 }
 
 gf::Vector2f Player::getPosition(){
@@ -51,6 +57,7 @@ gf::Vector2f Player::getVelocity(){
 void Player::reset(){
 	this->actions.reset();
 	this->hasObject=false;
+	this->isStatue=false;
 }
 
 void Player::setPosition(gf::Vector2f position){
@@ -72,6 +79,21 @@ void Player::findObject(){
 
 bool Player::stoleTheObject(){
 	return this->hasObject;
+}
+
+void Player::isAStatue(){
+	
+	if(this->spaceAction.isActive()) {
+		this->isStatue=true;
+		this->setPosition({128,128});
+		std::cout << "Je suis une statue" << std::endl;
+    }else{
+		this->isStatue=false;
+	}
+}
+
+bool Player::isAStatueBool(){
+	return this->isStatue;
 }
 
 
