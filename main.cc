@@ -9,7 +9,9 @@
 #include <gf/Window.h>
 #include <gf/Entity.h>
 #include <gf/Shapes.h>
+#include <gf/ViewContainer.h>
 #include <gf/View.h>
+#include <gf/Views.h>
 #include <gf/Rect.h>
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
@@ -26,6 +28,7 @@
 
 constexpr int WORLD_SIZE = 20;
 constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
+constexpr gf::Vector2f GAME_SIZE = {500.0, 500.0};
 
 class Game{
     public:
@@ -52,6 +55,17 @@ class Game{
         	this->level.addWall({17,19});
         	this->level.addWall({16,19});
 
+            //Ajout des vues
+            this->mainView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));
+            views.addView(this->mainView);
+
+            this->gameView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, GAME_SIZE));
+            views.addView(this->gameView);
+
+            views.setInitialFramebufferSize(WINDOW_SIZE);
+
+            this->minimap = gf::View(gf::RectF::fromPositionSize({-WINDOW_SIZE[0]*3, 0.0f}, WINDOW_SIZE*4));
+            
 
             //Création du menu
             gf::Font font("arial.ttf");
@@ -115,7 +129,7 @@ class Game{
 
             this->gameRules.setString(rules);
             this->gameRules.setFont(font);
-            this->gameRules.setParagraphWidth(WINDOW_SIZE[0]-100);
+            this->gameRules.setParagraphWidth(WINDOW_SIZE[0]-WINDOW_SIZE[0]/8);
             this->gameRules.setAlignment(gf::Alignment::Left);
             this->gameRules.setCharacterSize(20);
             this->gameRules.setAnchor(gf::Anchor::Center);
@@ -126,14 +140,13 @@ class Game{
             //Page jeu
             gf::TextButtonWidget button5("Menu", font, 20.0);
             button5.setAnchor(gf::Anchor::TopRight);
-            button5.setPosition({WINDOW_SIZE[0]-30 ,30.0});
+            button5.setPosition({WINDOW_SIZE[0]-WINDOW_SIZE[1]/25 ,30.0});
             button5.setBackgroundOutlineThickness(2);
             button5.setDefaultBackgroundColor(gf::Color::White);
             button5.setPadding(10.0);
             button5.setRadius(12.0);
             this->buttons.push_back(button5);
             
-
             this->gameloop();
         }
 
@@ -146,7 +159,10 @@ class Game{
         bool win;
         bool menuPage = true;
         bool rulesPage = false;
-        gf::View camera;
+        gf::ViewContainer views;
+        gf::FitView mainView;
+        gf::FitView gameView;
+        gf::View minimap;
         std::vector<gf::TextButtonWidget> buttons;
         gf::Text titleMenu; 
         gf::Text titleRules; 
@@ -164,16 +180,12 @@ class Game{
         
         void viewUpdate(){
             if(this->menuPage || this->isFinished){
-                gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, WINDOW_SIZE);
-                this->camera.reset(rect_camera);
+                this->renderer.setView(this->mainView);
             }else{
-                gf::Vector2f position = this->player.getPosition();
-                gf::Vector2f size(500.0, 500.0);
-                gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
-                this->camera.reset(rect_camera);
-                this->camera.setCenter(this->player.getPosition());
+                this->gameView.reset(gf::RectF().fromPositionSize({0,0}, {500.0, 500.0}));
+                this->gameView.setCenter(this->player.getPosition());
+                this->renderer.setView(this->gameView);
             }
-            this->renderer.setView(this->camera);
         }
 
         
@@ -202,17 +214,17 @@ class Game{
             //Set
             gameOverText.setCharacterSize(60);
             gameOverText.setAnchor(gf::Anchor::Center);
-            gameOverText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)-25});
+            gameOverText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)-(WINDOW_SIZE[1]/32)});
             gameOverText.setColor(gf::Color::Red);
             
             winText.setCharacterSize(60);
             winText.setAnchor(gf::Anchor::Center);
-            winText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)-25});
+            winText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)-(WINDOW_SIZE[1]/32)});
             winText.setColor(gf::Color::Red);
             
             pressSpaceText.setCharacterSize(25);
             pressSpaceText.setAnchor(gf::Anchor::Center);
-            pressSpaceText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)+25});
+            pressSpaceText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)+(WINDOW_SIZE[1]/32)});
             pressSpaceText.setColor(gf::Color::Red);
 
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
@@ -259,6 +271,7 @@ class Game{
 
                     while (this->window.pollEvent(event)) {
                         actions.processEvent(event);
+                        views.processEvent(event);
 
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
                         switch (event.type) {
@@ -310,6 +323,7 @@ class Game{
 
                     while (this->window.pollEvent(event)) {
                         actions.processEvent(event);
+                        views.processEvent(event);
 
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
                         switch (event.type) {
@@ -348,12 +362,12 @@ class Game{
 
                 }else{
                     //Update and draw View
-                    this->viewUpdate();
 
                     gf::Event event;
 
                     while (this->window.pollEvent(event)) {
                         actions.processEvent(event);
+                        views.processEvent(event);
                         this->player.processEvent(event);
 
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
@@ -400,9 +414,23 @@ class Game{
 
                     // Draw the entities
                     this->renderer.clear();
+                    
+                    this->viewUpdate();
+
                     this->level.render(this->renderer);
                     this->player.render(this->renderer);
-                    this->renderer.draw(this->buttons[4]);
+                    if(isFinished){
+                        this->renderer.draw(this->buttons[4]);
+                    }
+                    
+
+                    if(!isFinished){
+                        this->renderer.setView(this->minimap);
+                        
+                        this->level.render(this->renderer);
+                        this->player.render(this->renderer);
+                    }
+
 
 
                     //Test button
@@ -420,6 +448,7 @@ class Game{
                         }
                         this->renderer.draw(pressSpaceText);
                     }
+                    
 
                     this->renderer.display();
                     
