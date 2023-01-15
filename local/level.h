@@ -16,6 +16,7 @@ class Level{
         Player* player;
         bool win, loose;
         std::vector<Guard*> guards;
+        gf::RectangleShape background;
     public:
         Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object, gf::Vector2i statue);
         /**

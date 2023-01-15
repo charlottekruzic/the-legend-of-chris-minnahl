@@ -14,6 +14,12 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
             this->map[i].push_back(Wall(pos,WallType::EMPTY));
         }
     }
+    this->background = gf::RectangleShape({width*WALL_SIZE[0], height*WALL_SIZE[1]});
+    this->background.setColor(gf::Color::Black);
+    this->background.setAnchor(gf::Anchor::TopLeft);
+    this->background.setPosition({0,0});
+    
+
     if(!this->setStart(start)){exit(1);}
     if(!this->setEnd(end)){exit(1);}
     if(!this->setObject(object)){exit(1);}	
@@ -140,6 +146,7 @@ bool Level::setStatue(gf::Vector2i pos){
 }
 
 void Level::render(gf::RenderTarget& target){
+    target.draw(this->background);
     for(auto line : this->map){
         for(auto& item : line){
         	if(item.getType()!=WallType::EMPTY){
@@ -150,7 +157,6 @@ void Level::render(gf::RenderTarget& target){
     for (auto& guard : guards){
     	(*guard).render(target);
     }
-
 }
 
 Wall* Level::checkCollisions(){
