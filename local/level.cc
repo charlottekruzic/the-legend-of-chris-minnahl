@@ -1,9 +1,12 @@
 #include "level.h"
 #include <iostream>
+#include <fstream>
 
 
-Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object, gf::Vector2i statue): width(size.x),height(size.y) , player(player){
-    this->win=false; 
+
+Level::Level( Player* player_ptr){
+    this->win=false;
+    player = player_ptr;
     this->loose = false;
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
@@ -19,11 +22,28 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
     this->background.setAnchor(gf::Anchor::TopLeft);
     this->background.setPosition({0,0});
     
+	
+}
 
-    if(!this->setStart(start)){exit(1);}
-    if(!this->setEnd(end)){exit(1);}
-    if(!this->setObject(object)){exit(1);}	
-    if(!this->setStatue(statue)){exit(1);}
+void Level::load(std::string path){
+	level_path = path;
+	FILE* f = fopen(level_path.c_str(),"r");
+	if (f == nullptr){
+		exit(1);
+		return;
+	}
+	char c;
+	while(!feof(f)){
+		c = getc(f);
+		if(c == '\n'){
+			std::cout << "ENDL" << std::endl;
+			
+		}else{
+			std::cout << c << std::endl;
+		}
+	}
+	fclose(f);
+>>>>>>> 35cbf79 (adding level loader (not working))
 }
 
 void Level::reset(){	

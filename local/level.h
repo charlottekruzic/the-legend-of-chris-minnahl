@@ -17,15 +17,23 @@ class Level{
         bool win, loose;
         std::vector<Guard*> guards;
         gf::RectangleShape background;
+        std::string level_path;
     public:
-        Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object, gf::Vector2i statue);
+        Level(Player* player);
         /**
          * @brief Adds a wall to the level at the given position
          * @param position grid position of the wall
          * @return true if a wall was created
         */
+
+        
         bool addWall(gf::Vector2i position);
 
+		/**
+		*@brief Load a level from a text file.
+		*@param path to the text file from root directory
+		*/
+		void load(std::string path);
 
 		Guard * addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> route);
 
