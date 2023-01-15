@@ -33,7 +33,7 @@ class Game{
         window("My awesome game",WINDOW_SIZE),
         renderer(window),
         player({128,128}),//Initialize player
-        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12})//initialize level with set size, pointer to player and start/end grid coordinates
+        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12}, {4,4})//initialize level with set size, pointer to player and start/end grid coordinates
         {
             this->window.setPosition({this->player.getPosition()});
             this->isFinished = false;
@@ -403,11 +403,6 @@ class Game{
                     this->level.render(this->renderer);
                     this->player.render(this->renderer);
                     this->renderer.draw(this->buttons[4]);
-
-
-                    //Test button
-                    // gf::TextButtonWidget aff_button = buttonTest.getButton();
-                    // this->renderer.draw(aff_button);
 
                     //if the game is over
                     if(this->isFinished == true){

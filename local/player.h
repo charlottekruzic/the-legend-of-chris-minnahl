@@ -18,9 +18,10 @@ class Player : public gf::Entity{
         gf::RectI rect;
         gf::RectangleShape shape;
         gf::Color4f color;
-        gf::Action leftAction, rightAction, upAction, downAction;
+        gf::Action leftAction, rightAction, upAction, downAction, spaceAction;
         gf::ActionContainer actions;
         bool hasObject;
+        bool isStatue;
         
     public:
         Player(gf::Vector2f spawn);
@@ -30,6 +31,9 @@ class Player : public gf::Entity{
 
         void findObject();
         bool stoleTheObject();
+
+        void isAStatue();
+        bool isAStatueBool();
 
         void setPosition(gf::Vector2f position);
         void setVelocity(gf::Vector2f velocity);
