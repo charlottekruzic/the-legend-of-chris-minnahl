@@ -56,10 +56,10 @@ class Game{
         	this->level.addWall({16,19});
 
             //Ajout des vues
-            this->mainView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));
+            this->mainView = gf::StretchView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));
             views.addView(this->mainView);
 
-            this->gameView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, GAME_SIZE));
+            this->gameView = gf::StretchView(gf::RectF::fromPositionSize({0.0f, 0.0f}, GAME_SIZE));
             views.addView(this->gameView);
 
             views.setInitialFramebufferSize(WINDOW_SIZE);
@@ -160,8 +160,8 @@ class Game{
         bool menuPage = true;
         bool rulesPage = false;
         gf::ViewContainer views;
-        gf::FitView mainView;
-        gf::FitView gameView;
+        gf::StretchView mainView;
+        gf::StretchView gameView;
         gf::View minimap;
         std::vector<gf::TextButtonWidget> buttons;
         gf::Text titleMenu; 
