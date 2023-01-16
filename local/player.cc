@@ -18,7 +18,6 @@ Player::Player(gf::Vector2f spawn) :
     this->shape.setAnchor(gf::Anchor::TopLeft);
     this->shape.setPosition(this->position);
 
-
 	//Add actions
 	
 	rightAction.addKeycodeKeyControl(gf::Keycode::Right);
@@ -43,6 +42,9 @@ Player::Player(gf::Vector2f spawn) :
     actions.addAction(spaceAction);
 
 	this->isStatue=false;
+	hasObject=	false;
+	isStatue=	false;
+	canBeStatue=true;
 }
 
 gf::Vector2f Player::getPosition(){
@@ -80,21 +82,14 @@ int Player::NumberOfObjectsStolen(){
 	return this->numberOfObjects;
 }
 
-void Player::isAStatue(){
-	
-	if(this->spaceAction.isActive()) {
-		this->isStatue=true;
-		this->setPosition({128,128});
-		std::cout << "Je suis une statue" << std::endl;
-    }else{
-		this->isStatue=false;
-	}
-}
-
-bool Player::isAStatueBool(){
+bool Player::isAStatue(){
 	return this->isStatue;
+	
 }
 
+void Player::allowStatue(bool val){
+	canBeStatue = val;
+}
 
 void Player::processEvent(gf::Event event){
 	this->actions.processEvent(event);
@@ -149,6 +144,11 @@ void Player::update(float dt){
 	}
 	if(this->downAction.isActive()){
 		this->velocity.y += this->speed;
+	}
+	if(spaceAction.isActive() && canBeStatue){
+		isStatue = true;
+	}else{
+		isStatue = false;
 	}
 }
 

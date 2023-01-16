@@ -3,9 +3,12 @@
 #include <gf/Action.h>
 #include <gf/Entity.h>
 #include <gf/Sprite.h>
+#include <gf/Texture.h>
 #include <gf/Shapes.h>
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
+#include <iostream>
+#include <fstream>
 #include "wall.h"
 
 constexpr gf::Vector2i PLAYER_SIZE = {32,32};
@@ -22,6 +25,7 @@ class Player : public gf::Entity{
         gf::ActionContainer actions;
         int numberOfObjects;
         bool isStatue;
+        bool hasObject,isStatue,canBeStatue;
         
     public:
         Player(gf::Vector2f spawn);
@@ -32,8 +36,11 @@ class Player : public gf::Entity{
         void findObject();
         int NumberOfObjectsStolen();
 
-        void isAStatue();
-        bool isAStatueBool();
+		//allow player to be a statue
+        void allowStatue(bool val);
+
+        //check if player is currently a statue
+        bool isAStatue();
 
         void setPosition(gf::Vector2f position);
         void setVelocity(gf::Vector2f velocity);

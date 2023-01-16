@@ -37,7 +37,6 @@ class Game{
         player({128,128}),//Initialize player
         level(&player,"levels/1.txt")//initialize level with set size, pointer to player and start/end grid coordinates
         {
-        	level.prettyPrint();
             this->window.setPosition({this->player.getPosition()});
             this->isFinished = false;
             this->win = false;
@@ -423,7 +422,7 @@ class Game{
 
 
                     //if the game is over
-                    if(this->isFinished == true){
+                    if(isFinished == true){
                         //if he lost
                         if(this->win == false){
                             this->renderer.draw(gameOverText);
