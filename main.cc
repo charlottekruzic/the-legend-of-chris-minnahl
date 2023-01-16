@@ -25,8 +25,6 @@
 #include "gui/label.h"
 #include "gui/button.h"
 
-
-constexpr int WORLD_SIZE = 20;
 constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
 constexpr gf::Vector2f GAME_SIZE = {500.0, 500.0};
 
@@ -36,24 +34,12 @@ class Game{
         window("My awesome game",WINDOW_SIZE),
         renderer(window),
         player({128,128}),//Initialize player
-        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12}, {4,4})//initialize level with set size, pointer to player and start/end grid coordinates
+        level(&player,"levels/1.txt")//initialize level with set size, pointer to player and start/end grid coordinates
         {
+        	level.prettyPrint();
             this->window.setPosition({this->player.getPosition()});
             this->isFinished = false;
             this->win = false;
-        	for(int y = 0; y<WORLD_SIZE ; y++){//fill the level borders with walls
-        		for(int x : {0,WORLD_SIZE-1}){
-            		this->level.addWall({x,y});
-            		this->level.addWall({y,x});
-        		}
-        	}
-        	this->level.addWall({5,5});
-        	this->level.addWall({5,6});
-        	this->level.addWall({6,6});
-        	this->level.addWall({1,10});
-        	this->level.addWall({18,19});
-        	this->level.addWall({17,19});
-        	this->level.addWall({16,19});
 
             //Ajout des vues
             this->mainView = gf::StretchView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));

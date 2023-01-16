@@ -1,10 +1,49 @@
 #include "level.h"
 #include <iostream>
+#include <fstream>
+#include <string.h>
 
 
-Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object, gf::Vector2i statue): width(size.x),height(size.y) , player(player){
-    this->win=false; 
+Level::Level( Player* player_ptr,std::string path){
+	load(path);
+    player = player_ptr;
+    this->win=false;
     this->loose = false;
+
+    this->background = gf::RectangleShape({width*WALL_SIZE[0], height*WALL_SIZE[1]});
+    this->background.setColor(gf::Color::Black);
+    this->background.setAnchor(gf::Anchor::TopLeft);
+    this->background.setPosition({0,0});
+    
+	
+}
+
+void Level::load(std::string path){
+	level_path = path;
+	FILE* f = fopen(level_path.c_str(),"r");
+	if (f == nullptr){
+		exit(1);
+		return;
+	}
+
+	
+	height = 0;
+	char line[128];
+
+	while (fgets(line,128,f)){
+		std::cout<< line<<std::endl;
+
+		width = strlen(line)-1;
+		height++;
+	}
+
+	std::cout << "width : " << width << std::endl;
+	std::cout << "height : " << height << std::endl;
+	
+	rewind(f);
+
+
+	//fill level with empty walls
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
         
@@ -14,16 +53,41 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
             this->map[i].push_back(Wall(pos,WallType::EMPTY));
         }
     }
-    this->background = gf::RectangleShape({width*WALL_SIZE[0], height*WALL_SIZE[1]});
-    this->background.setColor(gf::Color::Black);
-    this->background.setAnchor(gf::Anchor::TopLeft);
-    this->background.setPosition({0,0});
-    
 
-    if(!this->setStart(start)){exit(1);}
-    if(!this->setEnd(end)){exit(1);}
-    if(!this->setObject(object)){exit(1);}	
-    if(!this->setStatue(statue)){exit(1);}
+	char c;
+	int row = 0;
+	int col = 0;
+	while(!feof(f)){
+		c = getc(f);
+		switch(c){
+			case '\0':
+				break;
+			case '\n':
+				row++;
+				col = -1;
+				break;
+			case 's':
+				setStart({col,row});
+				break;
+			case 'e':
+				setEnd({col,row});
+				break;
+			case 'o':
+				setObject({col,row});
+				break;
+			case 't':
+				setStatue({col,row});
+				break;
+			case '#':
+				addWall({col,row});
+				break;
+		}
+		col++;
+	}
+			
+	fclose(f);
+	std::cout << "FILE READ END" << std::endl; 
+
 }
 
 void Level::reset(){	
