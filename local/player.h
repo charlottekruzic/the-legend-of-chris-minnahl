@@ -23,10 +23,7 @@ class Player : public gf::Entity{
         gf::Color4f color;
         gf::Action leftAction, rightAction, upAction, downAction, spaceAction;
         gf::ActionContainer actions;
-        bool hasObject;
-        bool isStatue;
-
-        
+        bool hasObject,isStatue,canBeStatue;
         
     public:
         Player(gf::Vector2f spawn);
@@ -37,8 +34,11 @@ class Player : public gf::Entity{
         void findObject();
         bool stoleTheObject();
 
-        void isAStatue();
-        bool isAStatueBool();
+		//allow player to be a statue
+        void allowStatue(bool val);
+
+        //check if player is currently a statue
+        bool isAStatue();
 
         void setPosition(gf::Vector2f position);
         void setVelocity(gf::Vector2f velocity);
