@@ -26,7 +26,7 @@
 #include "gui/button.h"
 
 constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
-constexpr gf::Vector2f GAME_SIZE = {500.0, 500.0};
+constexpr gf::Vector2f GAME_SIZE = {WINDOW_SIZE[0]*WALL_SIZE[0], WINDOW_SIZE[1]*WALL_SIZE[1]};
 
 class Game{
     public:
@@ -42,15 +42,16 @@ class Game{
             this->win = false;
 
             //Ajout des vues
-            this->mainView = gf::StretchView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));
+            this->mainView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));
             views.addView(this->mainView);
 
-            this->gameView = gf::StretchView(gf::RectF::fromPositionSize({0.0f, 0.0f}, GAME_SIZE));
+            this->gameView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, GAME_SIZE));
             views.addView(this->gameView);
 
-            views.setInitialFramebufferSize(WINDOW_SIZE);
+            this->minimap = gf::FitView(gf::RectF::fromPositionSize({-WINDOW_SIZE[0]*3, 0.0}, WINDOW_SIZE*4));
+            views.addView(this->minimap);
 
-            this->minimap = gf::View(gf::RectF::fromPositionSize({-WINDOW_SIZE[0]*3, 0.0f}, WINDOW_SIZE*4));
+            views.setInitialFramebufferSize(WINDOW_SIZE);
             
 
             //Création du menu
@@ -146,9 +147,9 @@ class Game{
         bool menuPage = true;
         bool rulesPage = false;
         gf::ViewContainer views;
-        gf::StretchView mainView;
-        gf::StretchView gameView;
-        gf::View minimap;
+        gf::FitView mainView;
+        gf::FitView gameView;
+        gf::FitView minimap;
         std::vector<gf::TextButtonWidget> buttons;
         gf::Text titleMenu; 
         gf::Text titleRules; 
