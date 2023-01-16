@@ -291,11 +291,14 @@ bool Level::checkLoose(){
 void Level::checkTakeObject(){
     Wall square_object = this->map[object[1]][object[0]];
     gf::Rect<int> rect_intersection;
-    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true && this->map[object[0]][object[1]].getType()==WallType::OBJECT){
+
+    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true && this->map[object[1]][object[0]].getType()==WallType::OBJECT){
         this->player->findObject();
         this->map[object[1]][object[0]].setType(WallType::EMPTY);
     }
 }
+
+
 
 void Level::checkStatue(){
     Wall square_statue = this->map[statue[1]][statue[0]];
