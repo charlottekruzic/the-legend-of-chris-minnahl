@@ -26,7 +26,8 @@
 #include "gui/button.h"
 
 constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
-constexpr gf::Vector2f GAME_SIZE = {WINDOW_SIZE[0]*WALL_SIZE[0], WINDOW_SIZE[1]*WALL_SIZE[1]};
+constexpr gf::Vector2f GAME_SIZE = {WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2};
+
 
 class Game{
     public:
@@ -156,6 +157,7 @@ class Game{
         gf::Text gameRules;
         
         
+        
         void startGame(){
             this->level.reset();
             this->isFinished=false;
@@ -169,7 +171,7 @@ class Game{
             if(this->menuPage || this->isFinished){
                 this->renderer.setView(this->mainView);
             }else{
-                this->gameView.reset(gf::RectF().fromPositionSize({0,0}, {500.0, 500.0}));
+                this->gameView.reset(gf::RectF().fromPositionSize({0,0}, GAME_SIZE));
                 this->gameView.setCenter(this->player.getPosition());
                 this->renderer.setView(this->gameView);
             }
@@ -406,10 +408,11 @@ class Game{
 
                     this->level.render(this->renderer, false);
                     this->player.render(this->renderer);
+                   this->level.renderScore(this->renderer, GAME_SIZE);
+
                     if(isFinished){
                         this->renderer.draw(this->buttons[4]);
-                    }
-                    
+                    }                
 
                     //Affichage minimap
                     if(!isFinished){

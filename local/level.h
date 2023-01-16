@@ -4,6 +4,9 @@
 #include <gf/Sprite.h>
 #include <gf/Shapes.h>
 #include <gf/RenderWindow.h>
+#include <gf/Text.h>
+#include <gf/Font.h>
+#include <string>
 #include "wall.h"
 #include "player.h"
 #include "guard.h"
@@ -18,6 +21,7 @@ class Level{
         std::vector<Guard*> guards;
         gf::RectangleShape background;
         std::string level_path;
+        int numberTotalOfObject=0;
     public:
         Level(Player* player,std::string path);
         /**
@@ -34,6 +38,12 @@ class Level{
 		*@param path to the text file from root directory
 		*/
 		void load(std::string path);
+
+        gf::Vector2f getSize();
+
+        float getWidth();
+
+        float getHeight();
 
 		Guard * addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> route);
 
@@ -72,6 +82,8 @@ class Level{
         void update(float dt);
 
         void render(gf::RenderTarget& target, bool isMinimap);
+
+        void renderScore(gf::RenderTarget& target, gf::Vector2f size);
 
 };
 #endif

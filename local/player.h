@@ -20,7 +20,7 @@ class Player : public gf::Entity{
         gf::Color4f color;
         gf::Action leftAction, rightAction, upAction, downAction, spaceAction;
         gf::ActionContainer actions;
-        bool hasObject;
+        int numberOfObjects;
         bool isStatue;
         
     public:
@@ -30,7 +30,7 @@ class Player : public gf::Entity{
         gf::RectI * getRect();
 
         void findObject();
-        bool stoleTheObject();
+        int NumberOfObjectsStolen();
 
         void isAStatue();
         bool isAStatueBool();

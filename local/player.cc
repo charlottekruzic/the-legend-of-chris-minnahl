@@ -42,7 +42,6 @@ Player::Player(gf::Vector2f spawn) :
     spaceAction.setInstantaneous();
     actions.addAction(spaceAction);
 
-	this->hasObject=false;
 	this->isStatue=false;
 }
 
@@ -56,7 +55,7 @@ gf::Vector2f Player::getVelocity(){
 
 void Player::reset(){
 	this->actions.reset();
-	this->hasObject=false;
+	this->numberOfObjects=0;
 	this->isStatue=false;
 }
 
@@ -74,11 +73,11 @@ gf::RectI * Player::getRect(){
 }
 
 void Player::findObject(){
-	this->hasObject=true;
+	this->numberOfObjects++;
 }
 
-bool Player::stoleTheObject(){
-	return this->hasObject;
+int Player::NumberOfObjectsStolen(){
+	return this->numberOfObjects;
 }
 
 void Player::isAStatue(){

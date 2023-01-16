@@ -3,7 +3,6 @@
 #include <fstream>
 #include <string.h>
 
-
 Level::Level( Player* player_ptr,std::string path){
 	load(path);
     player = player_ptr;
@@ -74,6 +73,7 @@ void Level::load(std::string path){
 				break;
 			case 'o':
 				setObject({col,row});
+                this->numberTotalOfObject++;
 				break;
 			case 't':
 				setStatue({col,row});
@@ -88,6 +88,18 @@ void Level::load(std::string path){
 	fclose(f);
 	std::cout << "FILE READ END" << std::endl; 
 
+}
+
+gf::Vector2f Level::getSize(){
+    return {this->width*WALL_SIZE[0], this->height*WALL_SIZE[1]};
+}
+
+float Level::getWidth(){
+    return this->width*WALL_SIZE[0];
+}
+
+float Level::getHeight(){
+    return this->height*WALL_SIZE[1];
 }
 
 void Level::reset(){	
@@ -169,7 +181,6 @@ void Level::update(float dt){
     if (!this->checkWin()){
     	this->checkLoose();
     }
-
 }
 
 bool Level::setEnd(gf::Vector2i pos){
@@ -223,7 +234,19 @@ void Level::render(gf::RenderTarget& target, bool isMinimap){
             (*guard).render(target);
         }
     }
+
 }
+
+void Level::renderScore(gf::RenderTarget& target, gf::Vector2f size){
+    gf::Font font("arial.ttf");
+    std::string text_score = std::to_string(this->player->NumberOfObjectsStolen()) + "/" + std::to_string(this->numberTotalOfObject);
+    gf::Text score(text_score, font,25);
+    score.setAnchor(gf::Anchor::TopLeft);
+    score.setPosition({this->player->getPosition()[0]-size[0]/2, this->player->getPosition()[1]-size[1]/2});
+    target.draw(score);
+}
+
+
 
 Wall* Level::checkCollisions(){
     for(int i=0;i<this->map.size();i++){
@@ -245,7 +268,7 @@ bool Level::checkWin(){
     gf::Rect<int> rect_intersection;
    	gf::Rect<int> *  playerRect = player->getRect();
 
-    if(this->player->stoleTheObject()==true && square_end.getRect().intersects(*playerRect,rect_intersection)==true){
+    if(this->player->NumberOfObjectsStolen()==this->numberTotalOfObject && square_end.getRect().intersects(*playerRect,rect_intersection)==true){
         this->win=true;
         return true;
     }
@@ -271,7 +294,7 @@ bool Level::checkLoose(){
 void Level::checkTakeObject(){
     Wall square_object = this->map[object[0]][object[1]];
     gf::Rect<int> rect_intersection;
-    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true){
+    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true && this->map[object[0]][object[1]].getType()==WallType::OBJECT){
         this->player->findObject();
         this->map[object[0]][object[1]].setType(WallType::EMPTY);
     }
@@ -286,7 +309,6 @@ void Level::checkStatue(){
         
         
     }
-
 }
 
 
