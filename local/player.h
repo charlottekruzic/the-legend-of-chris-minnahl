@@ -3,9 +3,12 @@
 #include <gf/Action.h>
 #include <gf/Entity.h>
 #include <gf/Sprite.h>
+#include <gf/Texture.h>
 #include <gf/Shapes.h>
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
+#include <iostream>
+#include <fstream>
 #include "wall.h"
 
 constexpr gf::Vector2i PLAYER_SIZE = {32,32};
@@ -22,6 +25,8 @@ class Player : public gf::Entity{
         gf::ActionContainer actions;
         bool hasObject;
         bool isStatue;
+
+        
         
     public:
         Player(gf::Vector2f spawn);

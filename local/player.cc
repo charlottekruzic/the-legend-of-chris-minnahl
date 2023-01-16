@@ -18,7 +18,6 @@ Player::Player(gf::Vector2f spawn) :
     this->shape.setAnchor(gf::Anchor::TopLeft);
     this->shape.setPosition(this->position);
 
-
 	//Add actions
 	
 	rightAction.addKeycodeKeyControl(gf::Keycode::Right);
