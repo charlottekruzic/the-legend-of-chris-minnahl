@@ -63,7 +63,7 @@ class Level{
 
         void update(float dt);
 
-        void render(gf::RenderTarget& target);
+        void render(gf::RenderTarget& target, bool isMinimap);
 
 };
 #endif

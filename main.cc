@@ -417,17 +417,17 @@ class Game{
                     
                     this->viewUpdate();
 
-                    this->level.render(this->renderer);
+                    this->level.render(this->renderer, false);
                     this->player.render(this->renderer);
                     if(isFinished){
                         this->renderer.draw(this->buttons[4]);
                     }
                     
 
+                    //Affichage minimap
                     if(!isFinished){
                         this->renderer.setView(this->minimap);
-                        
-                        this->level.render(this->renderer);
+                        this->level.render(this->renderer, true);
                         this->player.render(this->renderer);
                     }
 

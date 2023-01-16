@@ -145,7 +145,7 @@ bool Level::setStatue(gf::Vector2i pos){
 	return false;	
 }
 
-void Level::render(gf::RenderTarget& target){
+void Level::render(gf::RenderTarget& target, bool isMinimap){
     target.draw(this->background);
     for(auto line : this->map){
         for(auto& item : line){
@@ -154,8 +154,10 @@ void Level::render(gf::RenderTarget& target){
         	}
         }
     }
-    for (auto& guard : guards){
-    	(*guard).render(target);
+    if(!isMinimap){
+        for (auto& guard : guards){
+            (*guard).render(target);
+        }
     }
 }
 
