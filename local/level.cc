@@ -82,6 +82,7 @@ void Level::load(std::string path){
 				addWall({col,row});
 				break;
 		}
+		std::cout << c;
 		col++;
 	}
 			
