@@ -10,6 +10,8 @@ Player::Player(gf::Vector2f spawn) :
     this->speed = 200;
     this->color = gf::Color::Azure;
 	//Position du joueur
+
+
     this->position = spawn;
 	//Utilisé pour les collisions
     this->rect = gf::RectI().fromPositionSize(this->position,PLAYER_SIZE);  
@@ -17,6 +19,15 @@ Player::Player(gf::Vector2f spawn) :
     this->shape.setColor(this->color);
     this->shape.setAnchor(gf::Anchor::TopLeft);
     this->shape.setPosition(this->position);
+
+	this->resources.addSearchDir("/home/jade/Documents/L3/Projet_L3/sprite/player");
+	gf::Texture& texture_droite = resources.getTexture("tile003.png");
+	gf::Texture& texture_haut = resources.getTexture("tile002.png");
+	gf::Texture& texture_gauche = resources.getTexture("tile001.png");
+	gf::Texture& texture_bas = resources.getTexture("tile000.png");
+    this->spriteShape.setTexture(texture_droite); //, gf::RectF::fromPositionSize(this->position, {500,500}));
+   	this->spriteShape.setPosition(this->position);
+
 
 	//Add actions
 	
@@ -69,6 +80,7 @@ void Player::setVelocity(gf::Vector2f vel){
     this->velocity=vel;
 }
 
+
 gf::RectI * Player::getRect(){
     return &this->rect;
 }
@@ -99,12 +111,14 @@ void Player::moveX(float dt){
     this->position.x += this->velocity.x  * dt;
     this->rect = this->rect.fromPositionSize(this->position,PLAYER_SIZE);
     this->shape.setPosition(this->position);
+	this->spriteShape.setPosition(this->position);
 }
 
 void Player::moveY(float dt){
     this->position.y += this->velocity.y  * dt;
     this->rect = this->rect.fromPositionSize(this->position,PLAYER_SIZE);
     this->shape.setPosition(this->position);
+	this->spriteShape.setPosition(this->position);
 }
 
 void Player::handleCollisionX(Wall *collider){
@@ -153,5 +167,6 @@ void Player::update(float dt){
 
 void Player::render(gf::RenderTarget& target){
     target.draw(this->shape);
+	target.draw(this->spriteShape);
 };
 

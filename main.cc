@@ -138,9 +138,9 @@ class Game{
         }
 
     private: 
-        Player player;
         gf::Window window;
         gf::RenderWindow renderer;
+        Player player;
         Level level;
         bool isFinished;
         bool win;
