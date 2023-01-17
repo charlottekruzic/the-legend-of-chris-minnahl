@@ -35,7 +35,7 @@ class Game{
         window("The Legend Of Chris Minnahl",WINDOW_SIZE),
         renderer(window),
         player({128,128}),//Initialize player
-        level(&player,"levels/1.txt")//initialize level with set size, pointer to player and start/end grid coordinates
+        level(&player,"levels/2.txt")//initialize level with set size, pointer to player and start/end grid coordinates
         {
             this->window.setPosition({this->player.getPosition()});
             this->isFinished = false;
