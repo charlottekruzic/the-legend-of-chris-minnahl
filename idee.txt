@@ -29,8 +29,6 @@ gameplay:
     -un petit (lorsque le joueur entre dans celui-la, le joueur est immédiatement repéré et signalé)
     Si le joueur reste trop longtemps dans le grand cône (mettre un timer), il sera signalé également
 
-- mini map (directement affichée, ou seulement où on est déjà passé)
-- socles pour faire la statue
 - ajouter item souris qu'on peut teleguider, que les gardes ne voient pas et qui a une camera.
 
 
@@ -41,23 +39,46 @@ idées thème :
 - manoir hanté
 
 
-
-Musée : 
-- gardes
-- lumière cercle
-- transformation statue
-- 
-- 
-- 
-
 Manoir hanté:
 -sauver une personne prisonnière
 -des monstres/démons dans les couloirs
 -des endroits avec peu/pas de lumière à part des torches et/ou chandeliers
--
 
 
-- faire niveau entier
+
+
+
+
+
+IMPLEMENTATION
+- Game faire singleton ?
+
+
+ELEMENTS DE BASE
+- Mur demi hauteur (on ne peut pas passer, mais les gardes nous voient)
+
+
+ITEMS 
+- item pour voir les gardes sur la minimap
+- traces de pas des gardes pour avoir le pattern de leurs ronde
+- distractions des ennemis (lancer d'objet, fumée etc..)
+- tuer les gardes 
+- ralentir les gardes ?
+
+
+AMELIORATION NIVEAU
+- faire un étage ?
+- possible de perdre l'objet ?
 - enregistrement niveau
-- faire page de menu
-- rapport demander contenu
+- niveau dans la nuit avec cercle de lumière autour du joueur
+- minimap seulement ou on est passé
+- ajout d'un inventaire avec les items
+- Ajout 2e zone de vision pour les gardes (joueur peut être dedans mais pas trop longtemps)
+- panning depuis l'objectif du niveau jusqu'au joueur
+
+
+ELEMENTS MISE EN SCENE
+- Créer un logo de jeu
+- Creer histoire autour du personnage
+- Ajout musique ?
+

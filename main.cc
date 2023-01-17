@@ -26,7 +26,7 @@
 #include "gui/button.h"
 
 constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
-constexpr gf::Vector2f GAME_SIZE = {WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2};
+constexpr gf::Vector2f GAME_SIZE = {500.0, 500.0};
 
 
 class Game{
