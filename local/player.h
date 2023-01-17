@@ -23,9 +23,8 @@ class Player : public gf::Entity{
         gf::Color4f color;
         gf::Action leftAction, rightAction, upAction, downAction, spaceAction;
         gf::ActionContainer actions;
-        int numberOfObjects;
-        bool isStatue;
-        bool hasObject,isStatue,canBeStatue;
+        int numberOfObjects=0;
+        bool isStatue,canBeStatue;
         
     public:
         Player(gf::Vector2f spawn);

@@ -42,7 +42,6 @@ Player::Player(gf::Vector2f spawn) :
     actions.addAction(spaceAction);
 
 	this->isStatue=false;
-	hasObject=	false;
 	isStatue=	false;
 	canBeStatue=true;
 }
