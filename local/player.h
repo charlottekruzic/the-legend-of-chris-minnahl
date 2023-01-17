@@ -4,6 +4,7 @@
 #include <gf/Entity.h>
 #include <gf/Sprite.h>
 #include <gf/Texture.h>
+#include <gf/ResourceManager.h>
 #include <gf/Shapes.h>
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
@@ -20,6 +21,8 @@ class Player : public gf::Entity{
         double speed;
         gf::RectI rect;
         gf::RectangleShape shape;
+        gf::ResourceManager resources;
+        gf::Sprite spriteShape;
         gf::Color4f color;
         gf::Action leftAction, rightAction, upAction, downAction, spaceAction;
         gf::ActionContainer actions;
