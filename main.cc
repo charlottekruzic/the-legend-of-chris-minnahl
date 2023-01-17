@@ -32,7 +32,7 @@ constexpr gf::Vector2f GAME_SIZE = {WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2};
 class Game{
     public:
         Game() :
-        window("My awesome game",WINDOW_SIZE),
+        window("The Legend Of Chris Minnahl",WINDOW_SIZE),
         renderer(window),
         player({128,128}),//Initialize player
         level(&player,"levels/1.txt")//initialize level with set size, pointer to player and start/end grid coordinates
@@ -57,7 +57,7 @@ class Game{
             //Création du menu
             gf::Font font("arial.ttf");
 
-            this->titleMenu = gf::Text("Steal museum", font);
+            this->titleMenu = gf::Text("The Legend Of Chris Minnahl", font);
             this->titleMenu.setCharacterSize(50);
             this->titleMenu.setAnchor(gf::Anchor::Center);
             this->titleMenu.setPosition({WINDOW_SIZE[0]/2,100.0});
@@ -407,7 +407,7 @@ class Game{
 
                     this->level.render(this->renderer, false);
                     this->player.render(this->renderer);
-                   this->level.renderScore(this->renderer, GAME_SIZE);
+                    this->level.renderScore(this->renderer, GAME_SIZE);
 
                     if(isFinished){
                         this->renderer.draw(this->buttons[4]);

@@ -238,6 +238,7 @@ void Level::renderScore(gf::RenderTarget& target, gf::Vector2f size){
     gf::Font font("arial.ttf");
     std::string text_score = std::to_string(this->player->NumberOfObjectsStolen()) + "/" + std::to_string(this->numberTotalOfObject);
     gf::Text score(text_score, font,25);
+    score.setColor(gf::Color::White);
     score.setAnchor(gf::Anchor::TopLeft);
     score.setPosition({this->player->getPosition()[0]-size[0]/2, this->player->getPosition()[1]-size[1]/2});
     target.draw(score);
