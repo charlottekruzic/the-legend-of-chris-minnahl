@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <gf/Event.h>
 #include <gf/Font.h>
 #include <gf/RenderWindow.h>
@@ -7,11 +9,14 @@
 #include <gf/Window.h>
 #include <gf/Entity.h>
 #include <gf/Shapes.h>
+#include <gf/ViewContainer.h>
 #include <gf/View.h>
+#include <gf/Views.h>
 #include <gf/Rect.h>
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
 #include <Box2D/Box2D.h>
+
 //Include local headers
 #include "local/player.h"
 #include "local/level.h"
@@ -20,77 +25,136 @@
 #include "gui/label.h"
 #include "gui/button.h"
 
-
-constexpr int WORLD_SIZE = 20;
 constexpr gf::Vector2f WINDOW_SIZE = {800.0, 800.0};
+constexpr gf::Vector2f GAME_SIZE = {500.0, 500.0};
+
 
 class Game{
     public:
         Game() :
-        window("My awesome game",WINDOW_SIZE),
+        window("The Legend Of Chris Minnahl",WINDOW_SIZE),
         renderer(window),
         player({128,128}),//Initialize player
-        level({WORLD_SIZE,WORLD_SIZE},&player,{2,2},{10,15}, {7,12})//initialize level with set size, pointer to player and start/end grid coordinates
+        level(&player,"levels/3.txt")//initialize level with set size, pointer to player and start/end grid coordinates
         {
             this->window.setPosition({this->player.getPosition()});
             this->isFinished = false;
             this->win = false;
-        	for(int y = 0; y<WORLD_SIZE ; y++){//fill the level borders with walls
-        		for(int x : {0,WORLD_SIZE-1}){
-            		this->level.addWall({x,y});
-            		this->level.addWall({y,x});
-        		}
-        	}
-        	this->level.addWall({5,5});
-        	this->level.addWall({5,6});
-        	this->level.addWall({6,6});
-        	this->level.addWall({1,10});
-        	this->level.addWall({18,19});
-        	this->level.addWall({17,19});
-        	this->level.addWall({16,19});
 
+            //Ajout des vues
+            this->mainView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, WINDOW_SIZE));
+            views.addView(this->mainView);
+
+            this->gameView = gf::FitView(gf::RectF::fromPositionSize({0.0f, 0.0f}, GAME_SIZE));
+            views.addView(this->gameView);
+
+            this->minimap = gf::FitView(gf::RectF::fromPositionSize({-WINDOW_SIZE[0]*3, 0.0}, WINDOW_SIZE*4));
+            views.addView(this->minimap);
+
+            views.setInitialFramebufferSize(WINDOW_SIZE);
+            
 
             //Création du menu
             gf::Font font("arial.ttf");
 
-            this->titleText = gf::Text("Steal museum", font); 
-            this->titleText.setCharacterSize(50);
-            this->titleText.setPosition({300.0,100.0});
-            this->titleText.setColor(gf::Color::Cyan);
+            this->titleMenu = gf::Text("The Legend Of Chris Minnahl", font);
+            this->titleMenu.setCharacterSize(50);
+            this->titleMenu.setAnchor(gf::Anchor::Center);
+            this->titleMenu.setPosition({WINDOW_SIZE[0]/2,100.0});
+            this->titleMenu.setColor(gf::Color::Cyan);
 
             gf::TextButtonWidget button1("Start", font, 30.0);
+            button1.setAnchor(gf::Anchor::Center);
             button1.setPosition({WINDOW_SIZE[0]/2 ,300.0});
             gf::TextButtonWidget button2("Rules", font, 30.0);
+            button2.setAnchor(gf::Anchor::Center);
             button2.setPosition({WINDOW_SIZE[0]/2,400.0});
             gf::TextButtonWidget button3("Exit", font,  30.0);
+            button3.setAnchor(gf::Anchor::Center);
             button3.setPosition({WINDOW_SIZE[0]/2,500.0});
 
             this->buttons.push_back(button1);
             this->buttons.push_back(button2);
             this->buttons.push_back(button3);
 
-            for(int i=0;i<this->buttons.size();i++){
+            for(int i=0;i<3;i++){
                 this->buttons[i].setBackgroundOutlineThickness(2);
                 this->buttons[i].setDefaultBackgroundColor(gf::Color::Cyan);
                 this->buttons[i].setPadding(20.0);
                 this->buttons[i].setRadius(12.0);
             }
-            
+
+            //Création page règles du jeu
+            this->titleRules = gf::Text("The game's rules", font); 
+            this->titleRules.setCharacterSize(50);
+            this->titleRules.setAnchor(gf::Anchor::Center);
+            this->titleRules.setPosition({WINDOW_SIZE[0]/2,100.0});
+            this->titleRules.setColor(gf::Color::White);
+
+            gf::TextButtonWidget button4("Return", font, 20.0);
+            button4.setAnchor(gf::Anchor::TopRight);
+            button4.setPosition({WINDOW_SIZE[0]-30 ,30.0});
+            button4.setBackgroundOutlineThickness(2);
+            button4.setDefaultBackgroundColor(gf::Color::White);
+            button4.setPadding(10.0);
+            button4.setRadius(12.0);
+            this->buttons.push_back(button4);
+
+
+            std::ifstream rulesFile ("local/game_rules.txt");
+            std::string rules;
+
+            if (rulesFile.is_open()) {
+                while (rulesFile) {
+                std::string line;
+                    std::getline (rulesFile, line);
+                    rules+=line+"\n";
+                }
+            }else {
+                std::cout << "Couldn't open file\n";
+            }
+
+            this->gameRules.setString(rules);
+            this->gameRules.setFont(font);
+            this->gameRules.setParagraphWidth(WINDOW_SIZE[0]-WINDOW_SIZE[0]/8);
+            this->gameRules.setAlignment(gf::Alignment::Left);
+            this->gameRules.setCharacterSize(20);
+            this->gameRules.setAnchor(gf::Anchor::Center);
+            this->gameRules.setPosition({WINDOW_SIZE[0]/2,WINDOW_SIZE[1]/2});
+            this->gameRules.setColor(gf::Color::White);
+
+
+            //Page jeu
+            gf::TextButtonWidget button5("Menu", font, 20.0);
+            button5.setAnchor(gf::Anchor::TopRight);
+            button5.setPosition({WINDOW_SIZE[0]-WINDOW_SIZE[1]/25 ,30.0});
+            button5.setBackgroundOutlineThickness(2);
+            button5.setDefaultBackgroundColor(gf::Color::White);
+            button5.setPadding(10.0);
+            button5.setRadius(12.0);
+            this->buttons.push_back(button5);
             
             this->gameloop();
         }
 
     private: 
-        Player player;
         gf::Window window;
         gf::RenderWindow renderer;
+        Player player;
         Level level;
         bool isFinished;
         bool win;
         bool menuPage = true;
-        gf::View camera;
+        bool rulesPage = false;
+        gf::ViewContainer views;
+        gf::FitView mainView;
+        gf::FitView gameView;
+        gf::FitView minimap;
         std::vector<gf::TextButtonWidget> buttons;
-        gf::Text titleText; 
+        gf::Text titleMenu; 
+        gf::Text titleRules; 
+        gf::Text gameRules;
+        
         
         
         void startGame(){
@@ -104,21 +168,16 @@ class Game{
         
         void viewUpdate(){
             if(this->menuPage || this->isFinished){
-                gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, WINDOW_SIZE);
-                this->camera.reset(rect_camera);
+                this->renderer.setView(this->mainView);
             }else{
-                gf::Vector2f position = this->player.getPosition();
-                gf::Vector2f size(500.0, 500.0);
-                gf::RectF rect_camera = gf::RectF().fromPositionSize({0,0}, size);
-                this->camera.reset(rect_camera);
-                this->camera.setCenter(this->player.getPosition());
+                this->gameView.reset(gf::RectF().fromPositionSize({0,0}, GAME_SIZE));
+                this->gameView.setCenter(this->player.getPosition());
+                this->renderer.setView(this->gameView);
             }
-            this->renderer.setView(this->camera);
         }
 
         
         void gameloop(){
-            this->renderer.clear(gf::Color::Gray(0.3));
 
 			gf::ActionContainer actions;
 
@@ -142,15 +201,18 @@ class Game{
 			
             //Set
             gameOverText.setCharacterSize(60);
-            gameOverText.setPosition({(WINDOW_SIZE[0]/2)-60,WINDOW_SIZE[1]/2});
+            gameOverText.setAnchor(gf::Anchor::Center);
+            gameOverText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)-(WINDOW_SIZE[1]/32)});
             gameOverText.setColor(gf::Color::Red);
             
             winText.setCharacterSize(60);
-            winText.setPosition({(WINDOW_SIZE[0]/2)-60,WINDOW_SIZE[1]/2});
+            winText.setAnchor(gf::Anchor::Center);
+            winText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)-(WINDOW_SIZE[1]/32)});
             winText.setColor(gf::Color::Red);
             
             pressSpaceText.setCharacterSize(25);
-            pressSpaceText.setPosition({(WINDOW_SIZE[0]/2)-140,(WINDOW_SIZE[1]/2)+20});
+            pressSpaceText.setAnchor(gf::Anchor::Center);
+            pressSpaceText.setPosition({WINDOW_SIZE[0]/2,(WINDOW_SIZE[1]/2)+(WINDOW_SIZE[1]/32)});
             pressSpaceText.setColor(gf::Color::Red);
 
             Button buttonTest("Button",{700,100},20.0,gf::Color::Cyan, font);
@@ -189,22 +251,16 @@ class Game{
         	float dt;
         	
             while (this->window.isOpen()) {
-                dt = clock.restart().asSeconds();
-               	gf::Event event;
-
-                while (this->window.pollEvent(event)) {
-                    actions.processEvent(event);
-                }
-                if(closeWindowAction.isActive()) {
-                    this->window.close();
-                }             
+        
                 // homepage display
-                if(menuPage == true){
+                if(menuPage){
                     
-
-
+                    gf::Event event;     
 
                     while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                        views.processEvent(event);
+
                         gf::MouseButtonEvent &mouseEvent = event.mouseButton;
                         switch (event.type) {
                             case gf::EventType::MouseButtonPressed:
@@ -222,7 +278,8 @@ class Game{
                                     this->startGame();
                                     menuPage =false;
                                 }else if(this->buttons[1].contains(mouseEvent.coords)){
-
+                                    rulesPage = true;
+                                    menuPage = false;
                                 }else if(this->buttons[2].contains(mouseEvent.coords)){
                                     this->window.close();
                                 }
@@ -231,21 +288,97 @@ class Game{
                             default:
                                 break;
                         }
-                    }                 
+                    }   
+
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    }              
 
                     this->renderer.clear();
+                    this->renderer.clear(gf::Color::Gray(0.3));
 
                     //Affichage éléments de l'écran d'accueil
-                    this->renderer.draw(this->titleText);
-                    for(int i=0;i<this->buttons.size();i++){
+                    this->renderer.draw(this->titleMenu);
+                    for(int i=0;i<3;i++){
                         this->renderer.draw(this->buttons[i]);
                     }
                     this->renderer.display();
 
-                }else{
+                    actions.reset();
 
+                }else if(rulesPage) {
+                    gf::Event event;
+
+                    while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                        views.processEvent(event);
+
+                        gf::MouseButtonEvent &mouseEvent = event.mouseButton;
+                        switch (event.type) {
+                            case gf::EventType::MouseButtonPressed:
+                                if(this->buttons[3].contains(mouseEvent.coords)){
+                                        this->buttons[3].setSelected();
+                                }
+                                break;
+                            case gf::EventType::MouseButtonReleased:
+                                this->buttons[3].setState(gf::WidgetState::Default );
+
+                                if(this->buttons[3].contains(mouseEvent.coords)){
+                                    rulesPage = false;
+                                    menuPage = true;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                     
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    } 
 
+
+                    this->renderer.clear(); 
+
+                    this->renderer.draw(this->titleRules);
+                    this->renderer.draw(this->buttons[3]);
+                    this->renderer.draw(this->gameRules);
+
+                    this->renderer.display();
+
+                    actions.reset();
+
+                }else{
+                    //Update and draw View
+
+                    gf::Event event;
+
+                    while (this->window.pollEvent(event)) {
+                        actions.processEvent(event);
+                        views.processEvent(event);
+                        this->player.processEvent(event);
+
+                        gf::MouseButtonEvent &mouseEvent = event.mouseButton;
+                        switch (event.type) {
+                            case gf::EventType::MouseButtonPressed:
+                                if(this->buttons[4].contains(mouseEvent.coords)){
+                                        this->buttons[4].setSelected();
+                                }
+                                break;
+                            case gf::EventType::MouseButtonReleased:
+                                this->buttons[4].setState(gf::WidgetState::Default);
+                                if(this->buttons[4].contains(mouseEvent.coords)){
+                                    menuPage = true;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    
+                    if(closeWindowAction.isActive()) {
+                        this->window.close();
+                    }  
 
                     if(spaceAction.isActive() && isFinished) {
                         this->startGame();
@@ -259,6 +392,8 @@ class Game{
                         this->endgame();
                     }
 
+                    dt = clock.restart().asSeconds();
+
                     if(isFinished == false){
                         //Update
                         this->player.update(dt);
@@ -267,16 +402,27 @@ class Game{
 
                     // Draw the entities
                     this->renderer.clear();
-                    this->level.render(this->renderer);
+                    
+                    this->viewUpdate();
+
+                    this->level.render(this->renderer, false);
                     this->player.render(this->renderer);
+                    this->level.renderScore(this->renderer, GAME_SIZE);
 
+                    if(isFinished){
+                        this->renderer.draw(this->buttons[4]);
+                    }                
 
-                    //Test button
-                    // gf::TextButtonWidget aff_button = buttonTest.getButton();
-                    // this->renderer.draw(aff_button);
+                    //Affichage minimap
+                    if(!isFinished){
+                        this->renderer.setView(this->minimap);
+                        this->level.render(this->renderer, true);
+                        this->player.render(this->renderer);
+                    }
+
 
                     //if the game is over
-                    if(this->isFinished == true){
+                    if(isFinished == true){
                         //if he lost
                         if(this->win == false){
                             this->renderer.draw(gameOverText);
@@ -286,9 +432,8 @@ class Game{
                         }
                         this->renderer.draw(pressSpaceText);
                     }
+                    
 
-                    //Update and draw View
-                    this->viewUpdate();
                     this->renderer.display();
                     
                     actions.reset();

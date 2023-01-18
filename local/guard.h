@@ -7,7 +7,7 @@
 #include <gf/RenderWindow.h>
 
 constexpr gf::Vector2i GUARD_SIZE = {32,32};
-constexpr gf::Vector2i DETECTOR_SIZE = {150,150};
+constexpr gf::Vector2i DETECTOR_SIZE = {80,80};
 
 
 enum class actionType{GO,WAIT};

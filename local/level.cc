@@ -1,9 +1,45 @@
 #include "level.h"
 #include <iostream>
+#include <fstream>
+#include <string.h>
 
-Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i end, gf::Vector2i object): width(size.x),height(size.y) , player(player){
-    this->win=false; 
+Level::Level( Player* player_ptr,std::string path){
+	load(path);
+    player = player_ptr;
+    this->win=false;
     this->loose = false;
+
+    this->background = gf::RectangleShape({width*WALL_SIZE[0], height*WALL_SIZE[1]});
+    this->background.setColor(gf::Color::Black);
+    this->background.setAnchor(gf::Anchor::TopLeft);
+    this->background.setPosition({0,0});
+    
+	
+}
+
+void Level::load(std::string path){
+	level_path = path;
+	FILE* f = fopen(level_path.c_str(),"r");
+	if (f == nullptr){
+		exit(1);
+		return;
+	}
+
+	
+	height = 0;
+	char line[128];
+
+	while (fgets(line,128,f)){
+
+		width = strlen(line)-1;
+		height++;
+	}
+
+	
+	rewind(f);
+
+
+	//fill level with empty walls
     for(float i = 0; i<this->height;i++){
         this->map.push_back({});
         
@@ -13,15 +49,61 @@ Level::Level(gf::Vector2f size, Player* player,gf::Vector2i start, gf::Vector2i 
             this->map[i].push_back(Wall(pos,WallType::EMPTY));
         }
     }
-    if(!this->setStart(start)){exit(1);}
-    if(!this->setEnd(end)){exit(1);}
-    if(!this->setObject(object)){exit(1);}	
+
+	char c;
+	int row = 0;
+	int col = 0;
+	while(!feof(f)){
+		c = getc(f);
+		switch(c){
+			case '\0':
+				break;
+			case '\n':
+				row++;
+				col = -1;
+				break;
+			case 's':
+				setStart({col,row});
+				break;
+			case 'e':
+				setEnd({col,row});
+				break;
+			case 'o':
+				setObject({col,row});
+                this->numberTotalOfObject++;
+				break;
+			case 't':
+				setStatue({col,row});
+				break;
+			case '#':
+				addWall({col,row});
+				break;
+		}
+		if(c=='\0'){break;}
+		col++;
+	}
+			
+	fclose(f);
+
+}
+
+gf::Vector2f Level::getSize(){
+    return {this->width*WALL_SIZE[0], this->height*WALL_SIZE[1]};
+}
+
+float Level::getWidth(){
+    return this->width*WALL_SIZE[0];
+}
+
+float Level::getHeight(){
+    return this->height*WALL_SIZE[1];
 }
 
 void Level::reset(){	
     this->player->reset();
     this->player->setPosition(this->start * WALL_SIZE);
     this->setObject(object);
+    this->setStatue(statue);
     this->win=false;
     this->loose = false;
     for (auto guard : guards){
@@ -92,15 +174,15 @@ void Level::update(float dt){
 	this->player->moveY(dt);
     this->player->handleCollisionY(this->checkCollisions());
     this->checkTakeObject();
+    this->checkStatue();
     if (!this->checkWin()){
     	this->checkLoose();
     }
-
 }
 
 bool Level::setEnd(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
-		this->map[pos.x][pos.y].setType(WallType::END);
+		this->map[pos.y][pos.x].setType(WallType::END);
 		this->end = pos;  
 		return true;
 	}
@@ -110,7 +192,7 @@ bool Level::setEnd(gf::Vector2i pos){
 bool Level::setStart(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
 		this->start = pos;
-		this->map[pos.x][pos.y].setType(WallType::START);
+		this->map[pos.y][pos.x].setType(WallType::START);
         
 		return true;
 	}
@@ -120,13 +202,23 @@ bool Level::setStart(gf::Vector2i pos){
 bool Level::setObject(gf::Vector2i pos){
 	if(this->isFreeSpace(pos)){
 		this->object = pos;
-		this->map[pos.x][pos.y].setType(WallType::OBJECT);
+		this->map[pos.y][pos.x].setType(WallType::OBJECT);
 		return true;
 	}
 	return false;	
 }
 
-void Level::render(gf::RenderTarget& target){
+bool Level::setStatue(gf::Vector2i pos){
+	if(this->isFreeSpace(pos)){
+		this->statue = pos;
+		this->map[pos.y][pos.x].setType(WallType::STATUE);
+		return true;
+	}
+	return false;	
+}
+
+void Level::render(gf::RenderTarget& target, bool isMinimap){
+    target.draw(this->background);
     for(auto line : this->map){
         for(auto& item : line){
         	if(item.getType()!=WallType::EMPTY){
@@ -134,11 +226,25 @@ void Level::render(gf::RenderTarget& target){
         	}
         }
     }
-    for (auto& guard : guards){
-    	(*guard).render(target);
+    if(!isMinimap){
+        for (auto& guard : guards){
+            (*guard).render(target);
+        }
     }
 
 }
+
+void Level::renderScore(gf::RenderTarget& target, gf::Vector2f size){
+    gf::Font font("arial.ttf");
+    std::string text_score = std::to_string(this->player->NumberOfObjectsStolen()) + "/" + std::to_string(this->numberTotalOfObject);
+    gf::Text score(text_score, font,25);
+    score.setColor(gf::Color::White);
+    score.setAnchor(gf::Anchor::TopLeft);
+    score.setPosition({this->player->getPosition()[0]-size[0]/2, this->player->getPosition()[1]-size[1]/2});
+    target.draw(score);
+}
+
+
 
 Wall* Level::checkCollisions(){
     for(int i=0;i<this->map.size();i++){
@@ -156,11 +262,11 @@ Wall* Level::checkCollisions(){
     return nullptr;
 }
 bool Level::checkWin(){
-    Wall square_end = this->map[end[0]][end[1]];
+    Wall square_end = this->map[end[1]][end[0]];
     gf::Rect<int> rect_intersection;
    	gf::Rect<int> *  playerRect = player->getRect();
 
-    if(this->player->stoleTheObject()==true && square_end.getRect().intersects(*playerRect,rect_intersection)==true){
+    if(this->player->NumberOfObjectsStolen()==this->numberTotalOfObject && square_end.getRect().intersects(*playerRect,rect_intersection)==true){
         this->win=true;
         return true;
     }
@@ -170,24 +276,44 @@ bool Level::checkWin(){
 bool Level::checkLoose(){
     gf::Rect<int> rect_intersection;
 	gf::Rect<int>* playerRect = player->getRect();
-	for (auto& guard : guards){
+    if(!player->isAStatue()){
+        for (auto& guard : guards){
 
-		if(playerRect->intersects(*guard->getRect(),rect_intersection)){
-			this->loose = true;
-			return true;
-		}
-	}
+            if(playerRect->intersects(*guard->getRect(),rect_intersection)){
+                this->loose = true;
+                return true;
+            }
+        }
+    }
 	return false;
 }
 
 
 void Level::checkTakeObject(){
-    Wall square_object = this->map[object[0]][object[1]];
+    Wall square_object = this->map[object[1]][object[0]];
     gf::Rect<int> rect_intersection;
-    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true){
+
+    if(square_object.getRect().intersects(*(this->player->getRect()),rect_intersection)==true && this->map[object[1]][object[0]].getType()==WallType::OBJECT){
         this->player->findObject();
-        this->map[object[0]][object[1]].setType(WallType::EMPTY);
+        this->map[object[1]][object[0]].setType(WallType::EMPTY);
     }
+}
+
+
+
+void Level::checkStatue(){
+    Wall square_statue = this->map[statue[1]][statue[0]];
+    gf::Rect<int> rect_intersection;
+    
+    if(square_statue.getRect().intersects(*(this->player->getRect()),rect_intersection)==true){
+       	player->allowStatue(true);
+       	if(player->isAStatue()){
+       		player->setPosition(statue * WALL_SIZE);
+       	}
+    }else{
+    	player->allowStatue(false);
+    }
+    
 }
 
 

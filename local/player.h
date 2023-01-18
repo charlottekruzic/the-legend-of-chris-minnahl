@@ -3,9 +3,13 @@
 #include <gf/Action.h>
 #include <gf/Entity.h>
 #include <gf/Sprite.h>
+#include <gf/Texture.h>
+#include <gf/ResourceManager.h>
 #include <gf/Shapes.h>
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
+#include <iostream>
+#include <fstream>
 #include "wall.h"
 
 constexpr gf::Vector2i PLAYER_SIZE = {32,32};
@@ -17,10 +21,13 @@ class Player : public gf::Entity{
         double speed;
         gf::RectI rect;
         gf::RectangleShape shape;
+        gf::ResourceManager resources;
+        gf::Sprite spriteShape;
         gf::Color4f color;
-        gf::Action leftAction, rightAction, upAction, downAction;
+        gf::Action leftAction, rightAction, upAction, downAction, spaceAction;
         gf::ActionContainer actions;
-        bool hasObject;
+        int numberOfObjects=0;
+        bool isStatue,canBeStatue;
         
     public:
         Player(gf::Vector2f spawn);
@@ -29,7 +36,13 @@ class Player : public gf::Entity{
         gf::RectI * getRect();
 
         void findObject();
-        bool stoleTheObject();
+        int NumberOfObjectsStolen();
+
+		//allow player to be a statue
+        void allowStatue(bool val);
+
+        //check if player is currently a statue
+        bool isAStatue();
 
         void setPosition(gf::Vector2f position);
         void setVelocity(gf::Vector2f velocity);
