@@ -20,13 +20,15 @@ Player::Player(gf::Vector2f spawn) :
     this->shape.setAnchor(gf::Anchor::TopLeft);
     this->shape.setPosition(this->position);
 
+	/* Changer chemin sprite
+	
 	this->resources.addSearchDir("/home/jade/Documents/L3/Projet_L3/sprite/player");
 	gf::Texture& texture_droite = resources.getTexture("tile003.png");
 	gf::Texture& texture_haut = resources.getTexture("tile002.png");
 	gf::Texture& texture_gauche = resources.getTexture("tile001.png");
 	gf::Texture& texture_bas = resources.getTexture("tile000.png");
     this->spriteShape.setTexture(texture_droite); //, gf::RectF::fromPositionSize(this->position, {500,500}));
-   	this->spriteShape.setPosition(this->position);
+   	this->spriteShape.setPosition(this->position);*/
 
 
 	//Add actions
