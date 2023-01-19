@@ -12,7 +12,7 @@ Level::Level( Player* player_ptr,std::string path){
     this->background = gf::RectangleShape({width*WALL_SIZE[0], height*WALL_SIZE[1]});
     this->background.setColor(gf::Color::Black);
     this->background.setAnchor(gf::Anchor::TopLeft);
-    this->background.setPosition({0,0});
+    this->background.setPosition({0,0}); 
     
 	
 }
