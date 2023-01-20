@@ -11,7 +11,6 @@ class Manager : public gf::GameManager{
 	Manager(std::string window_title);
 	Title titleScene;
 	Rules rulesScene;
-	void start();
 
 };
 

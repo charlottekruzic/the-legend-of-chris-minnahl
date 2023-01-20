@@ -9,13 +9,12 @@ struct Manager;
 class Rules : public gf::Scene {
 	private:
 	gf::Action spaceAction; 
-	Manager* managerLink;
+	Manager& managerLink;
 
 	
 	public:
-	Rules(gf::Vector2i size);
+	Rules(gf::Vector2i size,Manager& link);
 	void doHandleActions(gf::Window & window);
-	void setManager(Manager* m);
 
 };
 

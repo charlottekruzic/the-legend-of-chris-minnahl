@@ -4,7 +4,8 @@
 
 #include "../manager.h"
 
-Title::Title(gf::Vector2i size) : Scene(size),spaceAction("Press_space") {
+Title::Title(gf::Vector2i size,Manager& link) :
+	Scene(size),spaceAction("Press_space"),managerLink(link){
 	setClearColor(gf::Color::Azure);
 	
 	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
@@ -13,10 +14,6 @@ Title::Title(gf::Vector2i size) : Scene(size),spaceAction("Press_space") {
 
 void Title::doHandleActions(gf::Window & window){
 	if(spaceAction.isActive()){
-		managerLink->replaceScene(managerLink->rulesScene);
+		managerLink.replaceScene(managerLink.rulesScene);
 	}
-}
-
-void Title::setManager(Manager * m){
-	managerLink = m;
 }
