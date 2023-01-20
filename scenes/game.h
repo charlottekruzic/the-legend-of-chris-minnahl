@@ -1,21 +1,24 @@
-#ifndef TITLE_H
-#define TITLE_H
+#ifndef GAME_H
+#define GAME_H
 #include <gf/Scene.h>
 #include <gf/Math.h>
 #include <gf/Time.h>
 #include <gf/Action.h>
 #include <gf/Views.h>
 #include <gf/Color.h>
+#include "../local/player.h"
 struct Manager;
 
-class Title : public gf::Scene {
+class Game : public gf::Scene {
 	private:
-	gf::Action spaceAction; 
+	gf::Action spaceAction,rightAction,
+		leftAction,upAction,downAction; 
 	Manager& managerLink;
+	Player player;
 
 
 	public:
-	Title(gf::Vector2i size, Manager& managerLink);
+	Game(gf::Vector2i size, Manager& managerLink);
 	void doHandleActions(gf::Window & window);
 };
 

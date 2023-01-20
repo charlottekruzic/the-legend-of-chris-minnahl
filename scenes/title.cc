@@ -1,6 +1,5 @@
 #include "title.h"
 #include <iostream>
-#include <gf/Color.h>
 
 #include "../manager.h"
 
@@ -10,10 +9,12 @@ Title::Title(gf::Vector2i size,Manager& link) :
 	
 	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
 	addAction(spaceAction);
+	
+	
 }
 
 void Title::doHandleActions(gf::Window & window){
 	if(spaceAction.isActive()){
-		managerLink.replaceScene(managerLink.rulesScene);
+		managerLink.replaceScene(managerLink.gameScene);
 	}
 }

@@ -11,9 +11,11 @@ find_package(Box2D REQUIRED)
 add_executable(Commando
   main.cc
   manager.cc
+
   scenes/title.cc
   scenes/rules.cc
-
+  scenes/game.cc
+  
   local/player.cc
   local/level.cc
   local/wall.cc

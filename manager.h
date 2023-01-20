@@ -3,6 +3,8 @@
 #include <gf/GameManager.h>
 #include "scenes/rules.h"
 #include "scenes/title.h"
+#include "scenes/game.h"
+constexpr gf::Vector2i WINDOW_SIZE = {800, 800};
 
 constexpr std::initializer_list<gf::Path> ressource_paths = {};
 
@@ -11,6 +13,7 @@ class Manager : public gf::GameManager{
 	Manager(std::string window_title);
 	Title titleScene;
 	Rules rulesScene;
+	Game gameScene;
 
 };
 
