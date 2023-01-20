@@ -8,5 +8,6 @@ int main(){
 	Manager m("title");
 	gf::Window &win = m.getWindow();
 	gf::RenderTarget &renderer= m.getRenderer(); 
+	m.run();
 	return 0;
 }

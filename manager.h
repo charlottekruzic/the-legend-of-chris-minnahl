@@ -1,5 +1,6 @@
 #ifndef MANAGER_H
 #define MANAGER_H
+#include "config.h"
 #include <gf/GameManager.h>
 #include "scenes/rules.h"
 #include "scenes/title.h"
@@ -14,7 +15,6 @@ class Manager : public gf::GameManager{
 	Title titleScene;
 	Rules rulesScene;
 	Game gameScene;
-
 };
 
 

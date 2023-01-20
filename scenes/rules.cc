@@ -2,6 +2,7 @@
 #include "../manager.h"
 #include <iostream>
 #include <gf/Color.h>
+#include <gf/Text.h>
 
 
 Rules::Rules(gf::Vector2i size,Manager& link) :
@@ -10,6 +11,9 @@ Rules::Rules(gf::Vector2i size,Manager& link) :
 	
 	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
 	addAction(spaceAction);
+
+	gf::Text text("test config", managerLink.resources.getFont("arial.ttf"));
+
 }
 
 void Rules::doHandleActions(gf::Window & window){

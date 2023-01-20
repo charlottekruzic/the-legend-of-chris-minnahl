@@ -1,4 +1,5 @@
 #include "manager.h"
+#include <gf/Text.h>
 
 
 
@@ -8,9 +9,10 @@ Manager::Manager(std::string window_title) :
 	titleScene(WINDOW_SIZE,*this),
 	rulesScene(WINDOW_SIZE,*this){
 	getWindow().setSize(WINDOW_SIZE);
-	
-
 	pushScene(titleScene);
-	run();
+	resources.addSearchDir(MANAGER_DATA_DIR);
+	
+	
+	
 }
 
