@@ -1,6 +1,9 @@
 #include "title.h"
 #include <iostream>
 #include <gf/Color.h>
+
+#include "../manager.h"
+
 Title::Title(gf::Vector2i size) : Scene(size),spaceAction("Press_space") {
 	setClearColor(gf::Color::Azure);
 	
@@ -12,9 +15,6 @@ void Title::doHandleActions(gf::Window & window){
 	if(spaceAction.isActive()){
 		managerLink->replaceScene(managerLink->rulesScene);
 	}
-}
-
-void Title::doUpdate(gf::Time time){
 }
 
 void Title::setManager(Manager * m){

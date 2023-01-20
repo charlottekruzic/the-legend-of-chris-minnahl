@@ -4,15 +4,16 @@
 #include <gf/Math.h>
 #include <gf/Time.h>
 #include <gf/Action.h>
-#include "../manager.h"
+struct Manager;
 
 class Rules : public gf::Scene {
 	private:
 	gf::Action spaceAction; 
 	Manager* managerLink;
+
+	
 	public:
 	Rules(gf::Vector2i size);
-	void doUpdate(gf::Time time);
 	void doHandleActions(gf::Window & window);
 	void setManager(Manager* m);
 

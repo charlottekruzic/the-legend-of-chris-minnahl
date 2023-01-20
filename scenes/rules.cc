@@ -1,6 +1,9 @@
 #include "rules.h"
+#include "../manager.h"
 #include <iostream>
 #include <gf/Color.h>
+
+
 Rules::Rules(gf::Vector2i size) : Scene(size),spaceAction("Press_space") {
 	setClearColor(gf::Color::Orange);
 	
@@ -15,8 +18,6 @@ void Rules::doHandleActions(gf::Window & window){
 	}
 }
 
-void Rules::doUpdate(gf::Time time){
-}
 
 void Rules::setManager(Manager * m){
 	managerLink = m;
