@@ -8,7 +8,7 @@ Rules::Rules(gf::Vector2i size,Manager& link)
 , m_managerLink(link)
 , m_returnButton("Return", m_font, 20.0)
 {
-	setClearColor(gf::Color::Orange);
+	setClearColor(gf::Color::Gray(0.1f));
 
 
     //Title
@@ -52,7 +52,7 @@ Rules::Rules(gf::Vector2i size,Manager& link)
 
 void Rules::renderTitle(gf::RenderTarget &target){
     gf::Coordinates coords(target);
-    this->m_title.setCharacterSize(coords.getRelativeCharacterSize(0.07f));
+    this->m_title.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.07f, 0.07f)).x);
     this->m_title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
     this->m_title.setAnchor(gf::Anchor::TopCenter);
 
@@ -61,7 +61,7 @@ void Rules::renderTitle(gf::RenderTarget &target){
 
 void Rules::renderButton(gf::RenderTarget &target){
     gf::Coordinates coords(target);
-    this->m_returnButton.setCharacterSize(coords.getRelativeCharacterSize(0.03f));
+    this->m_returnButton.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
     this->m_returnButton.setPosition(coords.getRelativePoint({0.8f, 0.05f}));
     this->m_returnButton.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
     this->m_returnButton.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
@@ -71,8 +71,8 @@ void Rules::renderButton(gf::RenderTarget &target){
 
 void Rules::renderRules(gf::RenderTarget &target){
     gf::Coordinates coords(target);
-    this->m_rules.setCharacterSize(coords.getRelativeCharacterSize(0.03f));
-    this->m_rules.setPosition(coords.getRelativePoint({ 0.5f, 0.5f }));
+    this->m_rules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->m_rules.setPosition(coords.getRelativePoint({ 0.5f, 0.4f }));
     this->m_rules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.9f, 0.9f) - 0.05f).x);
     this->m_rules.setAnchor(gf::Anchor::TopCenter);
 
