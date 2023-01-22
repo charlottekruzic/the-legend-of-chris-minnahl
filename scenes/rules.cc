@@ -6,6 +6,7 @@
 Rules::Rules(gf::Vector2i size,Manager& link) 
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
+, m_font("data/arial.ttf")
 , m_returnButton("Return", m_font, 20.0)
 {
 	setClearColor(gf::Color::Gray(0.1f));
@@ -100,6 +101,7 @@ void Rules::doProcessEvent(gf::Event& event) {
 }
 
 void Rules::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
+    target.setView(getHudView());
     renderTitle(target);
     renderButton(target);
     renderRules(target);

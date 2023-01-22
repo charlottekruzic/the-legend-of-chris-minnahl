@@ -16,6 +16,7 @@ add_executable(Commando
 
   scenes/title.cc
   scenes/rules.cc
+  scenes/end.cc
   scenes/game.cc
   
   local/player.cc

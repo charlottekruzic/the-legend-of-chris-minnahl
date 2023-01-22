@@ -34,7 +34,7 @@ Game::Game(gf::Vector2i size,Manager& link) :
 
 void Game::doHandleActions(gf::Window & window){
 	if(spaceAction.isActive()){
-		managerLink.replaceScene(managerLink.rulesScene);
+		managerLink.replaceScene(managerLink.endScene);
 	}
 	player.setVelocity({0,0});
 	
