@@ -16,7 +16,17 @@ End::End(gf::Vector2i size,Manager& link)
     m_spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
 	addAction(m_spaceAction);
 
-    //Restart button
+    this->m_won = false;
+
+    //Initialization texts
+    this->m_text_win = gf::Text("You won !!", m_font); 
+    this->m_text_win.setColor(gf::Color::White);
+
+    this->m_text_lose = gf::Text("Game over", m_font); 
+    this->m_text_lose.setColor(gf::Color::White);
+
+
+    //Initialization buttons
     setButton(this->m_menuButton);
     setButton(this->m_restartButton);
 
@@ -71,9 +81,24 @@ void End::doProcessEvent(gf::Event& event) {
 }
 
 void End::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
-
-    target.setView(getHudView());
     gf::Coordinates coords(target);
+    target.setView(getHudView());
+
+    //Render text
+    if(this->m_won){
+        this->m_text_win.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
+        this->m_text_win.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
+        this->m_text_win.setAnchor(gf::Anchor::TopCenter);
+        target.draw(this->m_text_win);
+    }else{
+        this->m_text_lose.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
+        this->m_text_lose.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
+        this->m_text_lose.setAnchor(gf::Anchor::TopCenter);
+        target.draw(this->m_text_lose);
+    }
+
+
+    //Render buttons
 
     const float characterSize = coords.getRelativeSize(gf::Vector2f(0.05f, 0.05f)).x;
     const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;

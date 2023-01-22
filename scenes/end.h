@@ -5,6 +5,7 @@
 #include <gf/Color.h>
 #include <gf/Widgets.h>
 #include <gf/Font.h>
+#include <gf/Text.h>
 #include <gf/Coordinates.h>
 #include <gf/WidgetContainer.h>
 
@@ -15,6 +16,9 @@ class End : public gf::Scene {
 		Manager& m_managerLink;
         gf::Action m_spaceAction;
         gf::Font m_font = gf::Font("data/arial.ttf");
+        gf::Text m_text_win;
+        gf::Text m_text_lose;
+        bool m_won;
         gf::TextButtonWidget m_menuButton;
         gf::TextButtonWidget m_restartButton;
 		gf::WidgetContainer m_widgets;
