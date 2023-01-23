@@ -59,23 +59,23 @@ void Title::renderTitle(gf::RenderTarget &target){
 void Title::renderButtons(gf::RenderTarget &target){
     gf::Coordinates coords(target);
 
-    constexpr float characterSize = 0.075f;
-    constexpr float spaceBetweenButton = 0.045f;
+    constexpr float characterSize = 0.1f;
+    constexpr float spaceBetweenButton = 0.02f;
     
 	this->buttonStart.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-    this->buttonStart.setPosition(coords.getRelativePoint({0.45f, 0.425f}));
+    this->buttonStart.setPosition(coords.getRelativePoint({0.44f, 0.425f}));
     this->buttonStart.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
-    this->buttonStart.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
+    this->buttonStart.setPadding(coords.getRelativeSize({0.015f, 0.f}).x);
 
     this->buttonRules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-    this->buttonRules.setPosition(coords.getRelativePoint({0.45f, 0.425f + characterSize + spaceBetweenButton}));
+    this->buttonRules.setPosition(coords.getRelativePoint({0.44f, 0.425f + characterSize + spaceBetweenButton}));
     this->buttonRules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
-    this->buttonRules.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
+    this->buttonRules.setPadding(coords.getRelativeSize({0.015f, 0.f}).x);
 
    this->buttonQuit.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-   this->buttonQuit.setPosition(coords.getRelativePoint({0.45f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
+   this->buttonQuit.setPosition(coords.getRelativePoint({0.44f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
    this->buttonQuit.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
-   this->buttonQuit.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
+   this->buttonQuit.setPadding(coords.getRelativeSize({0.015f, 0.f}).x);
 
 	target.draw(this->buttonStart);
     target.draw(this->buttonRules);
