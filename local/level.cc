@@ -213,6 +213,10 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 		objects[i].render(target);
 	}
 }
+
+int Level::getNumberTotalOfObject(){
+    return numberTotalOfObject;
+}
 	
 bool Level::checkGameOver(){
 	return isGameOver;

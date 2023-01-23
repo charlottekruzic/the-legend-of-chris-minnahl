@@ -5,6 +5,10 @@
 #include <gf/Time.h>
 #include <gf/Action.h>
 #include <gf/Views.h>
+#include <gf/Widget.h>
+#include <gf/WidgetContainer.h>
+#include <gf/Coordinates.h>
+#include <gf/Vector.h>
 #include <gf/Color.h>
 #include "../local/player.h"
 #include "../local/level.h"
@@ -17,6 +21,9 @@ class Game : public gf::Scene {
 		Manager& managerLink;
 		Player player;
 		Level level;
+		gf::Font m_font;
+		gf::TextWidget m_score;
+		gf::WidgetContainer m_widgets;
 		
 
 
@@ -26,6 +33,7 @@ class Game : public gf::Scene {
 		void desactivateActions();
 		void doHandleActions(gf::Window & window);
 		void doUpdate(gf::Time time);
+		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 		void init();
 		void reset();
 		virtual void doShow();
