@@ -14,37 +14,25 @@ Title::Title(gf::Vector2i size,Manager& link) :
 
 	
     //Button
-	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-        button.setDefaultTextColor(gf::Color::Black);
-        button.setDefaultBackgroundColor(gf::Color::White);
-        button.setSelectedTextColor(gf::Color::Black);
-        button.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
-        button.setBackgroundOutlineThickness(2);
-        button.setRadius(12.0);
-        button.setAnchor(gf::Anchor::TopLeft);
-        button.setAlignment(gf::Alignment::Center);
-        buttons.addWidget(button);
-    };
-
-    setupButton(buttonStart, [&] () {
-        gf::Log::debug("Start pressed!\n");
-        managerLink.replaceScene(managerLink.gameScene);
-    });
-	setupButton(buttonRules, [&] () {
-        gf::Log::debug("Rules pressed!\n");
-        managerLink.replaceScene(managerLink.rulesScene);
-    });
-	setupButton(buttonQuit, [&] () {
-        gf::Log::debug("Quit pressed!\n");
-        managerLink.popAllScenes();
-    });
-
-	
+	setButton(this->buttonStart);
+    setButton(this->buttonRules);
+    setButton(this->buttonQuit);
 	
 	
 }
 
+void Title::setButton(gf::TextButtonWidget &button){
+    button.setDefaultTextColor(gf::Color::Black);
+    button.setDefaultBackgroundColor(gf::Color::White);
+    button.setSelectedTextColor(gf::Color::Black);
+    button.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+    button.setBackgroundOutlineThickness(2);
+    button.setRadius(12.0);
+    button.setAnchor(gf::Anchor::TopLeft);
+    button.setAlignment(gf::Alignment::Center);
+    this->buttons.addWidget(button);
 
+}
 
 void Title::renderTitle(gf::RenderTarget &target){
 	gf::Coordinates coords(target);

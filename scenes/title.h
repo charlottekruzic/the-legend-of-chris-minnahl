@@ -24,6 +24,7 @@ class Title : public gf::Scene {
 	gf::TextButtonWidget buttonStart;
     gf::TextButtonWidget buttonRules; 
     gf::TextButtonWidget buttonQuit;
+	void setButton(gf::TextButtonWidget &button);
 
 	
 	public:
