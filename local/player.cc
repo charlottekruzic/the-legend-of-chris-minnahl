@@ -1,20 +1,20 @@
 #include "player.h"
-
+#include <iostream>
 Player::Player(){
 	setPosition({0,0});
 }
 void Player::setPosition(gf::Vector2f pos){
 	position = pos;
 }
-
+gf::Vector2f Player::getPosition(){
+	return position;
+}
 void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
-	gf::RectangleShape shape({32.0,32.0});
+	gf::RectangleShape shape(PLAYER_SIZE);
 	shape.setPosition(position);
 	target.draw(shape);
 }
 void Player::update(gf::Time time){
-	float dt = time.asSeconds();	
-	position += velocity * speed * dt;
 		
 }
 void Player::setVelocity(gf::Vector2f vel){
@@ -25,4 +25,14 @@ gf::Vector2f Player::getVelocity(){
 }
 void Player::addVelocity(gf::Vector2f vel){
 	velocity += vel;
+}
+
+void Player::applyXMotion(gf::Time time){
+	float dt = time.asSeconds();
+	position.x += velocity.x * speed * dt;
+
+}
+void Player::applyYMotion(gf::Time time){
+	float dt = time.asSeconds();	
+	position.y += velocity.y * speed * dt;
 }

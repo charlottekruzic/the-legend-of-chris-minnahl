@@ -10,38 +10,81 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	leftAction("Go left"),
 	upAction("Go up"),
 	downAction("Go down"),
-	managerLink(link){
+	managerLink(link),
+	level(player){
 
 	
 	setClearColor(gf::Color::Black);
+
+	//SET ACTIONS
 	
 	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
 	addAction(spaceAction);
 
 
 	rightAction.addKeycodeKeyControl(gf::Keycode::Right);
-	rightAction.setInstantaneous();
+	rightAction.setContinuous();
 	addAction(rightAction);
 
 	leftAction.addKeycodeKeyControl(gf::Keycode::Left);
-	leftAction.setInstantaneous();
+	leftAction.setContinuous();
 	addAction(leftAction);
 
-	player.setPosition({0,0});
+	upAction.addKeycodeKeyControl(gf::Keycode::Up);
+	upAction.setContinuous();
+	addAction(upAction);
+
+	downAction.addKeycodeKeyControl(gf::Keycode::Down);
+	downAction.setContinuous();
+	addAction(downAction);
+
+
+	
+	//INITIALIZE PLAYER
+	player.setPosition({100,100});
+
+	//INITIALIZE LEVEL
+	level.load("levels/1.txt");
+
+	//ADD ENTITIES TO THE WORLD
+	addWorldEntity(level);
 	addWorldEntity(player);
+
+	init();	
 	
 }
-
+void Game::init(){
+	
+	level.init();
+}
 void Game::doHandleActions(gf::Window & window){
 	if(spaceAction.isActive()){
-		managerLink.replaceScene(managerLink.rulesScene);
+		managerLink.replaceScene(managerLink.endScene);
 	}
-	player.setVelocity({0,0});
 	
 	if(rightAction.isActive()){
-		player.addVelocity({100,0});
+		player.addVelocity({1,0});
 	}
 	if(leftAction.isActive()){
-		player.addVelocity({-100,0});
+		player.addVelocity({-1,0});
 	}
+	if(upAction.isActive()){
+		player.addVelocity({0,-1});
+	}
+	if(downAction.isActive()){
+		player.addVelocity({0,1});
+	}
+	if(level.checkGameOver()){
+		managerLink.replaceScene(managerLink.endScene);
+
+	}
+}
+
+void Game::doShow(){
+	level.init();
+}
+
+void Game::doUpdate(gf::Time time){
+	setWorldViewCenter(player.getPosition());
+
 }

@@ -3,28 +3,32 @@
 
 
 
-Rules::Rules(gf::Vector2i size,Manager& link) : Scene(size),spaceAction("Press_space"),managerLink(link){
-	setClearColor(gf::Color::Orange);
-	
-	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
-	addAction(spaceAction);
-
-	this->titleRules = gf::Text("The game's rules", font); 
-    this->titleRules.setCharacterSize(50);
-	gf::Coordinates coordinates_title(WINDOW_SIZE);
-	gf::Vector2f center = coordinates_title.getCenter();
-	this->titleRules.setPosition(coordinates_title.getAbsolutePoint(center/2, gf::Anchor::TopLeft));
-    this->titleRules.setColor(gf::Color::White);
-
-	
-	this->returnButton.setAnchor(gf::Anchor::TopRight);
-    this->returnButton.setPosition({WINDOW_SIZE[0]-30 ,30.0});
-    this->returnButton.setBackgroundOutlineThickness(2);
-    this->returnButton.setDefaultBackgroundColor(gf::Color::White);
-    this->returnButton.setPadding(10.0);
-    this->returnButton.setRadius(12.0);
+Rules::Rules(gf::Vector2i size,Manager& link) 
+: Scene(link.getRenderer().getSize())
+, m_managerLink(link)
+, m_font("data/arial.ttf")
+, m_returnButton("Return", m_font, 20.0)
+{
+	setClearColor(gf::Color::Gray(0.1f));
 
 
+    //Title
+	this->m_title = gf::Text("The game's rules", m_font); 
+    this->m_title.setColor(gf::Color::White);
+
+
+    //Button
+    this->m_returnButton.setDefaultTextColor(gf::Color::Black);
+    this->m_returnButton.setDefaultBackgroundColor(gf::Color::White);
+    this->m_returnButton.setSelectedTextColor(gf::Color::Black);
+    this->m_returnButton.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+    this->m_returnButton.setBackgroundOutlineThickness(2);
+    this->m_returnButton.setRadius(12.0);
+    this->m_returnButton.setAnchor(gf::Anchor::TopLeft);
+    this->m_returnButton.setAlignment(gf::Alignment::Center);
+    m_widgets.addWidget(this->m_returnButton);
+
+    //Rules
     std::ifstream rulesFile ("local/game_rules.txt");
     std::string rules;
 
@@ -38,31 +42,67 @@ Rules::Rules(gf::Vector2i size,Manager& link) : Scene(size),spaceAction("Press_s
         std::cout << "Couldn't open file\n";
     }
 
-    this->gameRules.setString(rules);
-    this->gameRules.setFont(font);
-    this->gameRules.setParagraphWidth(WINDOW_SIZE[0]-WINDOW_SIZE[0]/8);
-    this->gameRules.setAlignment(gf::Alignment::Left);
-    this->gameRules.setCharacterSize(20);
-    this->gameRules.setAnchor(gf::Anchor::Center);
-    this->gameRules.setPosition({WINDOW_SIZE[0]/2,WINDOW_SIZE[1]/2});
-    this->gameRules.setColor(gf::Color::White);
+    this->m_rules.setString(rules);
+    this->m_rules.setFont(m_font);
+    this->m_rules.setColor(gf::Color::White);
+    this->m_rules.setAlignment(gf::Alignment::Left);
 
-
-	//gf::Text text("test config", managerLink.resources.getFont("arial.ttf"));
+	//gf::Text text("test config", m_managerLink.resources.getFont("arial.ttf"));
 
 }
 
-void Rules::doHandleActions(gf::Window & window){
-	if(spaceAction.isActive()){
-		managerLink.replaceScene(managerLink.titleScene);
-	}
-}
-void Rules::doUpdate (gf::Time time){
+void Rules::renderTitle(gf::RenderTarget &target){
+    gf::Coordinates coords(target);
+    this->m_title.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.07f, 0.07f)).x);
+    this->m_title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
+    this->m_title.setAnchor(gf::Anchor::TopCenter);
 
+    target.draw(this->m_title);
+}
+
+void Rules::renderButton(gf::RenderTarget &target){
+    gf::Coordinates coords(target);
+    this->m_returnButton.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->m_returnButton.setPosition(coords.getRelativePoint({0.8f, 0.05f}));
+    this->m_returnButton.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
+    this->m_returnButton.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
+
+    target.draw(this->m_returnButton);
+}
+
+void Rules::renderRules(gf::RenderTarget &target){
+    gf::Coordinates coords(target);
+    this->m_rules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->m_rules.setPosition(coords.getRelativePoint({ 0.5f, 0.4f }));
+    this->m_rules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.9f, 0.9f) - 0.05f).x);
+    this->m_rules.setAnchor(gf::Anchor::TopCenter);
+
+    target.draw(this->m_rules);
+}
+
+void Rules::doProcessEvent(gf::Event& event) {
+    gf::MouseButtonEvent &mouseEvent = event.mouseButton;
+    switch (event.type) {
+        case gf::EventType::MouseButtonPressed:
+            if(this->m_returnButton.contains(mouseEvent.coords)){
+                    this->m_returnButton.setSelected();
+            }
+            break;
+        case gf::EventType::MouseButtonReleased:
+            this->m_returnButton.setState(gf::WidgetState::Default );
+
+            if(this->m_returnButton.contains(mouseEvent.coords)){
+                m_managerLink.replaceScene(m_managerLink.titleScene);
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 void Rules::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
-	target.draw(this->titleRules);
-	target.draw(this->returnButton);
-	target.draw(this->gameRules);
+    target.setView(getHudView());
+    renderTitle(target);
+    renderButton(target);
+    renderRules(target);
 }

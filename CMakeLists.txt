@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(MANAGER_DATA_DIR "${CMAKE_INSTALL_PREFIX}")               
+set(MANAGER_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/Commando")               
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
 project(Commando
@@ -16,6 +16,7 @@ add_executable(Commando
 
   scenes/title.cc
   scenes/rules.cc
+  scenes/end.cc
   scenes/game.cc
   
   local/player.cc

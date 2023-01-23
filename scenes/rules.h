@@ -14,23 +14,28 @@
 #include <gf/Action.h>
 #include <gf/Font.h>
 #include <gf/Coordinates.h>
+#include <gf/WidgetContainer.h>
+
+
 struct Manager;
 
 class Rules : public gf::Scene {
 	private:
-		gf::Action spaceAction; 
-		Manager& managerLink;
-		gf::Text titleRules; 
-    	gf::Text gameRules;
-		gf::Font font = gf::Font("data/arial.ttf");
-		gf::TextButtonWidget returnButton = gf::TextButtonWidget("Return", font, 20.0);
+		Manager& m_managerLink;
+		gf::Text m_title; 
+    	gf::Text m_rules;
+		gf::Font m_font;
+		gf::TextButtonWidget m_returnButton;
+		gf::WidgetContainer m_widgets;
 
 	
 	public:
 		Rules(gf::Vector2i size,Manager& link);
-		void doHandleActions(gf::Window & window);
-		void doUpdate (gf::Time time);
-		void doRender (gf::RenderTarget &target, const gf::RenderStates &states);
+		void renderTitle(gf::RenderTarget &target);
+		void renderButton(gf::RenderTarget &target);
+		void renderRules(gf::RenderTarget &target);
+		void doProcessEvent(gf::Event& event) override;
+		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 	
 };
 
