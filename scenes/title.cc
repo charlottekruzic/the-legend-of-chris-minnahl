@@ -63,17 +63,17 @@ void Title::renderButtons(gf::RenderTarget &target){
     constexpr float spaceBetweenButton = 0.045f;
     
 	this->buttonStart.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-    this->buttonStart.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+    this->buttonStart.setPosition(coords.getRelativePoint({0.45f, 0.425f}));
     this->buttonStart.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
     this->buttonStart.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
 
     this->buttonRules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-    this->buttonRules.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    this->buttonRules.setPosition(coords.getRelativePoint({0.45f, 0.425f + characterSize + spaceBetweenButton}));
     this->buttonRules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
     this->buttonRules.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
 
    this->buttonQuit.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-   this->buttonQuit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
+   this->buttonQuit.setPosition(coords.getRelativePoint({0.45f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
    this->buttonQuit.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
    this->buttonQuit.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
 
@@ -87,14 +87,24 @@ void Title::doProcessEvent(gf::Event& event) {
     switch (event.type) {
         case gf::EventType::MouseButtonPressed:
             if(this->buttonStart.contains(mouseEvent.coords)){
-                    this->buttonStart.setSelected();
+                this->buttonStart.setSelected();
+            }else if(this->buttonRules.contains(mouseEvent.coords)){
+                this->buttonRules.setSelected();
+            }else if(this->buttonQuit.contains(mouseEvent.coords)){
+                this->buttonQuit.setSelected();
             }
             break;
         case gf::EventType::MouseButtonReleased:
             this->buttonStart.setState(gf::WidgetState::Default );
+            this->buttonRules.setState(gf::WidgetState::Default );
+            this->buttonQuit.setState(gf::WidgetState::Default );
 
             if(this->buttonStart.contains(mouseEvent.coords)){
                 managerLink.replaceScene(managerLink.gameScene);
+            }else if(this->buttonRules.contains(mouseEvent.coords)){
+                managerLink.replaceScene(managerLink.rulesScene);
+            }else if(this->buttonQuit.contains(mouseEvent.coords)){
+                managerLink.getWindow().close();
             }
             break;
         default:
