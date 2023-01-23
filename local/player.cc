@@ -1,7 +1,14 @@
 #include "player.h"
 #include <iostream>
-Player::Player(){
+Player::Player():spaceAction("space"){
 	setPosition({0,0});
+
+	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
+    spaceAction.setInstantaneous();
+	actions.addAction(spaceAction);
+
+	this->isStatue=false;
+	this->canBeStatue=true;
 }
 void Player::setPosition(gf::Vector2f pos){
 	position = pos;
@@ -15,10 +22,12 @@ void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	target.draw(shape);
 }
 void Player::update(gf::Time time){
-		
+	
 }
 void Player::reset(){
 	this->numberOfObjects=0;
+	this->actions.reset();
+	this->isStatue=false;
 }
 
 
@@ -41,6 +50,19 @@ int Player::NumberOfObjectsStolen(){
 	return this->numberOfObjects;
 }
 
+bool Player::isAStatue(){
+	return this->isStatue;
+	
+}
+
+void Player::allowStatue(bool val){
+	this->canBeStatue = val;
+}
+
+void Player::processEvent(gf::Event event){
+	this->actions.processEvent(event);
+
+}
 
 void Player::applyXMotion(gf::Time time){
 	float dt = time.asSeconds();
@@ -50,4 +72,13 @@ void Player::applyXMotion(gf::Time time){
 void Player::applyYMotion(gf::Time time){
 	float dt = time.asSeconds();	
 	position.y += velocity.y * speed * dt;
+}
+
+void Player::doHandleActions(gf::Window & window){
+	if(spaceAction.isActive() && this->canBeStatue){
+		this->isStatue = true;
+		std::cout << "statue" << "\n";
+	}else{
+		this->isStatue = false;
+	}
 }
