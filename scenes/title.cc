@@ -5,23 +5,24 @@
 #include "../manager.h"
 
 Title::Title(gf::Vector2i size,Manager& link) :
-	Scene(size), managerLink(link), buttonStart("Start", font), buttonRules("Rules", font), buttonQuit("Quit", font){
-	setClearColor(gf::Color::Azure);
+	Scene(link.getRenderer().getSize()), managerLink(link), font("data/arial.ttf"), buttonStart("Start", font, 30.0), buttonRules("Rules", font, 30.0), buttonQuit("Quit", font, 30.0){
+	setClearColor(gf::Color::Gray(0.1f));
 	
-	
+	//Title
+	this->titleMenu = gf::Text("The Legend Of Chris Minnahl", font); 
+    this->titleMenu.setColor(gf::Color::White);
 
 	
-
+    //Button
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
         button.setDefaultTextColor(gf::Color::Black);
-        button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
+        button.setDefaultBackgroundColor(gf::Color::White);
         button.setSelectedTextColor(gf::Color::Black);
-        button.setSelectedBackgroundColor(gf::Color::Green);
-        button.setDisabledTextColor(gf::Color::Black);
-        button.setDisabledBackgroundColor(gf::Color::Red);
+        button.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+        button.setBackgroundOutlineThickness(2);
+        button.setRadius(12.0);
         button.setAnchor(gf::Anchor::TopLeft);
         button.setAlignment(gf::Alignment::Center);
-        button.setCallback(callback);
         buttons.addWidget(button);
     };
 
@@ -45,56 +46,64 @@ Title::Title(gf::Vector2i size,Manager& link) :
 
 
 
-void Title::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
+void Title::renderTitle(gf::RenderTarget &target){
 	gf::Coordinates coords(target);
-	float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
+	this->titleMenu.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.07f, 0.07f)).x);
+	this->titleMenu.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
+	this->titleMenu.setAnchor(gf::Anchor::TopCenter);
 	
-	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
-	
-	gf::Text titleMenu("The Legend Of Chris Minnahl", font, titleCharacterSize);
-	titleMenu.setCharacterSize(50);
-	titleMenu.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
-	titleMenu.setAnchor(gf::Anchor::TopCenter);
-	titleMenu.setColor(gf::Color::Cyan);
-	
-	target.draw(titleMenu);
+	target.draw(this->titleMenu);
 
-	 constexpr float characterSize = 0.075f;
-    constexpr float spaceBetweenButton = 0.045f;
-    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
-	const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-    const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
-
-	buttonStart.setCharacterSize(resumeCharacterSize);
-    buttonStart.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
-    buttonStart.setParagraphWidth(paragraphWidth);
-    buttonStart.setPadding(paddingSize);
-
-    buttonRules.setCharacterSize(resumeCharacterSize);
-    buttonRules.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-    buttonRules.setParagraphWidth(paragraphWidth);
-    buttonRules.setPadding(paddingSize);
-
-    buttonQuit.setCharacterSize(resumeCharacterSize);
-    buttonQuit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
-    buttonQuit.setParagraphWidth(paragraphWidth);
-    buttonQuit.setPadding(paddingSize);
-
-	buttons.render(target);
 }
 
-void Title::doShow() {
-    buttons.clear();
+void Title::renderButtons(gf::RenderTarget &target){
+    gf::Coordinates coords(target);
 
-    buttonStart.setDefault();
-    buttons.addWidget(buttonStart);
+    constexpr float characterSize = 0.075f;
+    constexpr float spaceBetweenButton = 0.045f;
+    
+	this->buttonStart.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->buttonStart.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+    this->buttonStart.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
+    this->buttonStart.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
 
-    buttonRules.setDefault();
-    buttons.addWidget(buttonRules);
+    this->buttonRules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->buttonRules.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    this->buttonRules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
+    this->buttonRules.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
 
-    buttonQuit.setDefault();
-    buttons.addWidget(buttonQuit);
+   this->buttonQuit.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+   this->buttonQuit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
+   this->buttonQuit.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
+   this->buttonQuit.setPadding(coords.getRelativeSize({0.01f, 0.f}).x);
 
-    buttons.selectNextWidget();
-  }
+	target.draw(this->buttonStart);
+    target.draw(this->buttonRules);
+    target.draw(this->buttonQuit);
+}
+
+void Title::doProcessEvent(gf::Event& event) {
+    gf::MouseButtonEvent &mouseEvent = event.mouseButton;
+    switch (event.type) {
+        case gf::EventType::MouseButtonPressed:
+            if(this->buttonStart.contains(mouseEvent.coords)){
+                    this->buttonStart.setSelected();
+            }
+            break;
+        case gf::EventType::MouseButtonReleased:
+            this->buttonStart.setState(gf::WidgetState::Default );
+
+            if(this->buttonStart.contains(mouseEvent.coords)){
+                managerLink.replaceScene(managerLink.gameScene);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Title::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
+    target.setView(getHudView());
+    renderTitle(target);
+    renderButtons(target);
+}

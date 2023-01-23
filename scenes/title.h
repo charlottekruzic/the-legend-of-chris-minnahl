@@ -18,19 +18,20 @@ struct Manager;
 class Title : public gf::Scene {
 	private: 
 	Manager& managerLink;
-	gf::Font font = gf::Font("data/arial.ttf");
+	gf::Font font;
+	gf::Text titleMenu;
 	gf::WidgetContainer buttons;
 	gf::TextButtonWidget buttonStart;
     gf::TextButtonWidget buttonRules; 
     gf::TextButtonWidget buttonQuit;
-    
 
+	
 	public:
-		Title(gf::Vector2i size, Manager& managerLink);
-		 void doProcessEvent(gf::Event& event) override;
-		void doUpdate (gf::Time time);
-		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
-		void doShow() override;
+		Title(gf::Vector2i size,Manager& link);
+		void renderTitle(gf::RenderTarget &target);
+		void renderButtons(gf::RenderTarget &target);
+		void doProcessEvent(gf::Event& event) override;
+		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 	
 };
 
