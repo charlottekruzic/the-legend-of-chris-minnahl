@@ -29,7 +29,7 @@ class Level : public gf::Entity{
 		void init();
 		void load(std::string path);
 		virtual void render(gf::RenderTarget & target,
-				const gf::RenderStates & states);	
+		const gf::RenderStates & states);	
 		void addWall(gf::Vector2i position,WallType type);	
 		void update(gf::Time time);
 		gf::RectF findCollider();

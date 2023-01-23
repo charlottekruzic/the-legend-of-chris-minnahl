@@ -1,6 +1,8 @@
 #ifndef END_H
 #define END_H
 
+#include "local/level.h"
+
 #include <gf/Scene.h>
 #include <gf/Color.h>
 #include <gf/Widgets.h>
@@ -18,11 +20,11 @@ class End : public gf::Scene {
         gf::Font m_font = gf::Font("data/arial.ttf");
         gf::Text m_text_win;
         gf::Text m_text_lose;
-        bool m_won;
         gf::TextButtonWidget m_menuButton;
         gf::TextButtonWidget m_restartButton;
 		gf::WidgetContainer m_widgets;
         void setButton(gf::TextButtonWidget &button);
+        Level& m_level;
 
 	
 	public:

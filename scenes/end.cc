@@ -10,13 +10,12 @@ End::End(gf::Vector2i size,Manager& link)
 , m_font("data/arial.ttf")
 , m_menuButton("Menu", m_font, 20.0)
 , m_restartButton("Restart", m_font, 20.0)
+, m_level(m_managerLink.gameScene.getLevel())
 {
     setClearColor(gf::Color::Gray(0.3f));
 
     m_spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
 	addAction(m_spaceAction);
-
-    this->m_won = false;
 
     //Initialization texts
     this->m_text_win = gf::Text("You won !!", m_font); 
@@ -70,8 +69,10 @@ void End::doProcessEvent(gf::Event& event) {
             this->m_restartButton.setState(gf::WidgetState::Default);
 
             if(this->m_menuButton.contains(mouseEvent.coords)){
+                m_managerLink.gameScene.reset();
                 m_managerLink.replaceScene(m_managerLink.titleScene);
             }else if(this->m_restartButton.contains(mouseEvent.coords)){
+                m_managerLink.gameScene.reset();
                 m_managerLink.replaceScene(m_managerLink.gameScene);
             }
             break;
@@ -85,16 +86,16 @@ void End::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
     target.setView(getHudView());
 
     //Render text
-    if(this->m_won){
-        this->m_text_win.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
-        this->m_text_win.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
-        this->m_text_win.setAnchor(gf::Anchor::TopCenter);
-        target.draw(this->m_text_win);
-    }else{
+    if(m_level.checkGameOver()){
         this->m_text_lose.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
         this->m_text_lose.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
         this->m_text_lose.setAnchor(gf::Anchor::TopCenter);
         target.draw(this->m_text_lose);
+    }else{
+        this->m_text_win.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
+        this->m_text_win.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
+        this->m_text_win.setAnchor(gf::Anchor::TopCenter);
+        target.draw(this->m_text_win);
     }
 
 

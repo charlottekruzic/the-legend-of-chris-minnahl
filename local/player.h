@@ -18,7 +18,7 @@ class Player: public gf::Entity{
 		Player();
 		virtual void update(gf::Time time);
 		virtual void render(gf::RenderTarget & target,
-				const gf::RenderStates & states);	
+		const gf::RenderStates & states);	
 
 		void setPosition(gf::Vector2f position);
 		gf::Vector2f getPosition();

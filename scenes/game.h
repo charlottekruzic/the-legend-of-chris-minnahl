@@ -22,9 +22,12 @@ class Game : public gf::Scene {
 
 	public:
 		Game(gf::Vector2i size, Manager& managerLink);
+		Level& getLevel();
+		void desactivateActions();
 		void doHandleActions(gf::Window & window);
 		void doUpdate(gf::Time time);
 		void init();
+		void reset();
 		virtual void doShow();
 };
 

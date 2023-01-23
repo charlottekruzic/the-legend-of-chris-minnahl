@@ -54,9 +54,14 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	
 }
 void Game::init(){
-	
 	level.init();
 }
+
+void Game::reset(){
+	desactivateActions();
+}
+
+
 void Game::doHandleActions(gf::Window & window){
 	if(spaceAction.isActive()){
 		managerLink.replaceScene(managerLink.endScene);
@@ -76,8 +81,28 @@ void Game::doHandleActions(gf::Window & window){
 	}
 	if(level.checkGameOver()){
 		managerLink.replaceScene(managerLink.endScene);
-
 	}
+}
+
+Level& Game::getLevel(){
+	return level;
+}
+
+void Game::desactivateActions(){
+	rightAction.setInstantaneous();
+	leftAction.setInstantaneous();
+	upAction.setInstantaneous();
+	downAction.setInstantaneous();
+
+	rightAction.reset();
+	leftAction.reset();
+	upAction.reset();
+	downAction.reset();
+
+	rightAction.setContinuous();
+	leftAction.setContinuous();
+	upAction.setContinuous();
+	downAction.setContinuous();	
 }
 
 void Game::doShow(){
