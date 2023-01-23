@@ -6,7 +6,7 @@
 Game::Game(gf::Vector2i size,Manager& link) :
 	Scene(size),
 	rightAction("Go right"),
-	leftAction("Go left"),
+	leftAction("Go left"), 
 	upAction("Go up"),
 	downAction("Go down"),
 	managerLink(link),

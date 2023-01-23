@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+$cmake_minimum_required(VERSION 3.10)
 
 set(MANAGER_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/Commando")               
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
@@ -23,6 +23,7 @@ add_executable(Commando
   local/level.cc
   local/wall.cc
   local/guard.cc
+  
   gui/panel.cc
   gui/label.cc
   gui/button.cc
