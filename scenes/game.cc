@@ -11,7 +11,9 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	upAction("Go up"),
 	downAction("Go down"),
 	managerLink(link),
-	level(player){
+	level(player),
+	m_font("data/arial.ttf"),
+	m_score("0/0", m_font, 25){
 
 	
 	setClearColor(gf::Color::Black);
@@ -37,8 +39,6 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	downAction.addKeycodeKeyControl(gf::Keycode::Down);
 	downAction.setContinuous();
 	addAction(downAction);
-
-
 	
 	//INITIALIZE PLAYER
 	player.setPosition({100,100});
@@ -46,11 +46,17 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	//INITIALIZE LEVEL
 	level.load("levels/3.txt");
 
+	//SCORE
+	m_score.setDefaultTextColor(gf::Color::White);
+    m_score.setSelectedTextColor(gf::Color::White);
+    m_score.setAnchor(gf::Anchor::TopLeft);
+	m_widgets.addWidget(m_score);
+
 	//ADD ENTITIES TO THE WORLD
 	addWorldEntity(level);
 	addWorldEntity(player);
 
-	init();	
+	init();
 	
 }
 void Game::init(){
@@ -117,5 +123,16 @@ void Game::doShow(){
 
 void Game::doUpdate(gf::Time time){
 	setWorldViewCenter(player.getPosition());
+}
 
+void Game::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
+	renderWorldEntities(target,states);
+	target.setView(getHudView());
+
+	gf::Coordinates coords(target);
+	std::string text_score = std::to_string(player.NumberOfObjectsStolen()) + "/" + std::to_string(level.getNumberTotalOfObject());
+	m_score.setString(text_score);
+	m_score.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    m_score.setPosition(coords.getRelativePoint({0.05f, 0.05f}));
+	target.draw(m_score);
 }

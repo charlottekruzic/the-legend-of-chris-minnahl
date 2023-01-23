@@ -6,6 +6,7 @@
 #include <gf/RenderWindow.h>
 #include <gf/Text.h>
 #include <gf/Font.h>
+#include <gf/Widgets.h>
 #include <string.h>
 #include "wall.h"
 #include "player.h"
@@ -39,5 +40,7 @@ class Level : public gf::Entity{
 		void checkTakeObject();
 		bool checkGameOver();
 		bool checkWin();
+		int getNumberTotalOfObject();
+
 };		
 #endif
