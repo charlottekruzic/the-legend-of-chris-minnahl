@@ -13,6 +13,7 @@ class Player: public gf::Entity{
 	private:
 	gf::Vector2f position;
 	gf::Vector2f velocity;
+	int numberOfObjects=0;
 	float speed = 200.0;
 	public :
 		Player();
@@ -20,11 +21,14 @@ class Player: public gf::Entity{
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
 
+		void reset();
 		void setPosition(gf::Vector2f position);
 		gf::Vector2f getPosition();
 		void setVelocity(gf::Vector2f vel);
 		gf::Vector2f getVelocity();
 		void addVelocity(gf::Vector2f vel);
+		void findObject();
+		int NumberOfObjectsStolen();
 		void applyXMotion(gf::Time time);
 		void applyYMotion(gf::Time time);
 		

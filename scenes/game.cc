@@ -44,7 +44,7 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	player.setPosition({100,100});
 
 	//INITIALIZE LEVEL
-	level.load("levels/1.txt");
+	level.load("levels/3.txt");
 
 	//ADD ENTITIES TO THE WORLD
 	addWorldEntity(level);
@@ -59,6 +59,7 @@ void Game::init(){
 
 void Game::reset(){
 	desactivateActions();
+	level.reset();
 }
 
 
@@ -80,6 +81,11 @@ void Game::doHandleActions(gf::Window & window){
 		player.addVelocity({0,1});
 	}
 	if(level.checkGameOver()){
+		if(level.checkWin()){
+			managerLink.endScene.setWin();
+		}else{
+			managerLink.endScene.setLose();
+		}
 		managerLink.replaceScene(managerLink.endScene);
 	}
 }

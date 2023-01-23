@@ -17,6 +17,12 @@ void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
 void Player::update(gf::Time time){
 		
 }
+void Player::reset(){
+	this->numberOfObjects=0;
+}
+
+
+
 void Player::setVelocity(gf::Vector2f vel){
 	velocity = vel;
 }
@@ -26,6 +32,15 @@ gf::Vector2f Player::getVelocity(){
 void Player::addVelocity(gf::Vector2f vel){
 	velocity += vel;
 }
+
+void Player::findObject(){
+	this->numberOfObjects++;
+}
+
+int Player::NumberOfObjectsStolen(){
+	return this->numberOfObjects;
+}
+
 
 void Player::applyXMotion(gf::Time time){
 	float dt = time.asSeconds();

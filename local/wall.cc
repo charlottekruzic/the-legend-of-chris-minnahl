@@ -21,7 +21,7 @@ bool Wall::setType(WallType type){
     switch(type){
         case WallType::EMPTY:
             this->solid = false;
-            this->color = gf::Color::Red;
+            this->color = gf::Color::Gray(0.2f);
             break;
         case WallType::SOLID:
             this->solid = true;

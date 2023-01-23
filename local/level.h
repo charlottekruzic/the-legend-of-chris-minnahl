@@ -22,18 +22,22 @@ class Level : public gf::Entity{
 		
 		Player& player;
 		bool isGameOver;
+		bool isWin;
+		int numberTotalOfObject=0;
 		
 		
 	public:
 		Level(Player & player);
 		void init();
 		void load(std::string path);
+		void reset();
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
 		void addWall(gf::Vector2i position,WallType type);	
 		void update(gf::Time time);
 		gf::RectF findCollider();
+		void checkTakeObject();
 		bool checkGameOver();
-
+		bool checkWin();
 };		
 #endif

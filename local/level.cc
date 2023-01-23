@@ -10,6 +10,7 @@ Level::Level(Player & playerLink) :
 
 void Level::init(){
 	isGameOver = false;
+	isWin = false;
 	player.setPosition(start.getPosition());
 	player.setVelocity({0,0});
 }
@@ -67,7 +68,7 @@ void Level::load(std::string path){
 				break;
 			case 'o':
 				tmp = WallType::OBJECT;
-				
+				this->numberTotalOfObject++;
 				break;
 			case 't':
 				tmp = WallType::STATUE;
@@ -86,6 +87,14 @@ void Level::load(std::string path){
 			
 	fclose(f);
 
+}
+
+void Level::reset(){
+	player.reset();
+	//reset object
+	for(int i=0; i<objects.size(); i++){
+		objects[i].setType(WallType::OBJECT);
+	}
 }
 
 
@@ -130,6 +139,9 @@ void Level::update(gf::Time time){
 			player.setPosition({player.getPosition().x,collider.max.y });
 		}
 	}
+
+	checkTakeObject();
+	
 	player.setVelocity({0,0});
 }
 
@@ -143,6 +155,9 @@ gf::RectF Level::findCollider(){
 			if(wallRect.intersects(playerRect)){
 				if(wall.getType() == WallType::END){
 					isGameOver = true;
+					if(player.NumberOfObjectsStolen()==this->numberTotalOfObject){
+						isWin=true;
+					}
 				}
 				return wallRect;
 			}
@@ -151,16 +166,38 @@ gf::RectF Level::findCollider(){
 	return gf::RectF::empty();
 }
 
-void Level::render(gf::RenderTarget & target,
-					const gf::RenderStates & states){
+void Level::checkTakeObject(){
+	for(int i=0; i<objects.size(); i++){
+		Wall &object = objects[i];
+		if(object.getType()!=WallType::OBJECT){continue;}
+		
+		gf::RectF objectRect = gf::RectF::fromPositionSize(object.getPosition(),WALL_SIZE);
+		gf::RectF playerRect = gf::RectF::fromPositionSize(player.getPosition(),PLAYER_SIZE);
+
+		if(objectRect.intersects(playerRect)){
+			player.findObject();
+			object.setType(WallType::EMPTY);
+		}	
+	}
+}
+
+void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	for(auto& line : map){
 		for(auto& wall : line){
-			if (wall.getType() != WallType::EMPTY){
-				wall.render(target);
-			}
+			wall.render(target);
 		}
 	}	
-}	
+
+	for(int i=0; i<objects.size(); i++){
+		objects[i].render(target);
+	}
+}
+	
 bool Level::checkGameOver(){
 	return isGameOver;
 }
+
+bool Level::checkWin(){
+	return isWin;
+}
+

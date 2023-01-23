@@ -17,6 +17,8 @@ End::End(gf::Vector2i size,Manager& link)
     m_spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
 	addAction(m_spaceAction);
 
+    m_won = false;
+
     //Initialization texts
     this->m_text_win = gf::Text("You won !!", m_font); 
     this->m_text_win.setColor(gf::Color::White);
@@ -81,21 +83,29 @@ void End::doProcessEvent(gf::Event& event) {
     }
 }
 
+void End::setLose(){
+    m_won=false;
+}
+
+void End::setWin(){
+    m_won=true;
+}
+
 void End::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
     gf::Coordinates coords(target);
     target.setView(getHudView());
 
     //Render text
-    if(m_level.checkGameOver()){
-        this->m_text_lose.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
-        this->m_text_lose.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
-        this->m_text_lose.setAnchor(gf::Anchor::TopCenter);
-        target.draw(this->m_text_lose);
-    }else{
+    if(m_won){
         this->m_text_win.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
         this->m_text_win.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
         this->m_text_win.setAnchor(gf::Anchor::TopCenter);
         target.draw(this->m_text_win);
+    }else{
+        this->m_text_lose.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.1f, 0.1f)).x);
+        this->m_text_lose.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
+        this->m_text_lose.setAnchor(gf::Anchor::TopCenter);
+        target.draw(this->m_text_lose);
     }
 
 
