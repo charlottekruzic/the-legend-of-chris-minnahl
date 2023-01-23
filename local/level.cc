@@ -141,6 +141,7 @@ void Level::update(gf::Time time){
 	}
 
 	checkTakeObject();
+	checkStatue();
 	
 	player.setVelocity({0,0});
 }
@@ -179,6 +180,26 @@ void Level::checkTakeObject(){
 			object.setType(WallType::EMPTY);
 		}	
 	}
+}
+
+void Level::checkStatue(){
+    for(int i=0; i<statues.size(); i++){
+		Wall &statue = statues[i];
+		if(statue.getType()!=WallType::STATUE){continue;}
+		
+		gf::RectF statueRect = gf::RectF::fromPositionSize(statue.getPosition(),WALL_SIZE);
+		gf::RectF playerRect = gf::RectF::fromPositionSize(player.getPosition(),PLAYER_SIZE);
+
+		if(statueRect.intersects(playerRect)){
+			player.allowStatue(true);
+       		if(player.isAStatue()){
+       			player.setPosition(statue.getPosition());
+       		}
+    	}else{
+    		player.allowStatue(false);
+    	}
+	}
+    
 }
 
 void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){

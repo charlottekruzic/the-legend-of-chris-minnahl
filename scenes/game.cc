@@ -5,7 +5,6 @@
 
 Game::Game(gf::Vector2i size,Manager& link) :
 	Scene(size),
-	spaceAction("Press_space"),
 	rightAction("Go right"),
 	leftAction("Go left"),
 	upAction("Go up"),
@@ -18,10 +17,6 @@ Game::Game(gf::Vector2i size,Manager& link) :
 
 	//SET ACTIONS
 	
-	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
-	addAction(spaceAction);
-
-
 	rightAction.addKeycodeKeyControl(gf::Keycode::Right);
 	rightAction.setContinuous();
 	addAction(rightAction);
@@ -64,10 +59,6 @@ void Game::reset(){
 
 
 void Game::doHandleActions(gf::Window & window){
-	if(spaceAction.isActive()){
-		managerLink.replaceScene(managerLink.endScene);
-	}
-	
 	if(rightAction.isActive()){
 		player.addVelocity({1,0});
 	}

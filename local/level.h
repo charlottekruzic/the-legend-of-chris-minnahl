@@ -37,6 +37,7 @@ class Level : public gf::Entity{
 		void update(gf::Time time);
 		gf::RectF findCollider();
 		void checkTakeObject();
+		void checkStatue();
 		bool checkGameOver();
 		bool checkWin();
 };		

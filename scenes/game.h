@@ -12,7 +12,7 @@ struct Manager;
 
 class Game : public gf::Scene {
 	private:
-		gf::Action spaceAction,rightAction,
+		gf::Action rightAction,
 		leftAction,upAction,downAction; 
 		Manager& managerLink;
 		Player player;
