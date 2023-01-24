@@ -18,6 +18,7 @@ add_executable(Commando
   scenes/rules.cc
   scenes/end.cc
   scenes/game.cc
+  scenes/pause.cc
   
   local/player.cc
   local/level.cc

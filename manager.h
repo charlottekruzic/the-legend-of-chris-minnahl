@@ -6,6 +6,7 @@
 #include "scenes/title.h"
 #include "scenes/end.h"
 #include "scenes/game.h"
+#include "scenes/pause.h"
 constexpr gf::Vector2i WINDOW_SIZE = {800, 800};
 
 class Manager : public gf::GameManager{
@@ -13,6 +14,7 @@ class Manager : public gf::GameManager{
 	Manager(std::string window_title);
 	Title titleScene;
 	Rules rulesScene;
+	Pause pauseScene;
 	End endScene;
 	Game gameScene;
 };
