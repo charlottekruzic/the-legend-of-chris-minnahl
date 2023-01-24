@@ -28,7 +28,7 @@ Rules::Rules(gf::Vector2i size,Manager& link)
     m_widgets.addWidget(this->m_returnButton);
 
     //Rules
-    std::ifstream rulesFile ("local/game_rules.txt");
+    std::ifstream rulesFile ("data/TheLegendOfChrisMinnahl/game_rules.txt");
     std::string rules;
 
     if (rulesFile.is_open()) {
