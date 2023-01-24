@@ -197,8 +197,8 @@ void Level::doWhenCollide(Wall & wall){
 	int y = (int) wall.getPosition().y / WALL_SIZE.y;
 	switch(wall.getType()){
 		case WallType::OBJECT:
-			foundObjects.push_back(Wall(wall.getPosition(),WallType::OBJECT));
 			map[y][x].setType(WallType::EMPTY);
+			foundObjects.push_back(Wall(wall.getPosition(),WallType::OBJECT));
 			break;
 		case WallType::STATUE:
 			if(player.isWantToStatue()){
@@ -207,6 +207,7 @@ void Level::doWhenCollide(Wall & wall){
 			}else{
 				player.setStatue(false);
 			}
+			break;
 		case WallType::START:
 			break;
 		case WallType::END:
@@ -230,9 +231,7 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 		}
 	}
 
-	for(size_t i=0; i<objects.size(); i++){
-		objects[i].render(target);
-	}
+
 }
 
 int Level::getNumberTotalObjects(){

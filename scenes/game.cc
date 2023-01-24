@@ -83,12 +83,14 @@ void Game::doHandleActions(gf::Window & window){
 		player.addVelocity({0,1});
 	}
 	if(level.checkGameOver()){
-		if(level.checkWin()){
-			managerLink.endScene.setWin();
-		}else{
-			managerLink.endScene.setLose();
-		}
+		managerLink.endScene.setLose();
 		managerLink.replaceScene(managerLink.endScene);
+
+	}
+	if(level.checkWin()){
+		managerLink.endScene.setWin();
+		managerLink.replaceScene(managerLink.endScene);
+
 	}
 }
 

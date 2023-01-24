@@ -13,7 +13,7 @@ Rules::Rules(gf::Vector2i size,Manager& link)
 
 
     //Title
-	this->m_title = gf::Text("The game's rules", m_font); 
+	this->m_title = gf::Text("Rules", m_font); 
     this->m_title.setColor(gf::Color::White);
 
 
