@@ -8,6 +8,7 @@ Manager::Manager(std::string window_title)
 , gameScene(WINDOW_SIZE,*this)
 , titleScene(WINDOW_SIZE,*this)
 , rulesScene(WINDOW_SIZE,*this)
+, pauseScene(WINDOW_SIZE,*this)
 , endScene(WINDOW_SIZE,*this){
 
 	getWindow().setSize(WINDOW_SIZE);

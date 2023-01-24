@@ -5,6 +5,7 @@
 
 Game::Game(gf::Vector2i size,Manager& link) :
 	Scene(size),
+	echapAction("press echap"),
 	spaceAction("press Space"),
 	rightAction("Go right"),
 	leftAction("Go left"), 
@@ -37,6 +38,9 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	downAction.addKeycodeKeyControl(gf::Keycode::Down);
 	downAction.setContinuous();
 	addAction(downAction);
+
+	echapAction.addKeycodeKeyControl(gf::Keycode::Escape);
+	addAction(echapAction);
 	
 	//INITIALIZE PLAYER
 	player.setPosition({100,100});
@@ -80,6 +84,10 @@ void Game::doHandleActions(gf::Window & window){
 	}
 	if(downAction.isActive()){
 		player.addVelocity({0,1});
+	}
+	if(echapAction.isActive()){
+		managerLink.gameScene.pause();
+		managerLink.pushScene(managerLink.pauseScene);
 	}
 	if(level.checkGameOver()){
 		managerLink.endScene.setLose();
