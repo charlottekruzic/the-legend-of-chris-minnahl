@@ -21,6 +21,7 @@ add_executable(TheLegendOfChrisMinnahl
   scenes/end.cc
   scenes/game.cc
   scenes/pause.cc
+  scenes/map.cc
   
   local/player.cc
   local/level.cc

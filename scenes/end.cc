@@ -6,15 +6,11 @@
 End::End(gf::Vector2i size,Manager& link)
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
-, m_spaceAction("Press_space")
 , m_menuButton("Menu", m_managerLink.resources.getFont("font/arial.ttf"), 20.0)
 , m_restartButton("Restart", m_managerLink.resources.getFont("font/arial.ttf"), 20.0)
 , m_level(m_managerLink.gameScene.getLevel())
 {
     setClearColor(gf::Color::Gray(0.3f));
-
-    m_spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
-	addAction(m_spaceAction);
 
     m_won = false;
 
@@ -43,14 +39,6 @@ void End::setButton(gf::TextButtonWidget &button){
     button.setAlignment(gf::Alignment::Center);
     this->m_widgets.addWidget(button);
 
-}
-
-
-
-void End::doHandleActions(gf::Window & window){
-	if(m_spaceAction.isActive()){
-		m_managerLink.replaceScene(m_managerLink.rulesScene);
-	}
 }
 
 

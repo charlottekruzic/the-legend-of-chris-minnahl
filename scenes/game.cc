@@ -7,6 +7,7 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	Scene(size),
 	echapAction("press echap"),
 	spaceAction("press Space"),
+	mAction("Open map"),
 	rightAction("Go right"),
 	leftAction("Go left"), 
 	upAction("Go up"),
@@ -40,7 +41,12 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	addAction(downAction);
 
 	echapAction.addKeycodeKeyControl(gf::Keycode::Escape);
+	echapAction.setInstantaneous();
 	addAction(echapAction);
+
+	mAction.addKeycodeKeyControl(gf::Keycode::M);
+	mAction.setInstantaneous();
+	addAction(mAction);
 	
 	//INITIALIZE PLAYER
 	player.setPosition({100,100});
@@ -89,6 +95,12 @@ void Game::doHandleActions(gf::Window & window){
 		managerLink.gameScene.pause();
 		managerLink.pushScene(managerLink.pauseScene);
 	}
+
+	if(mAction.isActive()){ //&& player.hasMap()
+		managerLink.gameScene.pause();
+		managerLink.pushScene(managerLink.mapScene);
+	}
+
 	if(level.checkGameOver()){
 		managerLink.endScene.setLose();
 		managerLink.replaceScene(managerLink.endScene);
@@ -120,10 +132,6 @@ void Game::desactivateActions(){
 	leftAction.setContinuous();
 	upAction.setContinuous();
 	downAction.setContinuous();	
-}
-
-void Game::doShow(){
-	level.init();
 }
 
 void Game::doUpdate(gf::Time time){

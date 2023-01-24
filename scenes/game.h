@@ -16,7 +16,7 @@ struct Manager;
 
 class Game : public gf::Scene {
 	private:
-		gf::Action echapAction,spaceAction,rightAction,
+		gf::Action echapAction,spaceAction, mAction,rightAction,
 		leftAction,upAction,downAction; 
 		Manager& managerLink;
 		Player player;
@@ -35,7 +35,6 @@ class Game : public gf::Scene {
 		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 		void init();
 		void reset();
-		virtual void doShow();
 };
 
 #endif
