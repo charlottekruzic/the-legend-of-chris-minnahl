@@ -3,12 +3,16 @@
 
 #include "../manager.h"
 
-Pause::Pause(gf::Vector2i size,Manager& link) :
-	Scene(link.getRenderer().getSize()), managerLink(link), font("data/arial.ttf"), buttonRestart("Restart", font), buttonResume("Resume", font), buttonQuit("Quit", font){
+Pause::Pause(gf::Vector2i size,Manager& link) 
+: Scene(link.getRenderer().getSize())
+, managerLink(link)
+, buttonRestart("Restart", managerLink.resources.getFont("font/arial.ttf"))
+, buttonResume("Resume", managerLink.resources.getFont("font/arial.ttf"))
+, buttonQuit("Quit", managerLink.resources.getFont("font/arial.ttf")){
 	setClearColor(gf::Color::Gray(0.1f));
 	
 	//Title
-	this->titleMenu = gf::Text("Pause", font); 
+	this->titleMenu = gf::Text("Pause", managerLink.resources.getFont("font/arial.ttf")); 
     this->titleMenu.setColor(gf::Color::White);
 
 	
