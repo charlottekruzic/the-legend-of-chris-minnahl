@@ -16,6 +16,7 @@ class Level : public gf::Entity{
 	private:
 		std::vector<std::vector<Wall>> map;
 		std::vector<Wall> objects;
+		std::vector<Wall> foundObjects;
 		std::vector<Wall> statues;
 
 		Wall start;
@@ -24,8 +25,7 @@ class Level : public gf::Entity{
 		Player& player;
 		bool isGameOver;
 		bool isWin;
-		int numberTotalOfObject=0;
-		
+		std::string currentLevelPath;
 		
 	public:
 		Level(Player & player);
@@ -35,13 +35,15 @@ class Level : public gf::Entity{
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
 		void addWall(gf::Vector2i position,WallType type);	
+		Wall & getWall(int x, int y);
 		void update(gf::Time time);
+		//find collider rect
 		gf::RectF findCollider();
-		void checkTakeObject();
-		void checkStatue();
+		//custom code to do once collided with a non empty wall
+		void doWhenCollide(Wall & wall);
 		bool checkGameOver();
 		bool checkWin();
-		int getNumberTotalOfObject();
-
+		int getNumberTotalObjects();
+		int getNumberStolenObjects();
 };		
 #endif

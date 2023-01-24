@@ -16,7 +16,7 @@ struct Manager;
 
 class Game : public gf::Scene {
 	private:
-		gf::Action rightAction,
+		gf::Action spaceAction,rightAction,
 		leftAction,upAction,downAction; 
 		Manager& managerLink;
 		Player player;

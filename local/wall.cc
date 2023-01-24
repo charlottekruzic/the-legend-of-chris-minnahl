@@ -49,7 +49,6 @@ bool Wall::setType(WallType type){
     this->shape.setColor(this->color);
 
     this->type = type;
-
     return true;
 }
 

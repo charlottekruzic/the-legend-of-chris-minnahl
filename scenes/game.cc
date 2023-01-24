@@ -5,6 +5,7 @@
 
 Game::Game(gf::Vector2i size,Manager& link) :
 	Scene(size),
+	spaceAction("press Space"),
 	rightAction("Go right"),
 	leftAction("Go left"), 
 	upAction("Go up"),
@@ -18,7 +19,10 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	setClearColor(gf::Color::Black);
 
 	//SET ACTIONS
-	
+	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);
+	spaceAction.setContinuous();
+	addAction(spaceAction);
+		
 	rightAction.addKeycodeKeyControl(gf::Keycode::Right);
 	rightAction.setContinuous();
 	addAction(rightAction);
@@ -65,6 +69,7 @@ void Game::reset(){
 
 
 void Game::doHandleActions(gf::Window & window){
+	player.setWantToStatue(spaceAction.isActive());
 	if(rightAction.isActive()){
 		player.addVelocity({1,0});
 	}
@@ -121,7 +126,7 @@ void Game::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
 	target.setView(getHudView());
 
 	gf::Coordinates coords(target);
-	std::string text_score = std::to_string(player.NumberOfObjectsStolen()) + "/" + std::to_string(level.getNumberTotalOfObject());
+	std::string text_score = std::to_string(level.getNumberStolenObjects()) + "/" + std::to_string(level.getNumberTotalObjects());
 	m_score.setString(text_score);
 	m_score.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
     m_score.setPosition(coords.getRelativePoint({0.05f, 0.05f}));

@@ -16,8 +16,11 @@ void Level::init(){
 }
 
 void Level::load(std::string path){
+	currentLevelPath = path;
 	objects = {};
+	foundObjects = {};
 	statues = {};
+	
 	start = Wall({0,0},WallType::START);
 	end = Wall({1*WALL_SIZE.x,1*WALL_SIZE.y},WallType::END);
 
@@ -68,7 +71,6 @@ void Level::load(std::string path){
 				break;
 			case 'o':
 				tmp = WallType::OBJECT;
-				this->numberTotalOfObject++;
 				break;
 			case 't':
 				tmp = WallType::STATUE;
@@ -90,11 +92,13 @@ void Level::load(std::string path){
 }
 
 void Level::reset(){
-	player.reset();
-	//reset object
-	for(int i=0; i<objects.size(); i++){
-		objects[i].setType(WallType::OBJECT);
-	}
+	isGameOver = false;
+	isWin = false;
+	player.init();
+	player.setPosition(start.getPosition());
+	player.setVelocity({0,0});
+	//only reset if level loaded at least once
+	if(!currentLevelPath.empty()){load(currentLevelPath);};
 }
 
 
@@ -102,18 +106,36 @@ void Level::addWall(gf::Vector2i pos, WallType type){
 	if(pos.y < 0 || pos.y >= (int)map.size()){return;}
 	if(pos.y < 0 || pos.y >= (int)map.size()){return;}
 	Wall newWall = Wall(pos * WALL_SIZE, type);
-	map[pos.y][pos.x] = newWall;
-	if(type == WallType::OBJECT){
-		objects.push_back(newWall);
+	if(map[pos.y][pos.x].getType() != WallType::EMPTY){
+		std::cout << "Replaced non empty Wall" << std::endl;
+		map[pos.y][pos.x] = newWall;
+		if(map[pos.y][pos.x].getType() == WallType::EMPTY){
+			std::cout << "success" << std::endl;
+		}else{
+			std::cout << "fail" << std::endl;
+
+		}
+
+	}else{
+		map[pos.y][pos.x] = newWall;
 	}
-	if(type == WallType::STATUE){
-		statues.push_back(newWall);
-	}
-	if(type == WallType::START){
-		start = newWall;
-	}
-	if(type == WallType::END){
-		end = newWall;
+	
+	switch(type){
+		case WallType::OBJECT:
+			objects.push_back(newWall);
+			break;
+		case WallType::STATUE:
+			statues.push_back(newWall);
+			break;
+		case WallType::START:
+			start = newWall;
+			break;
+		case WallType::END:
+			end = newWall;
+			break;
+		default:
+			break;	
+		
 	}
 }
 void Level::update(gf::Time time){
@@ -138,68 +160,67 @@ void Level::update(gf::Time time){
 		}else if (player.getVelocity().y <0){
 			player.setPosition({player.getPosition().x,collider.max.y });
 		}
-	}
-
-	checkTakeObject();
-	checkStatue();
-	
+	}	
 	player.setVelocity({0,0});
 }
 
 gf::RectF Level::findCollider(){
 	for(auto& line : map){
-		for (auto& wall : line){
-			if(wall.getType() != WallType::SOLID && wall.getType()!= WallType::END){continue;}
+		for (auto & wall : line){
+			if(wall.getType() == WallType::EMPTY){continue;}
 			gf::RectF wallRect = gf::RectF::fromPositionSize(wall.getPosition(),WALL_SIZE);
 			gf::RectF playerRect = gf::RectF::fromPositionSize(player.getPosition(),PLAYER_SIZE);
 
 			if(wallRect.intersects(playerRect)){
-				if(wall.getType() == WallType::END){
-					isGameOver = true;
-					if(player.NumberOfObjectsStolen()==this->numberTotalOfObject){
-						isWin=true;
-					}
+				//Custom collision code
+				doWhenCollide(wall);
+				if(wall.getType() == WallType::SOLID){
+					return wallRect;
 				}
-				return wallRect;
 			}
 		}
 	}
 	return gf::RectF::empty();
 }
 
-void Level::checkTakeObject(){
-	for(int i=0; i<objects.size(); i++){
-		Wall &object = objects[i];
-		if(object.getType()!=WallType::OBJECT){continue;}
-		
-		gf::RectF objectRect = gf::RectF::fromPositionSize(object.getPosition(),WALL_SIZE);
-		gf::RectF playerRect = gf::RectF::fromPositionSize(player.getPosition(),PLAYER_SIZE);
-
-		if(objectRect.intersects(playerRect)){
-			player.findObject();
-			object.setType(WallType::EMPTY);
-		}	
+Wall & Level::getWall(int x , int y){
+	if(y < 0 || y >= (int)map.size() ||x < 0 || x >= (int)map[y].size() ){
+		throw std::out_of_range("Invalid coordinates to getWall");
 	}
+	return map[y][x];
+
 }
 
-void Level::checkStatue(){
-    for(int i=0; i<statues.size(); i++){
-		Wall &statue = statues[i];
-		if(statue.getType()!=WallType::STATUE){continue;}
+void Level::doWhenCollide(Wall & wall){
+	//get grid position of the collided wall
+	int x = (int) wall.getPosition().x / WALL_SIZE.x;
+	int y = (int) wall.getPosition().y / WALL_SIZE.y;
+	switch(wall.getType()){
+		case WallType::OBJECT:
+			foundObjects.push_back(Wall(wall.getPosition(),WallType::OBJECT));
+			map[y][x].setType(WallType::EMPTY);
+			break;
+		case WallType::STATUE:
+			if(player.isWantToStatue()){
+				player.setStatue(true);
+				player.setPosition(wall.getPosition());
+			}else{
+				player.setStatue(false);
+			}
+		case WallType::START:
+			break;
+		case WallType::END:
+			if(foundObjects.size() == objects.size()){
+				isWin=true;
+			}else{
+				isGameOver = true;
+			}
+			break;
+		default:
+			break;	
 		
-		gf::RectF statueRect = gf::RectF::fromPositionSize(statue.getPosition(),WALL_SIZE);
-		gf::RectF playerRect = gf::RectF::fromPositionSize(player.getPosition(),PLAYER_SIZE);
-
-		if(statueRect.intersects(playerRect)){
-			player.allowStatue(true);
-       		if(player.isAStatue()){
-       			player.setPosition(statue.getPosition());
-       		}
-    	}else{
-    		player.allowStatue(false);
-    	}
+	
 	}
-    
 }
 
 void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
@@ -207,17 +228,19 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 		for(auto& wall : line){
 			wall.render(target);
 		}
-	}	
+	}
 
-	for(int i=0; i<objects.size(); i++){
+	for(size_t i=0; i<objects.size(); i++){
 		objects[i].render(target);
 	}
 }
 
-int Level::getNumberTotalOfObject(){
-    return numberTotalOfObject;
+int Level::getNumberTotalObjects(){
+    return (int) objects.size();
 }
-	
+int Level::getNumberStolenObjects(){
+    return (int) foundObjects.size();
+}	
 bool Level::checkGameOver(){
 	return isGameOver;
 }
