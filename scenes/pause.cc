@@ -95,10 +95,10 @@ void Pause::doProcessEvent(gf::Event& event) {
             this->buttonQuit.setState(gf::WidgetState::Default );
 
             if(this->buttonRestart.contains(mouseEvent.coords)){
+                managerLink.popScene();
                 managerLink.gameScene.reset();
                 managerLink.replaceScene(managerLink.gameScene);
             }else if(this->buttonResume.contains(mouseEvent.coords)){
-               
                 managerLink.popScene();
                 managerLink.gameScene.resume();
             }else if(this->buttonQuit.contains(mouseEvent.coords)){
