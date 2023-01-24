@@ -21,7 +21,6 @@ class Game : public gf::Scene {
 		Manager& managerLink;
 		Player player;
 		Level level;
-		gf::Font m_font;
 		gf::TextWidget m_score;
 		gf::WidgetContainer m_widgets;
 		

@@ -4,12 +4,17 @@
 
 #include "../manager.h"
 
-Title::Title(gf::Vector2i size,Manager& link) :
-	Scene(link.getRenderer().getSize()), managerLink(link), font("data/arial.ttf"), buttonStart("Start", font, 30.0), buttonRules("Rules", font, 30.0), buttonQuit("Quit", font, 30.0){
+Title::Title(gf::Vector2i size,Manager& link) 
+: Scene(link.getRenderer().getSize())
+, managerLink(link)
+, buttonStart("Start", managerLink.resources.getFont("font/arial.ttf"), 30.0)
+, buttonRules("Rules", managerLink.resources.getFont("font/arial.ttf"), 30.0)
+, buttonQuit("Quit", managerLink.resources.getFont("font/arial.ttf"), 30.0)
+{
 	setClearColor(gf::Color::Gray(0.1f));
 	
 	//Title
-	this->titleMenu = gf::Text("The Legend Of Chris Minnahl", font); 
+	this->titleMenu = gf::Text("The Legend Of Chris Minnahl", managerLink.resources.getFont("font/arial.ttf")); 
     this->titleMenu.setColor(gf::Color::White);
 
 	

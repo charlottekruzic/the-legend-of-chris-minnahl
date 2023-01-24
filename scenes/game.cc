@@ -12,8 +12,7 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	downAction("Go down"),
 	managerLink(link),
 	level(player),
-	m_font("data/arial.ttf"),
-	m_score("0/0", m_font, 25){
+	m_score("0/0", managerLink.resources.getFont("font/arial.ttf"), 25){
 
 	
 	setClearColor(gf::Color::Black);
@@ -43,7 +42,7 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	player.setPosition({100,100});
 
 	//INITIALIZE LEVEL
-	level.load("levels/3.txt");
+	level.load("data/TheLegendOfChrisMinnahl/levels/3.txt");
 
 	//SCORE
 	m_score.setDefaultTextColor(gf::Color::White);

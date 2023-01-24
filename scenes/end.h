@@ -17,7 +17,6 @@ class End : public gf::Scene {
 	private:
 		Manager& m_managerLink;
         gf::Action m_spaceAction;
-        gf::Font m_font;
         bool m_won;
         gf::Text m_text_win;
         gf::Text m_text_lose;

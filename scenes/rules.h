@@ -24,7 +24,6 @@ class Rules : public gf::Scene {
 		Manager& m_managerLink;
 		gf::Text m_title; 
     	gf::Text m_rules;
-		gf::Font m_font;
 		gf::TextButtonWidget m_returnButton;
 		gf::WidgetContainer m_widgets;
 

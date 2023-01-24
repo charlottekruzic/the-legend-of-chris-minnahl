@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(MANAGER_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/Commando")               
+set(MANAGER_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/TheLegendOfChrisMinnahl")               
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
-project(Commando
+project(TheLegendOfChrisMinnahl
   VERSION 0.1.0
 )
+
+include(GNUInstallDirs)
  
 find_package(gf REQUIRED)
 find_package(Box2D REQUIRED)
 
-add_executable(Commando
+add_executable(TheLegendOfChrisMinnahl
   main.cc
   manager.cc
 
@@ -23,33 +25,28 @@ add_executable(Commando
   local/level.cc
   local/wall.cc
   local/guard.cc
-  
-  gui/panel.cc
-  gui/label.cc
-  gui/button.cc
   # and the rest of your sources
 )
 
-target_include_directories(Commando
+target_include_directories(TheLegendOfChrisMinnahl
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-target_link_libraries(Commando
+target_link_libraries(TheLegendOfChrisMinnahl
   PRIVATE
     gf::graphics
-    gf::net
     Box2D
 )
 
 install(
-  TARGETS Commando
+  TARGETS TheLegendOfChrisMinnahl
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
 )
 
 install(
-  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data"
-  DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}"
+  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/TheLegendOfChrisMinnahl"
+  DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/games"
 )
 

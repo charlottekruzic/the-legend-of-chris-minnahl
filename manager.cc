@@ -12,7 +12,7 @@ Manager::Manager(std::string window_title)
 
 	getWindow().setSize(WINDOW_SIZE);
 	pushScene(titleScene);
-	//resources.addSearchDir(MANAGER_DATA_DIR);
+	resources.addSearchDir(MANAGER_DATA_DIR);
 
 }
 
