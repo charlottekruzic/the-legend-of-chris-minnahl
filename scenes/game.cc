@@ -78,38 +78,40 @@ void Game::reset(){
 
 
 void Game::doHandleActions(gf::Window & window){
-	player.setWantToStatue(spaceAction.isActive());
-	if(rightAction.isActive()){
-		player.addVelocity({1,0});
-	}
-	if(leftAction.isActive()){
-		player.addVelocity({-1,0});
-	}
-	if(upAction.isActive()){
-		player.addVelocity({0,-1});
-	}
-	if(downAction.isActive()){
-		player.addVelocity({0,1});
-	}
-	if(echapAction.isActive()){
-		managerLink.gameScene.pause();
-		managerLink.pushScene(managerLink.pauseScene);
-	}
+	if(!isPaused()){
+		player.setWantToStatue(spaceAction.isActive());
+		if(rightAction.isActive()){
+			player.addVelocity({1,0});
+		}
+		if(leftAction.isActive()){
+			player.addVelocity({-1,0});
+		}
+		if(upAction.isActive()){
+			player.addVelocity({0,-1});
+		}
+		if(downAction.isActive()){
+			player.addVelocity({0,1});
+		}
+		if(echapAction.isActive()){
+			managerLink.gameScene.pause();
+			managerLink.pushScene(managerLink.pauseScene);
+		}
 
-	if(mAction.isActive()){ //&& player.hasMap()
-		managerLink.gameScene.pause();
-		managerLink.pushScene(managerLink.mapScene);
-	}
+		if(mAction.isActive()){ //&& player.hasMap()
+			managerLink.gameScene.pause();
+			managerLink.pushScene(managerLink.mapScene);
+		}
 
-	if(level.checkGameOver()){
-		managerLink.endScene.setLose();
-		managerLink.replaceScene(managerLink.endScene);
+		if(level.checkGameOver()){
+			managerLink.endScene.setLose();
+			managerLink.replaceScene(managerLink.endScene);
 
-	}
-	if(level.checkWin()){
-		managerLink.endScene.setWin();
-		managerLink.replaceScene(managerLink.endScene);
+		}
+		if(level.checkWin()){
+			managerLink.endScene.setWin();
+			managerLink.replaceScene(managerLink.endScene);
 
+		}
 	}
 }
 
