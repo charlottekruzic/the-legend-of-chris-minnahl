@@ -3,6 +3,7 @@
 
 #include "../manager.h"
 
+<<<<<<< HEAD
 Game::Game(gf::Vector2i size,Manager& link) 
 : Scene(size)
 , echapAction("press echap")
@@ -18,8 +19,21 @@ Game::Game(gf::Vector2i size,Manager& link)
 , m_openMap("Open map", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_buttonMap("M", managerLink.resources.getFont("font/arial.ttf"), 25)
 {
+=======
+Game::Game(gf::Vector2i size,Manager& link) :
+	Scene(size),
+	spaceAction("press Space"),
+	rightAction("Go right"),
+	leftAction("Go left"), 
+	upAction("Go up"),
+	downAction("Go down"),
+	managerLink(link),
+	level(player,map),
+	m_font("data/arial.ttf"),
+	m_score("0/0", m_font, 25){
+>>>>>>> 93e3dcc (re-structured level and decentralized map)
 
-	
+	level_list = {"1.txt","2.txt","3.txt"};
 	setClearColor(gf::Color::Black);
 
 	//SET ACTIONS
@@ -55,7 +69,11 @@ Game::Game(gf::Vector2i size,Manager& link)
 	player.setPosition({100,100});
 
 	//INITIALIZE LEVEL
+<<<<<<< HEAD
 	level.load("data/TheLegendOfChrisMinnahl/levels/3.txt");
+=======
+	
+>>>>>>> 93e3dcc (re-structured level and decentralized map)
 
 	//SCORE
 	m_score.setDefaultTextColor(gf::Color::White);
@@ -87,7 +105,8 @@ Game::Game(gf::Vector2i size,Manager& link)
 	
 }
 void Game::init(){
-	level.init();
+	map.load("levels/3.txt");
+	level.reset();
 }
 
 void Game::reset(){
@@ -96,42 +115,44 @@ void Game::reset(){
 }
 
 
+
 void Game::doHandleActions(gf::Window & window){
-	if(!isPaused() && !isHidden()){
-		player.setWantToStatue(spaceAction.isActive());
-		if(rightAction.isActive()){
-			player.addVelocity({1,0});
-		}
-		if(leftAction.isActive()){
-			player.addVelocity({-1,0});
-		}
-		if(upAction.isActive()){
-			player.addVelocity({0,-1});
-		}
-		if(downAction.isActive()){
-			player.addVelocity({0,1});
-		}
-		if(echapAction.isActive()){
-			pause();
-			managerLink.pushScene(managerLink.pauseScene);
-		}
-
-		if(mAction.isActive()){ //&& player.hasMap()
-			desactivateActions();
-			managerLink.replaceScene(managerLink.mapScene);
-		}
-
-		if(level.checkGameOver()){
-			managerLink.endScene.setLose();
-			managerLink.replaceScene(managerLink.endScene);
-
-		}
-		if(level.checkWin()){
-			managerLink.endScene.setWin();
-			managerLink.replaceScene(managerLink.endScene);
-
-		}
+<<<<<<< HEAD
+	if(isPaused() || isHidden()){return;}
+	player.setWantToStatue(spaceAction.isActive());
+	if(rightAction.isActive()){
+		player.addVelocity({1,0});
 	}
+	if(leftAction.isActive()){
+		player.addVelocity({-1,0});
+	}
+	if(upAction.isActive()){
+		player.addVelocity({0,-1});
+	}
+	if(downAction.isActive()){
+		player.addVelocity({0,1});
+	}
+	if(echapAction.isActive()){
+		pause();
+		managerLink.pushScene(managerLink.pauseScene);
+	}
+
+	if(mAction.isActive()){ //&& player.hasMap()
+		desactivateActions();
+		managerLink.replaceScene(managerLink.mapScene);
+	}
+
+	if(level.checkGameOver()){
+		managerLink.endScene.setLose();
+		managerLink.replaceScene(managerLink.endScene);
+
+	}
+	if(level.checkWin()){
+		managerLink.endScene.setWin();
+		managerLink.replaceScene(managerLink.endScene);
+
+	}
+	
 }
 
 Level& Game::getLevel(){
@@ -165,7 +186,9 @@ void Game::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
 
 	//Score
 	gf::Coordinates coords(target);
-	std::string text_score = std::to_string(level.getNumberStolenObjects()) + "/" + std::to_string(level.getNumberTotalObjects());
+	int total = (int) map.getObjects().size();
+	int found = (int) level.getFoundObjects().size();
+	std::string text_score = std::to_string(found) + "/" + std::to_string(total);
 	m_score.setString(text_score);
 	m_score.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
     m_score.setPosition(coords.getRelativePoint({0.05f, 0.05f}));

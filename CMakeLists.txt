@@ -27,6 +27,9 @@ add_executable(TheLegendOfChrisMinnahl
   local/level.cc
   local/wall.cc
   local/guard.cc
+  local/map.cc
+
+>>>>>>> 93e3dcc (re-structured level and decentralized map)
   # and the rest of your sources
 )
 

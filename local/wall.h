@@ -31,11 +31,13 @@ class Wall : public gf::Entity{
 
         gf::RectI getRect();
 
-        gf::Vector2f getPosition();
+        gf::Vector2f getPosition()const;
         
 		WallType getType()const;
 
         void render(gf::RenderTarget& target);
+
+        bool equals(const Wall & other)const;
 
         /** 
          * @brief checks if the wall has collisions

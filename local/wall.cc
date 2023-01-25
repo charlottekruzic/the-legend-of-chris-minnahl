@@ -17,6 +17,10 @@ WallType Wall::getType()const{
 	return this->type;
 }
 
+bool Wall::equals(const Wall & other)const{
+	return (other.getType() == getType()) && (other.getPosition() == getPosition());
+}
+
 bool Wall::setType(WallType type){
     switch(type){
         case WallType::EMPTY:
@@ -33,7 +37,7 @@ bool Wall::setType(WallType type){
         	break;
         case WallType::END:
         	this->solid = false;
-        	this->color = gf::Color::White;
+        	this->color = gf::Color::Magenta;
         	break;
         case WallType::OBJECT:
         	this->solid = false;
@@ -56,7 +60,7 @@ gf::RectI Wall::getRect(){
     return this->rect;
 }
 
-gf::Vector2f Wall::getPosition(){
+gf::Vector2f Wall::getPosition()const{
     return this->m_position;
 }
 
