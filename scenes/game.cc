@@ -83,7 +83,7 @@ Game::Game(gf::Vector2i size,Manager& link)
 	
 }
 void Game::init(){
-	map.load("data/levels/3.txt");//CA FOIRE ICI
+	map.load("data/TheLegendOfChrisMinnahl/levels/3.txt");//CA FOIRE ICI
 	level.reset();
 }
 
