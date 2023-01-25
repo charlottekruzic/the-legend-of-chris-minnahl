@@ -5,7 +5,7 @@
 #include <gf/Time.h>
 #include <gf/Action.h>
 #include <gf/Views.h>
-#include <gf/Widget.h>
+#include <gf/Widgets.h>
 #include <gf/WidgetContainer.h>
 #include <gf/Coordinates.h>
 #include <gf/Vector.h>
@@ -22,6 +22,8 @@ class Game : public gf::Scene {
 		Player player;
 		Level level;
 		gf::TextWidget m_score;
+		gf::TextWidget m_openMap;
+		gf::TextButtonWidget m_buttonMap;
 		gf::WidgetContainer m_widgets;
 		
 
