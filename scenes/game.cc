@@ -117,9 +117,8 @@ void Game::doHandleActions(gf::Window & window){
 		}
 
 		if(mAction.isActive()){ //&& player.hasMap()
-			//hide M and text
-			pause();
-			managerLink.pushScene(managerLink.mapScene);
+			desactivateActions();
+			managerLink.replaceScene(managerLink.mapScene);
 		}
 
 		if(level.checkGameOver()){

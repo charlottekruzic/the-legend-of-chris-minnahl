@@ -36,8 +36,7 @@ Map::Map(gf::Vector2i size,Manager& link)
 
 void Map::doHandleActions(gf::Window & window){
 	if(m_mAction.isActive()){
-        m_managerLink.popScene();
-        m_managerLink.replaceAllScenes(m_managerLink.gameScene);
+        m_managerLink.replaceScene(m_managerLink.gameScene);
 	}
 }
 
