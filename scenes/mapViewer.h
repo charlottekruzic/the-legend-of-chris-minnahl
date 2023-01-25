@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef MAP_VIEWER_H
+#define MAP_VIEWER_H
 
 #include <gf/Scene.h>
 #include <gf/Action.h>
@@ -9,7 +9,7 @@
 
 struct Manager;
 
-class Map : public gf::Scene {
+class MapViewer : public gf::Scene {
 	private:
 		Manager& m_managerLink;
         gf::Action m_mAction;
@@ -19,7 +19,7 @@ class Map : public gf::Scene {
 
 	
 	public:
-		Map(gf::Vector2i size,Manager& link);
+		MapViewer(gf::Vector2i size,Manager& link);
         void doHandleActions(gf::Window & window) override;
 		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 	

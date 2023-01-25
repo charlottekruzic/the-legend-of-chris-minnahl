@@ -40,6 +40,6 @@ class Game : public gf::Scene {
 		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 		void init();
 		void reset();
-}
+};
 
 #endif

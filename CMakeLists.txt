@@ -21,15 +21,13 @@ add_executable(TheLegendOfChrisMinnahl
   scenes/end.cc
   scenes/game.cc
   scenes/pause.cc
-  scenes/map.cc
+  scenes/mapViewer.cc
   
   local/player.cc
   local/level.cc
   local/wall.cc
-  local/guard.cc
+  local/guard.cc	
   local/map.cc
-
->>>>>>> 93e3dcc (re-structured level and decentralized map)
   # and the rest of your sources
 )
 

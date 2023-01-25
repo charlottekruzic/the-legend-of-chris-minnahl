@@ -7,7 +7,7 @@
 #include "scenes/end.h"
 #include "scenes/game.h"
 #include "scenes/pause.h"
-#include "scenes/map.h"
+#include "scenes/mapViewer.h"
 constexpr gf::Vector2i WINDOW_SIZE = {800, 800};
 
 class Manager : public gf::GameManager{
@@ -17,7 +17,7 @@ class Manager : public gf::GameManager{
 	Rules rulesScene;
 	Game gameScene;
 	Pause pauseScene;
-	Map mapScene;
+	MapViewer mapScene;
 	End endScene;
 };
 

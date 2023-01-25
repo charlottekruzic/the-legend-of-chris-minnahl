@@ -1,8 +1,8 @@
-#include "map.h"
+#include "mapViewer.h"
 #include "../manager.h"
 
 
-Map::Map(gf::Vector2i size,Manager& link)
+MapViewer::MapViewer(gf::Vector2i size,Manager& link)
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
 , m_mAction("Close map")
@@ -34,13 +34,13 @@ Map::Map(gf::Vector2i size,Manager& link)
 
 }
 
-void Map::doHandleActions(gf::Window & window){
+void MapViewer::doHandleActions(gf::Window & window){
 	if(m_mAction.isActive()){
         m_managerLink.replaceScene(m_managerLink.gameScene);
 	}
 }
 
-void Map::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
+void MapViewer::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
 	renderWorldEntities(target,states);
 	target.setView(getHudView());
 

@@ -3,7 +3,6 @@
 
 #include "../manager.h"
 
-<<<<<<< HEAD
 Game::Game(gf::Vector2i size,Manager& link) 
 : Scene(size)
 , echapAction("press echap")
@@ -14,25 +13,11 @@ Game::Game(gf::Vector2i size,Manager& link)
 , upAction("Go up")
 , downAction("Go down")
 , managerLink(link)
-, level(player)
+, level(player,map)
 , m_score("0/0", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_openMap("Open map", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_buttonMap("M", managerLink.resources.getFont("font/arial.ttf"), 25)
 {
-=======
-Game::Game(gf::Vector2i size,Manager& link) :
-	Scene(size),
-	spaceAction("press Space"),
-	rightAction("Go right"),
-	leftAction("Go left"), 
-	upAction("Go up"),
-	downAction("Go down"),
-	managerLink(link),
-	level(player,map),
-	m_font("data/arial.ttf"),
-	m_score("0/0", m_font, 25){
->>>>>>> 93e3dcc (re-structured level and decentralized map)
-
 	level_list = {"1.txt","2.txt","3.txt"};
 	setClearColor(gf::Color::Black);
 
@@ -68,13 +53,6 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	//INITIALIZE PLAYER
 	player.setPosition({100,100});
 
-	//INITIALIZE LEVEL
-<<<<<<< HEAD
-	level.load("data/TheLegendOfChrisMinnahl/levels/3.txt");
-=======
-	
->>>>>>> 93e3dcc (re-structured level and decentralized map)
-
 	//SCORE
 	m_score.setDefaultTextColor(gf::Color::White);
     m_score.setSelectedTextColor(gf::Color::White);
@@ -105,7 +83,7 @@ Game::Game(gf::Vector2i size,Manager& link) :
 	
 }
 void Game::init(){
-	map.load("levels/3.txt");
+	map.load("data/levels/3.txt");//CA FOIRE ICI
 	level.reset();
 }
 
@@ -114,10 +92,7 @@ void Game::reset(){
 	level.reset();
 }
 
-
-
 void Game::doHandleActions(gf::Window & window){
-<<<<<<< HEAD
 	if(isPaused() || isHidden()){return;}
 	player.setWantToStatue(spaceAction.isActive());
 	if(rightAction.isActive()){
