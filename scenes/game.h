@@ -12,6 +12,7 @@
 #include <gf/Color.h>
 #include "../local/player.h"
 #include "../local/level.h"
+#include "../local/map.h"
 struct Manager;
 
 class Game : public gf::Scene {
@@ -19,7 +20,9 @@ class Game : public gf::Scene {
 		gf::Action echapAction,spaceAction, mAction,rightAction,
 		leftAction,upAction,downAction; 
 		Manager& managerLink;
+		Map map;
 		Player player;
+		std::vector<std::string> level_list;
 		Level level;
 		gf::TextWidget m_score;
 		gf::TextWidget m_openMap;

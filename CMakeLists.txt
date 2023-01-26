@@ -21,12 +21,13 @@ add_executable(TheLegendOfChrisMinnahl
   scenes/end.cc
   scenes/game.cc
   scenes/pause.cc
-  scenes/map.cc
+  scenes/mapViewer.cc
   
   local/player.cc
   local/level.cc
   local/wall.cc
-  local/guard.cc
+  local/guard.cc	
+  local/map.cc
   # and the rest of your sources
 )
 

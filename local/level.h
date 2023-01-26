@@ -7,35 +7,27 @@
 #include <gf/Text.h>
 #include <gf/Font.h>
 #include <gf/Widgets.h>
+#include <algorithm>
 #include <string.h>
+#include <iostream>
 #include "wall.h"
 #include "player.h"
 #include "guard.h"
-
+#include "map.h"
 class Level : public gf::Entity{
 	private:
-		std::vector<std::vector<Wall>> map;
-		std::vector<Wall> objects;
-		std::vector<Wall> foundObjects;
-		std::vector<Wall> statues;
-
-		Wall start;
-		Wall end;
-		
+		Map& map;
 		Player& player;
 		bool isGameOver;
 		bool isWin;
-		std::string currentLevelPath;
-		
+		std::vector<Wall> foundObjects;
+		std::vector<Wall> notFoundObjects;
 	public:
-		Level(Player & player);
-		void init();
-		void load(std::string path);
+		Level(Player & player, Map & map);
 		void reset();
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
-		void addWall(gf::Vector2i position,WallType type);	
-		Wall & getWall(int x, int y);
+
 		void update(gf::Time time);
 		//find collider rect
 		gf::RectF findCollider();
@@ -43,7 +35,9 @@ class Level : public gf::Entity{
 		void doWhenCollide(Wall & wall);
 		bool checkGameOver();
 		bool checkWin();
-		int getNumberTotalObjects();
-		int getNumberStolenObjects();
+		std::vector<Wall> & getFoundObjects();
+		std::vector<Wall> & getNotFoundObjects();
+
+		gf::RectF testCollision(Wall & wall);
 };		
 #endif
