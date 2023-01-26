@@ -7,11 +7,16 @@
 #include <gf/Widgets.h>
 #include <gf/WidgetContainer.h>
 
+#include "../local/minimap.h"
+#include "../local/player.h"
+#include "../local/map.h"
+
 struct Manager;
 
 class MapViewer : public gf::Scene {
 	private:
 		Manager& m_managerLink;
+		Minimap m_miniMap;
         gf::Action m_mAction;
 		gf::TextWidget m_closeMap;
 		gf::TextButtonWidget m_buttonGame;

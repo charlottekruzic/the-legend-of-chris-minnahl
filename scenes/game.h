@@ -34,6 +34,8 @@ class Game : public gf::Scene {
 	public:
 		Game(gf::Vector2i size, Manager& managerLink);
 		Level& getLevel();
+		Map& getMap();
+		Player& getPlayer();
 		void desactivateActions();
 		void doHandleActions(gf::Window & window);
 		void doUpdate(gf::Time time);
