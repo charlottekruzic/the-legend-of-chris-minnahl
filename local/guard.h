@@ -20,7 +20,7 @@ struct RouteAction{
 	
 };
 
-struct RouteAction * generateRouteAction(actionType type,float time,gf::Vector2i position);
+struct RouteAction * newRoute(actionType type,float time,gf::Vector2i position);
 
 class Guard : public gf::Entity{
 
@@ -30,10 +30,10 @@ class Guard : public gf::Entity{
     	
         gf::Vector2f position, last_position, spawn_position;
         double speed;
-        gf::RectI rect;
+        gf::RectF rect;
         gf::RectangleShape shape;
         gf::Color4f color;
-        gf::RectI detectorRect;
+        gf::RectF detectorRect;
         gf::RectangleShape detectorShape;
         struct RouteAction * currentAction;
     public:
@@ -41,8 +41,8 @@ class Guard : public gf::Entity{
         void reset();
 		void nextAction();
         void setRoute(std::vector<struct RouteAction *> route);
-        virtual void update(float dt);
+        virtual void update(gf::Time time);
         virtual void render(gf::RenderTarget& target);
-        gf::RectI * getRect();
+        gf::RectF * getRect();
 };
 #endif

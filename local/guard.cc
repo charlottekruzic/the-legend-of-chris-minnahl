@@ -8,7 +8,7 @@ bool is_between(float number, float lower,float upper){
 }
 
 
-struct RouteAction* generateRouteAction(actionType type,float time,gf::Vector2i position){
+struct RouteAction* newRoute(actionType type,float time,gf::Vector2i position){
 	struct RouteAction* newRoute = new struct RouteAction;
 	newRoute->type = type;
 	newRoute->time = time;
@@ -20,7 +20,7 @@ Guard::Guard(gf::Vector2i grid_pos):shape(GUARD_SIZE),detectorShape(DETECTOR_SIZ
     speed = 200;
     position = grid_pos * WALL_SIZE;
     spawn_position = position;
-    rect = gf::RectI().fromPositionSize(position,GUARD_SIZE);  
+    rect = gf::RectF().fromPositionSize(position,GUARD_SIZE);  
     color = gf::Color::Red;
    	shape.setColor(color);
     shape.setAnchor(gf::Anchor::TopLeft);
@@ -34,7 +34,7 @@ Guard::Guard(gf::Vector2i grid_pos):shape(GUARD_SIZE),detectorShape(DETECTOR_SIZ
 void Guard::reset(){
 	position = spawn_position;
 
-    rect = gf::RectI().fromPositionSize(position,GUARD_SIZE);  
+    rect = gf::RectF().fromPositionSize(position,GUARD_SIZE);  
     shape.setPosition(position);
     detectorShape.setColor(gf::Color4f({0.7,0.7,0,0.5}));
    	detectorShape.setPosition(position);
@@ -51,7 +51,7 @@ void Guard::setRoute(std::vector<RouteAction *> new_route){
 	
 }
 
-gf::RectI * Guard::getRect(){
+gf::RectF * Guard::getRect(){
 	return &detectorRect;
 }
 
@@ -59,7 +59,7 @@ gf::RectI * Guard::getRect(){
 void Guard::nextAction(){
 
 	route_index ++;
-   	if(route_index >= route.size()){
+   	if(route_index >= (int)route.size()){
    		route_index = 0;
    	}
 
@@ -89,7 +89,8 @@ void Guard::nextAction(){
 }
 
 
-void Guard::update(float dt){
+void Guard::update(gf::Time time){
+	float dt = time.asSeconds();
 	gf::Vector2f target;
 	float time_proportion,deltaX,deltaY,upper,lower;
     switch(currentAction->type){
@@ -101,8 +102,8 @@ void Guard::update(float dt){
     		deltaY = (currentAction->grid_position.y * WALL_SIZE.y) - last_position.y;
 
 			target = {
-				round(last_position.x + deltaX * time_proportion ),
-				round(last_position.y + deltaY * time_proportion ),
+				(float)round(last_position.x + deltaX * time_proportion ),
+				(float)round(last_position.y + deltaY * time_proportion),
 
 			};
 			//std::cout << "target : " << target[0] << ", " << target[1] << std::endl;

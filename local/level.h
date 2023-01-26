@@ -22,17 +22,19 @@ class Level : public gf::Entity{
 		bool isWin;
 		std::vector<Wall> foundObjects;
 		std::vector<Wall> notFoundObjects;
+		std::vector<Guard> guards;
 	public:
 		Level(Player & player, Map & map);
 		void reset();
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
-
+		void addGuard(gf::Vector2i pos,std::vector<struct RouteAction *> route);
 		void update(gf::Time time);
 		//find collider rect
 		gf::RectF findCollider();
 		//custom code to do once collided with a non empty wall
 		void doWhenCollide(Wall & wall);
+		bool checkGuards();
 		bool checkGameOver();
 		bool checkWin();
 		std::vector<Wall> & getFoundObjects();
