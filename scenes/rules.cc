@@ -1,4 +1,5 @@
 #include "rules.h"
+#include "pause.h"
 #include "../manager.h"
 
 
@@ -88,7 +89,13 @@ void Rules::doProcessEvent(gf::Event& event) {
             this->m_returnButton.setState(gf::WidgetState::Default );
 
             if(this->m_returnButton.contains(mouseEvent.coords)){
-                m_managerLink.replaceScene(m_managerLink.titleScene);
+                if(m_managerLink.pauseScene.isPause()==true){
+                    m_managerLink.popScene();
+                    m_managerLink.pushScene(m_managerLink.gameScene);
+                    m_managerLink.pushScene(m_managerLink.pauseScene);
+                }else{
+                    m_managerLink.replaceScene(m_managerLink.titleScene);
+                }
             }
             break;
         default:

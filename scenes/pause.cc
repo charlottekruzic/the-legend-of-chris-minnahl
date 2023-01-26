@@ -8,9 +8,12 @@ Pause::Pause(gf::Vector2i size,Manager& link)
 , managerLink(link)
 , buttonRestart("Restart", managerLink.resources.getFont("font/arial.ttf"))
 , buttonResume("Resume", managerLink.resources.getFont("font/arial.ttf"))
-, buttonQuit("Quit", managerLink.resources.getFont("font/arial.ttf")){
-	setClearColor(gf::Color::Gray(0.1f));
-	
+, buttonRules("Rules", managerLink.resources.getFont("font/arial.ttf"))
+, buttonMenu("Menu", managerLink.resources.getFont("font/arial.ttf")){
+	setClearColor(gf::Color::Black);
+
+    this->pause=false;
+
 	//Title
 	this->titleMenu = gf::Text("Pause", managerLink.resources.getFont("font/arial.ttf")); 
     this->titleMenu.setColor(gf::Color::White);
@@ -19,7 +22,8 @@ Pause::Pause(gf::Vector2i size,Manager& link)
     //Button
 	setButton(this->buttonRestart);
     setButton(this->buttonResume);
-    setButton(this->buttonQuit);
+    setButton(this->buttonRules);
+    setButton(this->buttonMenu);
 	
 	
 }
@@ -35,6 +39,14 @@ void Pause::setButton(gf::TextButtonWidget &button){
     button.setAlignment(gf::Alignment::Center);
     this->buttons.addWidget(button);
 
+}
+
+bool Pause::isPause(){
+	return pause;
+}
+
+void Pause::setPause(bool var){
+    pause = var;
 }
 
 void Pause::renderTitle(gf::RenderTarget &target){
@@ -66,15 +78,22 @@ void Pause::renderButtons(gf::RenderTarget &target){
     this->buttonResume.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
     this->buttonResume.setPadding(paddingSize);
 
-   this->buttonQuit.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
-   this->buttonQuit.setPosition(coords.getRelativePoint({0.5f, 0.4f + (characterSize + spaceBetweenButton) * 2}));
-   this->buttonQuit.setAnchor(gf::Anchor::TopCenter);
-   this->buttonQuit.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
-   this->buttonQuit.setPadding(paddingSize);
+    this->buttonRules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->buttonRules.setPosition(coords.getRelativePoint({0.5f, 0.4f + (characterSize + spaceBetweenButton) * 2}));
+    this->buttonRules.setAnchor(gf::Anchor::TopCenter);
+    this->buttonRules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
+    this->buttonRules.setPadding(paddingSize);
+
+    this->buttonMenu.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->buttonMenu.setPosition(coords.getRelativePoint({0.5f, 0.4f + (characterSize + spaceBetweenButton) * 3}));
+    this->buttonMenu.setAnchor(gf::Anchor::TopCenter);
+    this->buttonMenu.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.2f, 0.1f) - 0.05f).x);
+    this->buttonMenu.setPadding(paddingSize);
 
 	target.draw(this->buttonRestart);
     target.draw(this->buttonResume);
-    target.draw(this->buttonQuit);
+    target.draw(this->buttonRules);
+    target.draw(this->buttonMenu);
 }
 
 void Pause::doProcessEvent(gf::Event& event) {
@@ -85,24 +104,32 @@ void Pause::doProcessEvent(gf::Event& event) {
                 this->buttonRestart.setSelected();
             }else if(this->buttonResume.contains(mouseEvent.coords)){
                 this->buttonResume.setSelected();
-            }else if(this->buttonQuit.contains(mouseEvent.coords)){
-                this->buttonQuit.setSelected();
+            }else if(this->buttonRules.contains(mouseEvent.coords)){
+                this->buttonRules.setSelected();
+            }else if(this->buttonMenu.contains(mouseEvent.coords)){
+                this->buttonMenu.setSelected();
             }
             break;
         case gf::EventType::MouseButtonReleased:
             this->buttonRestart.setState(gf::WidgetState::Default );
             this->buttonResume.setState(gf::WidgetState::Default );
-            this->buttonQuit.setState(gf::WidgetState::Default );
+            this->buttonRules.setState(gf::WidgetState::Default );
+            this->buttonMenu.setState(gf::WidgetState::Default );
+
 
             if(this->buttonRestart.contains(mouseEvent.coords)){
-                managerLink.popScene();
                 managerLink.gameScene.reset();
-                managerLink.replaceScene(managerLink.gameScene);
+                managerLink.replaceAllScenes(managerLink.gameScene);
             }else if(this->buttonResume.contains(mouseEvent.coords)){
                 managerLink.popScene();
                 managerLink.gameScene.resume();
-            }else if(this->buttonQuit.contains(mouseEvent.coords)){
-                managerLink.getWindow().close();
+            }else if(this->buttonRules.contains(mouseEvent.coords)){
+                setPause(true);
+                managerLink.replaceAllScenes(managerLink.rulesScene);
+            }else if(this->buttonMenu.contains(mouseEvent.coords)){
+              
+                managerLink.gameScene.reset();
+                managerLink.replaceAllScenes(managerLink.titleScene);
             }
             break;
         default:

@@ -22,12 +22,16 @@ class Pause : public gf::Scene {
 	gf::WidgetContainer buttons;
 	gf::TextButtonWidget buttonRestart;
     gf::TextButtonWidget buttonResume; 
-    gf::TextButtonWidget buttonQuit;
+	gf::TextButtonWidget buttonRules;
+    gf::TextButtonWidget buttonMenu;
+	bool pause;
 	void setButton(gf::TextButtonWidget &button);
 
 	
 	public:
 		Pause(gf::Vector2i size,Manager& link);
+		bool isPause();
+		void setPause(bool var);
 		void renderTitle(gf::RenderTarget &target);
 		void renderButtons(gf::RenderTarget &target);
 		void doProcessEvent(gf::Event& event) override;

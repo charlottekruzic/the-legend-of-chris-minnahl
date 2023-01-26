@@ -96,6 +96,7 @@ void Title::doProcessEvent(gf::Event& event) {
             if(this->buttonStart.contains(mouseEvent.coords)){
                 managerLink.replaceScene(managerLink.gameScene);
             }else if(this->buttonRules.contains(mouseEvent.coords)){
+                managerLink.pauseScene.setPause(false);
                 managerLink.replaceScene(managerLink.rulesScene);
             }else if(this->buttonQuit.contains(mouseEvent.coords)){
                 managerLink.getWindow().close();
