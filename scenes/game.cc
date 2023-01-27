@@ -125,7 +125,8 @@ int Game::getNumTotalLevels(){
 
 void Game::doHandleActions(gf::Window & window){
 	if(isPaused() || isHidden()){return;}
-	player.setWantToStatue(spaceAction.isActive());
+		player.setWantToStatue(spaceAction.isActive());
+		
 	if(rightAction.isActive()){
 		player.addVelocity({1,0});
 		player.setdirectionPlayer(1);

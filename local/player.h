@@ -20,8 +20,14 @@ class Player: public gf::Entity{
 	gf::Vector2f velocity;
 	gf::ResourceManager& resources;
 	gf::Sprite sprite;
+	gf::Texture& textureRight;
+	gf::Texture& textureLeft;
+	gf::Texture& textureUp;
+	gf::Texture& textureDown;
+	gf::Texture& textureStatue;
+
 	float speed = 200.0;
-	bool isStatue, wantToStatue;
+	bool isStatue, wantToStatue,statueSprite;
 	int dirPlayer;
 	public :
 		Player(gf::ResourceManager& resources);
@@ -35,9 +41,9 @@ class Player: public gf::Entity{
 		
 		void setWantToStatue(bool val);
 		bool isWantToStatue();
-		
+		void setStatueSprite(bool var);
 		void setStatue(bool val);
-		int setdirectionPlayer(int var);
+		void setdirectionPlayer(int var);
 		//check if player is currently a statue
         bool isAStatue();
 		void applyXMotion(gf::Time time);
