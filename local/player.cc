@@ -1,6 +1,7 @@
 #include "player.h"
 #include <iostream>
-Player::Player(){
+Player::Player(gf::ResourceManager& resources)
+:resources(resources){
 	setPosition({0,0});
 
 
@@ -56,6 +57,12 @@ void Player::applyYMotion(gf::Time time){
 }
 void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	gf::RectangleShape shape(PLAYER_SIZE);
+	gf::Texture& texture(resources.getTexture(resources.getAbsolutePath("sprite/player/tile000.png")));
 	shape.setPosition(position);
 	target.draw(shape);
+	sprite.setAnchor(gf::Anchor::TopLeft);
+	sprite.setPosition(position);
+	sprite.setTexture(texture);
+	target.draw(sprite);
+
 }

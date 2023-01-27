@@ -28,6 +28,8 @@ class Game : public gf::Scene {
 		gf::TextWidget m_openMap;
 		gf::TextButtonWidget m_buttonMap;
 		gf::WidgetContainer m_widgets;
+		int compteur_niveau;
+		int nb_total_levels;
 		
 
 
@@ -36,11 +38,16 @@ class Game : public gf::Scene {
 		Level& getLevel();
 		Map& getMap();
 		Player& getPlayer();
+		int counterLevel();
+		void setCounterLevel(int var);
+		int getNumCurrentLevel();
+		int getNumTotalLevels();
 		void desactivateActions();
 		void doHandleActions(gf::Window & window);
 		void doUpdate(gf::Time time);
 		void doRender (gf::RenderTarget &target, const gf::RenderStates &states) override;
 		void init();
+		void changeLevel();
 		void reset();
 };
 

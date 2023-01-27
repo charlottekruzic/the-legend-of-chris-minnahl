@@ -21,9 +21,11 @@ class End : public gf::Scene {
         gf::Text m_text_lose;
         gf::TextButtonWidget m_menuButton;
         gf::TextButtonWidget m_restartButton;
+        gf::TextButtonWidget m_nextButton;
 		gf::WidgetContainer m_widgets;
         void setButton(gf::TextButtonWidget &button);
         Level& m_level;
+        
 
 	
 	public:
