@@ -13,12 +13,15 @@ Game::Game(gf::Vector2i size,Manager& link)
 , upAction("Go up")
 , downAction("Go down")
 , managerLink(link)
+,player(managerLink.resources)
 , level(player,map, managerLink.resources)
 , m_score("0/0", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_openMap("Open map", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_buttonMap("M", managerLink.resources.getFont("font/arial.ttf"), 25)
 {
 	setClearColor(gf::Color::Black);
+	compteur_niveau=1;
+	nb_total_levels=3;
 
 	setWorldViewSize(GAME_SIZE);
 
@@ -84,13 +87,40 @@ Game::Game(gf::Vector2i size,Manager& link)
 	
 }
 void Game::init(){
-	map.load("data/TheLegendOfChrisMinnahl/levels/3");
+	compteur_niveau=1;
+	changeLevel();
+}
+
+int Game::counterLevel(){
+	return compteur_niveau;
+}
+
+void Game::setCounterLevel(int var){
+    compteur_niveau = var;
+}
+
+void Game::changeLevel(){
+	
+	std::cout << "compteur game " << compteur_niveau << std::endl;
+	map.load("data/TheLegendOfChrisMinnahl/levels/"+std::to_string(compteur_niveau));
+	
 	level.reset();
+	compteur_niveau++;
+	
+	
 }
 
 void Game::reset(){
 	desactivateActions();
 	level.reset();
+}
+
+int Game::getNumCurrentLevel(){
+	return compteur_niveau-1;
+}
+
+int Game::getNumTotalLevels(){
+	return nb_total_levels;
 }
 
 void Game::doHandleActions(gf::Window & window){

@@ -94,6 +94,7 @@ void Title::doProcessEvent(gf::Event& event) {
             this->buttonQuit.setState(gf::WidgetState::Default );
 
             if(this->buttonStart.contains(mouseEvent.coords)){
+                managerLink.gameScene.init();
                 managerLink.replaceScene(managerLink.gameScene);
             }else if(this->buttonRules.contains(mouseEvent.coords)){
                 managerLink.pauseScene.setPause(false);

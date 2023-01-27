@@ -6,7 +6,10 @@
 #include <gf/Action.h>
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
+#include <gf/ResourceManager.h>
+#include <gf/Texture.h>
 #include <gf/Time.h>
+#include <gf/Sprite.h>
 
 constexpr gf::Vector2f PLAYER_SIZE = {32.0,32.0};
 
@@ -15,11 +18,12 @@ class Player: public gf::Entity{
 	private:
 	gf::Vector2f position;
 	gf::Vector2f velocity;
-	
+	gf::ResourceManager& resources;
+	gf::Sprite sprite;
 	float speed = 200.0;
 	bool isStatue, wantToStatue;
 	public :
-		Player();
+		Player(gf::ResourceManager& resources);
 
 		void init();
 		void setPosition(gf::Vector2f position);
