@@ -1,8 +1,10 @@
 #include "map.h"
 using json = nlohmann::json;
-Map::Map():
-	start(Wall({0,0},WallType::START)),
-	end(Wall({1*WALL_SIZE.x,1*WALL_SIZE.y},WallType::END)){
+Map::Map()
+: start(Wall({0,0},WallType::START))
+, end(Wall({1*WALL_SIZE.x,1*WALL_SIZE.y},WallType::END))
+{
+
 }
 
 void Map::set(gf::Vector2i pos, WallType type){

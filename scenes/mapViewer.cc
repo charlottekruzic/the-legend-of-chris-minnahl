@@ -4,7 +4,7 @@
 MapViewer::MapViewer(gf::Vector2i size,Manager& link)
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
-, m_miniMap(m_managerLink.gameScene)
+, m_miniMap(m_managerLink.gameScene, m_managerLink.resources)
 , m_mAction("Close map")
 , m_closeMap("Close map", m_managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_buttonGame("M", m_managerLink.resources.getFont("font/arial.ttf"), 25)
@@ -32,8 +32,7 @@ MapViewer::MapViewer(gf::Vector2i size,Manager& link)
 	m_widgets.addWidget(m_closeMap);
 
     addWorldEntity(m_miniMap);
-
-    setWorldViewCenter(WINDOW_SIZE/2);
+    
 
 }
 
@@ -44,7 +43,8 @@ void MapViewer::doHandleActions(gf::Window & window){
 }
 
 void MapViewer::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
-	target.setView(getHudView());
+    setWorldViewCenter(m_miniMap.getSize()/2);
+    setWorldViewSize(m_miniMap.getSize());
 
     renderWorldEntities(target,states);
     renderHudEntities(target,states);
