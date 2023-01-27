@@ -3,6 +3,7 @@
 #include <gf/Entity.h>
 #include <gf/Sprite.h>
 #include <gf/Shapes.h>
+#include <gf/Sprite.h>
 #include <gf/RenderWindow.h>
 #include <iostream>
 constexpr gf::Vector2f WALL_SIZE = {32.0,32.0};
@@ -12,10 +13,10 @@ constexpr gf::Vector2f WALL_SIZE = {32.0,32.0};
 */
 enum class WallType {SOLID,EMPTY,START,END,OBJECT,STATUE};
 
-class Wall : public gf::Entity{
+class Wall{
     protected:
         gf::Vector2f m_position;
-        gf::RectI rect;
+        gf::RectF rect;
         gf::RectangleShape shape;
         gf::Color4f color;
         bool solid;
@@ -29,7 +30,7 @@ class Wall : public gf::Entity{
         */
         Wall(gf::Vector2f position,WallType type);
 
-        gf::RectI getRect();
+        gf::RectF getRect();
 
         gf::Vector2f getPosition()const;
         

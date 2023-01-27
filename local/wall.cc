@@ -3,7 +3,7 @@
 Wall::Wall(gf::Vector2f position,WallType type){
     this->m_position = position;
     //Set up the collider rect
-    this->rect = gf::RectI().fromPositionSize(this->m_position,WALL_SIZE);
+    this->rect = gf::RectF().fromPositionSize(this->m_position,WALL_SIZE);
 
 	//Set up the shape (visual representation of the player)
     this->shape.setAnchor(gf::Anchor::TopLeft);
@@ -56,7 +56,7 @@ bool Wall::setType(WallType type){
     return true;
 }
 
-gf::RectI Wall::getRect(){
+gf::RectF Wall::getRect(){
     return this->rect;
 }
 

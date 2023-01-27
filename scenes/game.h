@@ -15,6 +15,8 @@
 #include "../local/map.h"
 struct Manager;
 
+constexpr gf::Vector2f GAME_SIZE = {500.0, 500.0};
+
 class Game : public gf::Scene {
 	private:
 		gf::Action echapAction,spaceAction, mAction,rightAction,

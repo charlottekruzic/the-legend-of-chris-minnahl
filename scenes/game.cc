@@ -14,15 +14,16 @@ Game::Game(gf::Vector2i size,Manager& link)
 , downAction("Go down")
 , managerLink(link)
 ,player(managerLink.resources)
-, level(player,map)
+, level(player,map, managerLink.resources)
 , m_score("0/0", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_openMap("Open map", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_buttonMap("M", managerLink.resources.getFont("font/arial.ttf"), 25)
 {
-	level_list = {"1","2","3"};
 	setClearColor(gf::Color::Black);
 	compteur_niveau=1;
 	nb_total_levels=3;
+
+	setWorldViewSize(GAME_SIZE);
 
 	//SET ACTIONS
 	spaceAction.addKeycodeKeyControl(gf::Keycode::Space);

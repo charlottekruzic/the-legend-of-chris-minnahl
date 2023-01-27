@@ -1,7 +1,18 @@
 #include "level.h"
 #include <iostream>
-Level::Level(Player & playerLink,Map & mapLink) : 
-	map(mapLink),player(playerLink){
+Level::Level(Player & playerLink,Map & mapLink, gf::ResourceManager & resources) 
+: map(mapLink)
+, player(playerLink)
+, m_resources(resources)
+, m_wall_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall.png")))
+, m_object_not_found_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/object_not_found.png")))
+, m_object_found_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/object_found.png")))
+, m_floor_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/floor.png")))
+, m_statue_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/socle_statue.png")))
+, m_start_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/start.png")))
+, m_end_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/end.png")))
+{
+
 	reset();
 }
 
@@ -159,33 +170,100 @@ bool Level::checkGuards(){
 	return false;
 }
 void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
+	
+	bool find = false;
+	
+	//render wall
 	int y = map.getHeight();
 	int x = map.getWidth();
 	for(int row = 0 ; row < y; row++ ){
 		for (int col = 0; col<x ; col++){
-			map.get(col,row).render(target);
+			find = false;
+			Wall wall = map.get(col,row);
+			WallType type = wall.getType();
+			gf::Vector2f sprite_position = {wall.getPosition().x, wall.getPosition().y+WALL_SIZE.y};
+
+			//ground
+			if(wall.getType()==WallType::EMPTY){
+				m_floor_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_floor_sprite.setPosition(sprite_position);
+				m_floor_sprite.setTexture(m_floor_texture);
+				target.draw(m_floor_sprite);
+			}
+
+			//object not found
+			for(Wall & obj : notFoundObjects){
+				if(obj.getPosition()==wall.getPosition()){
+					m_object_not_found_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_object_not_found_sprite.setPosition(sprite_position);
+					m_object_not_found_sprite.setTexture(m_object_not_found_texture);
+					m_object_not_found_sprite.setScale(1);
+					target.draw(m_object_not_found_sprite);
+					find=true;
+				}
+			}
+
+			//statue
+			if(find){continue;};
+			std::vector<Wall> statuesList = map.getStatues();
+			for(Wall & statue : statuesList){
+				if(statue.getPosition()==wall.getPosition()){
+					m_statue_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_statue_sprite.setPosition(sprite_position);
+					m_statue_sprite.setTexture(m_statue_texture);
+					m_statue_sprite.setScale(1);
+					target.draw(m_statue_sprite);
+					find=true;
+				}
+			}
+
+
+			//start
+			if(find){continue;};
+			if(map.getStart().getPosition()==wall.getPosition()){
+				m_start_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_start_sprite.setPosition(sprite_position);
+				m_start_sprite.setTexture(m_start_texture);
+				m_start_sprite.setScale(1);
+				target.draw(m_start_sprite);
+				find=true;
+			}
+
+
+
+			//end
+			if(find){continue;};
+			if(map.getEnd().getPosition()==wall.getPosition()){
+				m_end_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_end_sprite.setPosition(sprite_position);
+				m_end_sprite.setTexture(m_end_texture);
+				m_end_sprite.setScale(1);
+				target.draw(m_end_sprite);
+				find=true;
+			}
+		
+
+			//wall
+			if(find){continue;};
+			if(wall.getType()==WallType::SOLID){
+				m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_wall_sprite.setPosition(sprite_position);
+				m_wall_sprite.setTexture(m_wall_texture);
+				target.draw(m_wall_sprite);
+			}
 		}
 	}
 	
-	for(Wall & obj : notFoundObjects){
-		obj.render(target);
-	}
-	
-	std::vector<Wall> statuesList = map.getStatues();
-
-	for(Wall & wall : statuesList){
-		wall.render(target);
-	}
-
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
 	}
-	
-	map.getStart().render(target);
-	map.getEnd().render(target);
+
 
 
 }
+
+
+
 bool Level::checkGameOver(){
 	return isGameOver;
 }
