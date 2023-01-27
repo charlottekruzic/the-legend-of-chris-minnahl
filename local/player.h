@@ -22,6 +22,7 @@ class Player: public gf::Entity{
 	gf::Sprite sprite;
 	float speed = 200.0;
 	bool isStatue, wantToStatue;
+	int dirPlayer;
 	public :
 		Player(gf::ResourceManager& resources);
 
@@ -36,6 +37,7 @@ class Player: public gf::Entity{
 		bool isWantToStatue();
 		
 		void setStatue(bool val);
+		int setdirectionPlayer(int var);
 		//check if player is currently a statue
         bool isAStatue();
 		void applyXMotion(gf::Time time);

@@ -127,15 +127,19 @@ void Game::doHandleActions(gf::Window & window){
 	player.setWantToStatue(spaceAction.isActive());
 	if(rightAction.isActive()){
 		player.addVelocity({1,0});
+		player.setdirectionPlayer(1);
 	}
 	if(leftAction.isActive()){
 		player.addVelocity({-1,0});
+		player.setdirectionPlayer(2);
 	}
 	if(upAction.isActive()){
 		player.addVelocity({0,-1});
+		player.setdirectionPlayer(3);
 	}
 	if(downAction.isActive()){
 		player.addVelocity({0,1});
+		player.setdirectionPlayer(4);
 	}
 	if(echapAction.isActive()){
 		pause();
