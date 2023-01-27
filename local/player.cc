@@ -61,10 +61,10 @@ int Player::setdirectionPlayer(int var){
 }
 void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	gf::RectangleShape shape(PLAYER_SIZE);
-	gf::Texture& textureRight(resources.getTexture(resources.getAbsolutePath("sprite/player/tile007.png")));
-	gf::Texture& textureLeft(resources.getTexture(resources.getAbsolutePath("sprite/player/tile005.png")));
-	gf::Texture& textureUp(resources.getTexture(resources.getAbsolutePath("sprite/player/tile002.png")));
-	gf::Texture& textureDown(resources.getTexture(resources.getAbsolutePath("sprite/player/tile000.png")));
+	gf::Texture& textureRight(resources.getTexture(resources.getAbsolutePath("sprites/player/tile007.png")));
+	gf::Texture& textureLeft(resources.getTexture(resources.getAbsolutePath("sprites/player/tile005.png")));
+	gf::Texture& textureUp(resources.getTexture(resources.getAbsolutePath("sprites/player/tile002.png")));
+	gf::Texture& textureDown(resources.getTexture(resources.getAbsolutePath("sprites/player/tile000.png")));
 
 	shape.setPosition(position);
 	target.draw(shape);

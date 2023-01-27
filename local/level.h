@@ -26,8 +26,8 @@ class Level : public gf::Entity{
 		gf::Sprite m_wall_sprite;
 		gf::Texture & m_object_not_found_texture;
 		gf::Sprite m_object_not_found_sprite;
-		gf::Texture & m_object_found_texture;
-		gf::Sprite m_object_found_sprite;
+		//gf::Texture & m_object_found_texture;
+		//gf::Sprite m_object_found_sprite;
 		gf::Texture & m_floor_texture;
 		gf::Sprite m_floor_sprite;
 		gf::Texture & m_statue_texture;

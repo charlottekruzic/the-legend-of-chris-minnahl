@@ -4,13 +4,13 @@ Level::Level(Player & playerLink,Map & mapLink, gf::ResourceManager & resources)
 : map(mapLink)
 , player(playerLink)
 , m_resources(resources)
-, m_wall_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall.png")))
-, m_object_not_found_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/object_not_found.png")))
-, m_object_found_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/object_found.png")))
-, m_floor_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/floor.png")))
-, m_statue_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/socle_statue.png")))
-, m_start_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/start.png")))
-, m_end_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/end.png")))
+, m_wall_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/wall.png")))
+, m_object_not_found_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/object_not_found.png")))
+//, m_object_found_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/object_found.png")))
+, m_floor_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/floor.png")))
+, m_statue_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/socle_statue.png")))
+, m_start_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/start.png")))
+, m_end_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/end.png")))
 {
 
 	reset();
@@ -253,7 +253,7 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 			}
 		}
 	}
-	
+
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
 	}
