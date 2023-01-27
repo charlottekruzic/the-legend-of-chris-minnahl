@@ -18,7 +18,7 @@ Game::Game(gf::Vector2i size,Manager& link)
 , m_openMap("Open map", managerLink.resources.getFont("font/arial.ttf"), 25)
 , m_buttonMap("M", managerLink.resources.getFont("font/arial.ttf"), 25)
 {
-	level_list = {"1.txt","2.txt","3.txt"};
+	level_list = {"1","2","3"};
 	setClearColor(gf::Color::Black);
 
 	//SET ACTIONS
@@ -83,7 +83,7 @@ Game::Game(gf::Vector2i size,Manager& link)
 	
 }
 void Game::init(){
-	map.load("data/TheLegendOfChrisMinnahl/levels/3.txt");//CA FOIRE ICI
+	map.load("data/TheLegendOfChrisMinnahl/levels/3");
 	level.reset();
 }
 
@@ -132,6 +132,14 @@ void Game::doHandleActions(gf::Window & window){
 
 Level& Game::getLevel(){
 	return level;
+}
+
+Map& Game::getMap(){
+	return map;
+}
+
+Player& Game::getPlayer(){
+	return player;
 }
 
 void Game::desactivateActions(){

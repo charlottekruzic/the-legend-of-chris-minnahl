@@ -28,6 +28,7 @@ add_executable(TheLegendOfChrisMinnahl
   local/wall.cc
   local/guard.cc	
   local/map.cc
+  local/minimap.cc
   # and the rest of your sources
 )
 
