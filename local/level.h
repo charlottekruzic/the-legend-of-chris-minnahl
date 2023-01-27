@@ -4,6 +4,7 @@
 #include <gf/Sprite.h>
 #include <gf/Shapes.h>
 #include <gf/RenderWindow.h>
+#include <gf/ResourceManager.h>
 #include <gf/Text.h>
 #include <gf/Font.h>
 #include <gf/Widgets.h>
@@ -14,17 +15,34 @@
 #include "player.h"
 #include "guard.h"
 #include "map.h"
+
+
 class Level : public gf::Entity{
 	private:
 		Map& map;
 		Player& player;
+		gf::ResourceManager & m_resources;
+		gf::Texture & m_wall_texture;
+		gf::Sprite m_wall_sprite;
+		gf::Texture & m_object_not_found_texture;
+		gf::Sprite m_object_not_found_sprite;
+		gf::Texture & m_object_found_texture;
+		gf::Sprite m_object_found_sprite;
+		gf::Texture & m_floor_texture;
+		gf::Sprite m_floor_sprite;
+		gf::Texture & m_statue_texture;
+		gf::Sprite m_statue_sprite;
+		gf::Texture & m_start_texture;
+		gf::Sprite m_start_sprite;
+		gf::Texture & m_end_texture;
+		gf::Sprite m_end_sprite;
 		bool isGameOver;
 		bool isWin;
 		std::vector<Wall> foundObjects;
 		std::vector<Wall> notFoundObjects;
 		std::vector<Guard> guards;
 	public:
-		Level(Player & player, Map & map);
+		Level(Player & player, Map & map, gf::ResourceManager & resources);
 		void reset();
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
