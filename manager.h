@@ -8,7 +8,7 @@
 #include "scenes/game.h"
 #include "scenes/pause.h"
 #include "scenes/mapViewer.h"
-constexpr gf::Vector2i WINDOW_SIZE = {800, 800};
+constexpr gf::Vector2i WINDOW_SIZE = {1422, 800};
 
 class Manager : public gf::GameManager{
 	public :
