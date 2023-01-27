@@ -1,5 +1,5 @@
 #include "map.h"
-
+using json = nlohmann::json;
 Map::Map():
 	start(Wall({0,0},WallType::START)),
 	end(Wall({1*WALL_SIZE.x,1*WALL_SIZE.y},WallType::END)){
@@ -19,6 +19,7 @@ void Map::set(gf::Vector2i pos, WallType type){
 		case WallType::START:
 			start = newWall;
 			break;
+		
 		case WallType::END:
 			end = newWall;
 			break;
@@ -46,20 +47,28 @@ std::vector<Wall> & Map::getObjects(){
 std::vector<Wall> & Map::getStatues(){
 	return statues;
 }
+std::vector<Guard> & Map::getGuards(){
+	return guards;
+}
+
 int Map::getHeight(){return height;}
 int Map::getWidth(){return width;}
 
-void Map::load(std::string path){
+
+
+//path 
+void Map::load(std::string level_name){
 	objects = {};
 	statues = {};
+	guards = {};
 	
 	start = Wall({0,0},WallType::START);
 	end = Wall({1*WALL_SIZE.x,1*WALL_SIZE.y},WallType::END);
 
 	data = {};
-	FILE* f = fopen(path.c_str(),"r");
+	FILE* f = fopen((level_name+".txt").c_str(),"r");
 	if (f == nullptr){
-		std::cout << "Couldn't open "<< path << std::endl;
+		std::cout << "Couldn't open "<< (level_name+".txt").c_str() << std::endl;
 		exit(1);
 		return;
 	}
@@ -120,4 +129,32 @@ void Map::load(std::string path){
 	}
 			
 	fclose(f);
+
+
+	//Load guards
+    std::ifstream jsonFile(level_name +".json");
+    if(!jsonFile){
+		std::cout << "Couldn't open "<<level_name +".json" << std::endl;
+    	return;
+    }
+	std::string jsonString((std::istreambuf_iterator<char>(jsonFile)),
+                            std::istreambuf_iterator<char>());
+	json jsonData = json::parse(jsonString);
+	for(auto & guard : jsonData["list"]){
+		Guard newGuard = Guard({guard["position"]["x"],guard["position"]["y"]});
+		std::vector<struct RouteAction> routeList;
+		for(auto & routeItem : guard["route"]){
+			actionType tmp = (routeItem["type"] == "WAIT") ? actionType::WAIT : actionType::GO;  
+			routeList.push_back(
+				newRoute(
+					tmp,
+					routeItem["time"],
+					{routeItem["position"]["x"],routeItem["position"]["y"]}
+				)
+			);
+		}
+		newGuard.setRoute(routeList);
+		guards.push_back(newGuard);
+	}
+	
 }

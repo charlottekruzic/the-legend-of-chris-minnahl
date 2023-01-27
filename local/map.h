@@ -4,12 +4,14 @@
 #include "player.h"
 #include "guard.h"
 #include <string.h>
-
+#include "nlohmann/json.hpp"
+#include <fstream>
 class Map{
 	private:
 		std::vector<std::vector<Wall>> data;
 		std::vector<Wall> objects;
 		std::vector<Wall> statues;
+		std::vector<Guard> guards;
 		Wall start,end;
 		int width,height;
 	public :
@@ -21,6 +23,8 @@ class Map{
 		Wall & getEnd();
 		std::vector<Wall> & getObjects();
 		std::vector<Wall> & getStatues();
+		std::vector<Guard> & getGuards();
+
 		int getHeight();
 		int getWidth();
 

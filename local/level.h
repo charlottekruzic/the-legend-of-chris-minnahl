@@ -28,7 +28,7 @@ class Level : public gf::Entity{
 		void reset();
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);	
-		void addGuard(gf::Vector2i pos,std::vector<struct RouteAction *> route);
+		void addGuard(gf::Vector2i pos,std::vector<struct RouteAction > route);
 		void update(gf::Time time);
 		//find collider rect
 		gf::RectF findCollider();

@@ -3,25 +3,14 @@
 Level::Level(Player & playerLink,Map & mapLink) : 
 	map(mapLink),player(playerLink){
 	reset();
-	addGuard({5,5},{
-		newRoute(actionType::GO, 1.0,{8,5}),
-		newRoute(actionType::WAIT, 1.0,{0,0}),
-		newRoute(actionType::GO, 1.0,{5,5}),
-		newRoute(actionType::WAIT, 1.0,{0,0}),
-	});
-	addGuard({13,1},{
-		newRoute(actionType::GO, 1.0,{10,1}),
-		newRoute(actionType::WAIT, 1.0,{0,0}),
-		newRoute(actionType::GO, 1.0,{13,1}),
-		newRoute(actionType::WAIT, 1.0,{0,0}),
-	});
 }
 
 
 void Level::reset(){
-	for (Guard & guard :guards){
+	std::cout << "reset guards" << std::endl;
+	for (Guard & guard :map.getGuards()){
 		guard.reset();
-	}	
+	}
 	isGameOver = false;
 	notFoundObjects = map.getObjects();	
 	foundObjects = {}; 
@@ -33,14 +22,14 @@ void Level::reset(){
 }
 
 
-void Level::addGuard(gf::Vector2i pos, std::vector<struct RouteAction *> route){
+void Level::addGuard(gf::Vector2i pos, std::vector<struct RouteAction > route){
 	Guard newGuard = Guard(pos);
 	newGuard.setRoute(route);
 	guards.push_back(newGuard);
 }
 
 void Level::update(gf::Time time){
-	for (Guard & guard :guards){
+	for (Guard & guard :map.getGuards()){
 		guard.update(time);
 	}	
 
@@ -161,7 +150,7 @@ void Level::doWhenCollide(Wall & wall){
 }
 bool Level::checkGuards(){
 	gf::RectF playerRect = gf::RectF::fromPositionSize(player.getPosition(),PLAYER_SIZE);
-	for(Guard & guard : guards){
+	for(Guard & guard : map.getGuards()){
 		gf::RectF guardRect = *guard.getRect();
 		if(guardRect.intersects(playerRect)){
 			return true;
@@ -188,7 +177,7 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 		wall.render(target);
 	}
 
-	for(Guard & guard : guards){
+	for(Guard & guard : map.getGuards()){
 		guard.render(target);
 	}
 	
