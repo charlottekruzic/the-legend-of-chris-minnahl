@@ -15,6 +15,10 @@ Level::Level(Player & playerLink,Map & mapLink, gf::ResourceManager & resources)
 , m_guard_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile010.png")))
 , m_guard_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile011.png")))
 , m_guard_textureUp(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile009.png")))
+, m_faisceau_textureRight(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe001.png")))
+, m_faisceau_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe000.png")))
+, m_faisceau_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe003.png")))
+, m_faisceau_textureUp(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe002.png")))
 {
 
 	reset();
@@ -274,20 +278,45 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
 		gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
+		gf::Vector2f faisceau_position_right = {guard.getPosition().x-100, guard.getPosition().y+100};
+		gf::Vector2f faisceau_position_left = {guard.getPosition().x-100, guard.getPosition().y+100};
+		gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
+		gf::Vector2f faisceau_position_up = {guard.getPosition().x, guard.getPosition().y};
+
 		m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
 		m_guard_sprite.setPosition(sprite_position);
+		m_guard_sprite.setScale(0.8);
+		m_faisceau_sprite.setAnchor(gf::Anchor::BottomLeft);
+		m_faisceau_sprite.setScale(0.15);
 		if(guard.getdirectionGuard()==1){
 			m_guard_sprite.setTexture(m_guard_textureRight);
+			m_faisceau_sprite.setTexture(m_faisceau_textureRight);
+			m_faisceau_sprite.setPosition(faisceau_position_right);
+			target.draw(m_guard_sprite);
+			target.draw(m_faisceau_sprite);
 		}else if(guard.getdirectionGuard()==2){
 			m_guard_sprite.setTexture(m_guard_textureLeft);
+			m_faisceau_sprite.setTexture(m_faisceau_textureLeft);
+			m_faisceau_sprite.setPosition(faisceau_position_left);
+			target.draw(m_guard_sprite);
+			target.draw(m_faisceau_sprite);
 		}else if(guard.getdirectionGuard()==3){
 			m_guard_sprite.setTexture(m_guard_textureDown);
+			m_faisceau_sprite.setTexture(m_faisceau_textureDown);
+			m_faisceau_sprite.setPosition(faisceau_position_down);
+			target.draw(m_guard_sprite);
+			target.draw(m_faisceau_sprite);
 		}else if(guard.getdirectionGuard()==4){
+			m_faisceau_sprite.setTexture(m_faisceau_textureUp);
+			m_faisceau_sprite.setPosition(faisceau_position_up);
+			target.draw(m_faisceau_sprite);
 			m_guard_sprite.setTexture(m_guard_textureUp);
+			target.draw(m_guard_sprite);
+			
 		}
 		
-		m_guard_sprite.setScale(0.8);
-		target.draw(m_guard_sprite);
+		
+		
 	}
 
 
