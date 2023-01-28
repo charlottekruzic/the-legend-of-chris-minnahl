@@ -1,0 +1,22 @@
+{
+    "list":[
+        {
+            "position": {"x": 10, "y": 10},
+            "route": [
+                {"type":"GO","time":1,"position": {"x": 10, "y": 14}},
+                {"type":"WAIT","time":1,"position": {"x": 0, "y": 0}},
+                {"type":"GO","time":1,"position": {"x": 10, "y": 10}},
+                {"type":"WAIT","time":1,"position": {"x": 0, "y": 0}}
+            ]
+        },
+        {
+            "position": {"x": 5, "y": 10},
+            "route": [
+                {"type":"GO","time":1,"position": {"x": 5, "y": 14}},
+                {"type":"WAIT","time":1,"position": {"x": 0, "y": 0}},
+                {"type":"GO","time":1,"position": {"x": 5, "y": 10}},
+                {"type":"WAIT","time":1,"position": {"x": 0, "y": 0}}
+            ]
+        }
+    ]
+}
