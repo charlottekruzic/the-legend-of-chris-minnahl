@@ -36,6 +36,11 @@ class Level : public gf::Entity{
 		gf::Sprite m_start_sprite;
 		gf::Texture & m_end_texture;
 		gf::Sprite m_end_sprite;
+		gf::Texture & m_guard_textureRight;
+		gf::Texture & m_guard_textureLeft;
+		gf::Texture & m_guard_textureDown;
+		gf::Texture & m_guard_textureUp;
+		gf::Sprite m_guard_sprite;
 		bool isGameOver;
 		bool isWin;
 		std::vector<Wall> foundObjects;

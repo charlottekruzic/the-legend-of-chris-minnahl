@@ -11,6 +11,10 @@ Level::Level(Player & playerLink,Map & mapLink, gf::ResourceManager & resources)
 , m_statue_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/socle_statue.png")))
 , m_start_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/start.png")))
 , m_end_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/end.png")))
+, m_guard_textureRight(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile020.png")))
+, m_guard_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile010.png")))
+, m_guard_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile011.png")))
+, m_guard_textureUp(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile009.png")))
 {
 
 	reset();
@@ -269,6 +273,21 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
+		gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
+		m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
+		m_guard_sprite.setPosition(sprite_position);
+		if(guard.getdirectionGuard()==1){
+			m_guard_sprite.setTexture(m_guard_textureRight);
+		}else if(guard.getdirectionGuard()==2){
+			m_guard_sprite.setTexture(m_guard_textureLeft);
+		}else if(guard.getdirectionGuard()==3){
+			m_guard_sprite.setTexture(m_guard_textureDown);
+		}else if(guard.getdirectionGuard()==4){
+			m_guard_sprite.setTexture(m_guard_textureUp);
+		}
+		
+		m_guard_sprite.setScale(0.8);
+		target.draw(m_guard_sprite);
 	}
 
 

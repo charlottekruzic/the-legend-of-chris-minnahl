@@ -38,10 +38,13 @@ class Guard : public gf::Entity{
         gf::Color4f color;
         gf::RectF detectorRect;
         gf::RectangleShape detectorShape;
+        int dirGuard;
     public:
         Guard(gf::Vector2i grid_pos);
         void reset();
 		void nextAction();
+        gf::Vector2f getPosition()const;
+        int getdirectionGuard();
         void setRoute(std::vector<struct RouteAction > route);
         virtual void update(gf::Time time);
         virtual void render(gf::RenderTarget& target);

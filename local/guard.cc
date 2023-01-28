@@ -25,7 +25,8 @@ Guard::Guard(gf::Vector2i grid_pos):
     shape.setPosition(position);
     detectorShape.setColor(gf::Color4f({0.7,0.7,0,0.5}));
     detectorShape.setAnchor(gf::Anchor::TopLeft);
-   	detectorShape.setPosition(position);    		
+   	detectorShape.setPosition(position);   
+	dirGuard=3; 		
 
 }
 
@@ -52,6 +53,9 @@ gf::RectF * Guard::getRect(){
 	return &detectorRect;
 }
 
+gf::Vector2f Guard::getPosition()const{
+    return position;
+}
 
 void Guard::nextAction(){
 	if(route.size()==0){return;}
@@ -86,6 +90,9 @@ void Guard::nextAction(){
 
 }
 
+int Guard::getdirectionGuard(){
+	return dirGuard;
+}
 
 void Guard::update(gf::Time time){
 	float dt = time.asSeconds();
@@ -139,17 +146,21 @@ void Guard::update(gf::Time time){
 				if (deltaX > 0 ){
 					//going right
 					detectorShape.move({0,+(GUARD_SIZE.y * 0.5) - (DETECTOR_SIZE.y * 0.5)});
+					dirGuard=1;
 				}else if (deltaX <0){
 					//going left
 					detectorShape.move({-DETECTOR_SIZE.x +GUARD_SIZE.x,+(GUARD_SIZE.y * 0.5) - (DETECTOR_SIZE.y * 0.5)});
+					dirGuard=2;
 				}
 			}else{
 				if(deltaY > 0){
 					//going down
 					detectorShape.move({(GUARD_SIZE.x * 0.5) - (DETECTOR_SIZE.x * 0.5),0});
+					dirGuard=3;
 				}else if(deltaY <0){
 					//going up
 					detectorShape.move({(GUARD_SIZE.x * 0.5) - (DETECTOR_SIZE.x * 0.5),-DETECTOR_SIZE.y + GUARD_SIZE.y});
+					dirGuard=4;
 				}
 			}		
 
