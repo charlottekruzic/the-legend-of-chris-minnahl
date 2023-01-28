@@ -129,9 +129,9 @@ void End::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
     m_restartButton.setPadding(paddingSize);
 
     m_menuButton.setCharacterSize(characterSize);
-    if(m_managerLink.gameScene.counterLevel()<=m_managerLink.gameScene.getNumTotalLevels()){
+    if(m_managerLink.gameScene.counterLevel()<=m_managerLink.gameScene.getNumTotalLevels() && m_won){
         m_menuButton.setAnchor(gf::Anchor::Center);
-        m_menuButton.setPosition(coords.getRelativePoint({0.5f, 0.7f}));
+        m_menuButton.setPosition(coords.getRelativePoint({0.5f, 0.75f}));
     }else{
         m_menuButton.setAnchor(gf::Anchor::TopRight);
         m_menuButton.setPosition(coords.getRelativePoint({0.8f, 0.6f}));
