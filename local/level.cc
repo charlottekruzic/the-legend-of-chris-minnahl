@@ -204,53 +204,66 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 			}
 
 			//statue
-			if(find){continue;};
-			std::vector<Wall> statuesList = map.getStatues();
-			for(Wall & statue : statuesList){
-				if(statue.getPosition()==wall.getPosition()){
-					m_statue_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_statue_sprite.setPosition(sprite_position);
-					m_statue_sprite.setTexture(m_statue_texture);
-					m_statue_sprite.setScale(1);
-					target.draw(m_statue_sprite);
-					find=true;
+			if(!find){
+				std::vector<Wall> statuesList = map.getStatues();
+				for(Wall & statue : statuesList){
+					if(statue.getPosition()==wall.getPosition()){
+						m_statue_sprite.setAnchor(gf::Anchor::BottomLeft);
+						m_statue_sprite.setPosition(sprite_position);
+						m_statue_sprite.setTexture(m_statue_texture);
+						m_statue_sprite.setScale(1);
+						target.draw(m_statue_sprite);
+						find=true;
+					}
 				}
-			}
+
+			};
 
 
 			//start
-			if(find){continue;};
-			if(map.getStart().getPosition()==wall.getPosition()){
-				m_start_sprite.setAnchor(gf::Anchor::BottomLeft);
-				m_start_sprite.setPosition(sprite_position);
-				m_start_sprite.setTexture(m_start_texture);
-				m_start_sprite.setScale(1);
-				target.draw(m_start_sprite);
-				find=true;
-			}
+			if(!find){
+				if(map.getStart().getPosition()==wall.getPosition()){
+					m_start_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_start_sprite.setPosition(sprite_position);
+					m_start_sprite.setTexture(m_start_texture);
+					m_start_sprite.setScale(1);
+					target.draw(m_start_sprite);
+					find=true;
+				}				
+			};
+
 
 
 
 			//end
-			if(find){continue;};
-			if(map.getEnd().getPosition()==wall.getPosition()){
-				m_end_sprite.setAnchor(gf::Anchor::BottomLeft);
-				m_end_sprite.setPosition(sprite_position);
-				m_end_sprite.setTexture(m_end_texture);
-				m_end_sprite.setScale(1);
-				target.draw(m_end_sprite);
-				find=true;
-			}
+			if(!find){
+				if(map.getEnd().getPosition()==wall.getPosition()){
+					m_end_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_end_sprite.setPosition(sprite_position);
+					m_end_sprite.setTexture(m_end_texture);
+					m_end_sprite.setScale(1);
+					target.draw(m_end_sprite);
+					find=true;
+				}				
+			};
+
 		
 
 			//wall
-			if(find){continue;};
-			if(wall.getType()==WallType::SOLID){
-				m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
-				m_wall_sprite.setPosition(sprite_position);
-				m_wall_sprite.setTexture(m_wall_texture);
-				target.draw(m_wall_sprite);
+			if(!find){
+				if(wall.getType()==WallType::SOLID){
+					m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_wall_sprite.setPosition(sprite_position);
+					m_wall_sprite.setTexture(m_wall_texture);
+					target.draw(m_wall_sprite);
+				}				
+			};
+
+			if(row == player.getGridPosY()){
+				std::cout << player.getGridPosY() << std::endl;
+				player.render(target,states);
 			}
+
 		}
 	}
 

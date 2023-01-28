@@ -80,8 +80,8 @@ Game::Game(gf::Vector2i size,Manager& link)
 	m_widgets.addWidget(m_openMap);
 
 	//ADD ENTITIES TO THE WORLD
-	addWorldEntity(level);
 	addWorldEntity(player);
+	addWorldEntity(level);
 
 	init();
 	

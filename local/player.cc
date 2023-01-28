@@ -26,6 +26,12 @@ void Player::init(){
 	isStatue=false;
 }
 
+int Player::getGridPosY()const{
+	float y_pos;
+	y_pos = position.y + PLAYER_SIZE.y - 0.1;
+	return (int) y_pos / WALL_SIZE.y;
+}
+
 void Player::setVelocity(gf::Vector2f vel){
 	velocity = vel;
 }

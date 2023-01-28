@@ -10,6 +10,7 @@
 #include <gf/Texture.h>
 #include <gf/Time.h>
 #include <gf/Sprite.h>
+#include "wall.h"
 
 constexpr gf::Vector2f PLAYER_SIZE = {32.0,32.0};
 
@@ -50,6 +51,7 @@ class Player: public gf::Entity{
 		void applyYMotion(gf::Time time);
 		virtual void render(gf::RenderTarget & target,
 		const gf::RenderStates & states);
+		int getGridPosY()const;
 		
 };
 #endif
