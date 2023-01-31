@@ -268,7 +268,6 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 			};
 
 			if(row == player.getGridPosY()){
-				std::cout << player.getGridPosY() << std::endl;
 				player.render(target,states);
 			}
 
