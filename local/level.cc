@@ -277,8 +277,8 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
 		gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
-		gf::Vector2f faisceau_position_right = {guard.getPosition().x-100, guard.getPosition().y+100};
-		gf::Vector2f faisceau_position_left = {guard.getPosition().x-100, guard.getPosition().y+100};
+		gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
+		gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
 		gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
 		gf::Vector2f faisceau_position_up = {guard.getPosition().x, guard.getPosition().y};
 
