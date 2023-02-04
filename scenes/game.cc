@@ -103,7 +103,7 @@ void Game::changeLevel(){
 	
 	std::cout << "compteur game " << compteur_niveau << std::endl;
 	map.load("data/TheLegendOfChrisMinnahl/levels/"+std::to_string(compteur_niveau));
-	//map.load("data/TheLegendOfChrisMinnahl/levels/3");
+	//map.load("data/TheLegendOfChrisMinnahl/levels/2");
 	level.reset();
 	compteur_niveau++;
 	
