@@ -51,8 +51,8 @@ void Pause::setPause(bool var){
 
 void Pause::renderTitle(gf::RenderTarget &target){
 	gf::Coordinates coords(target);
-	this->titleMenu.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.06f, 0.06f)).x);
-	this->titleMenu.setPosition(coords.getRelativePoint({ 0.5f, 0.24f }));
+	this->titleMenu.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.07f, 0.07f)).x);
+	this->titleMenu.setPosition(coords.getRelativePoint({ 0.5f, 0.23f }));
 	this->titleMenu.setAnchor(gf::Anchor::TopCenter);
 	
 	target.draw(this->titleMenu);
@@ -63,29 +63,29 @@ void Pause::renderButtons(gf::RenderTarget &target){
     gf::Coordinates coords(target);
 
     constexpr float characterSize = 0.02f;
-    constexpr float spaceBetweenButton = 0.06f;
+    constexpr float spaceBetweenButton = 0.07f;
     const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
     
 	this->buttonRestart.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.02f, 0.02f)).x);
-    this->buttonRestart.setPosition(coords.getRelativePoint({0.5f, 0.4f}));
+    this->buttonRestart.setPosition(coords.getRelativePoint({0.5f, 0.42f + characterSize + spaceBetweenButton}));
     this->buttonRestart.setAnchor(gf::Anchor::TopCenter);
     this->buttonRestart.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.17f, 0.1f) - 0.05f).x);
     this->buttonRestart.setPadding(paddingSize);
 
     this->buttonResume.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.02f, 0.02f)).x);
-    this->buttonResume.setPosition(coords.getRelativePoint({0.5f, 0.4f + characterSize + spaceBetweenButton}));
+    this->buttonResume.setPosition(coords.getRelativePoint({0.5f, 0.42f}));
     this->buttonResume.setAnchor(gf::Anchor::TopCenter);
     this->buttonResume.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.17f, 0.1f) - 0.05f).x);
     this->buttonResume.setPadding(paddingSize);
 
     this->buttonRules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.02f, 0.02f)).x);
-    this->buttonRules.setPosition(coords.getRelativePoint({0.5f, 0.4f + (characterSize + spaceBetweenButton) * 2}));
+    this->buttonRules.setPosition(coords.getRelativePoint({0.5f, 0.42f + (characterSize + spaceBetweenButton) * 2}));
     this->buttonRules.setAnchor(gf::Anchor::TopCenter);
     this->buttonRules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.17f, 0.1f) - 0.05f).x);
     this->buttonRules.setPadding(paddingSize);
 
     this->buttonMenu.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.02f, 0.02f)).x);
-    this->buttonMenu.setPosition(coords.getRelativePoint({0.5f, 0.4f + (characterSize + spaceBetweenButton) * 3}));
+    this->buttonMenu.setPosition(coords.getRelativePoint({0.5f, 0.42f + (characterSize + spaceBetweenButton) * 3}));
     this->buttonMenu.setAnchor(gf::Anchor::TopCenter);
     this->buttonMenu.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.17f, 0.1f) - 0.05f).x);
     this->buttonMenu.setPadding(paddingSize);
@@ -139,6 +139,15 @@ void Pause::doProcessEvent(gf::Event& event) {
 
 void Pause::doRender (gf::RenderTarget &target, const gf::RenderStates &states){
     target.setView(getHudView());
+    gf::Coordinates coords(target);
+    gf::RoundedRectangleShape shape(coords.getRelativeSize(gf::Vector2f(0.5f, 0.6f)));
+    shape.setColor(gf::Color4f({0.1,0.1,0.1,0.5}));
+    shape.setAnchor(gf::Anchor::Center);
+    shape.setOutlineColor(gf::Color::Black);
+    shape.setOutlineThickness(5);
+    shape.setRadius(10);
+    shape.setPosition(coords.getRelativePoint({0.5f, 0.5f}));
+	target.draw(shape);
     renderTitle(target);
     renderButtons(target);
 }
