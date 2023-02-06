@@ -1,21 +1,21 @@
 {
     "list":[
         {
-            "position": {"x": 39, "y": 21},
+            "position": {"x": 37, "y": 21},
             "route": [
-                {"type":"GO","time":1,"position": {"x": 39, "y": 26}},
-                {"type":"WAIT","time":1,"position": {"x": 39, "y": 26}},
-                {"type":"GO","time":1,"position": {"x": 39, "y": 21}},
-                {"type":"WAIT","time":1,"position": {"x": 39, "y": 21}}
+                {"type":"GO","time":0.7,"position": {"x": 37, "y": 26}},
+                {"type":"WAIT","time":1,"position": {"x": 37, "y": 26}},
+                {"type":"GO","time":0.7,"position": {"x": 37, "y": 21}},
+                {"type":"WAIT","time":1,"position": {"x": 37, "y": 21}}
             ]
         },
         {
-            "position": {"x": 34, "y": 21},
+            "position": {"x": 32, "y": 21},
             "route": [
-                {"type":"GO","time":1,"position": {"x": 34, "y": 26}},
-                {"type":"WAIT","time":1,"position": {"x": 34, "y": 26}},
-                {"type":"GO","time":1,"position": {"x": 34, "y": 21}},
-                {"type":"WAIT","time":1,"position": {"x": 34, "y": 21}}
+                {"type":"GO","time":1,"position": {"x": 32, "y": 28}},
+                {"type":"WAIT","time":1,"position": {"x": 32, "y": 28}},
+                {"type":"GO","time":1,"position": {"x": 32, "y": 21}},
+                {"type":"WAIT","time":1,"position": {"x": 32, "y": 21}}
             ]
         },
         {
@@ -32,12 +32,12 @@
             ]
         },
         {
-            "position": {"x": 17, "y": 15},
+            "position": {"x": 17, "y": 14},
             "route": [
-                {"type":"GO","time":1.5,"position": {"x": 3, "y": 15}},
-                {"type":"WAIT","time":1,"position": {"x": 3, "y": 15}},
-                {"type":"GO","time":1.5,"position": {"x": 18, "y": 15}},
-                {"type":"WAIT","time":1,"position": {"x": 18, "y": 15}}
+                {"type":"GO","time":1.5,"position": {"x": 3, "y": 14}},
+                {"type":"WAIT","time":1,"position": {"x": 3, "y": 14}},
+                {"type":"GO","time":1.5,"position": {"x": 18, "y": 14}},
+                {"type":"WAIT","time":1,"position": {"x": 18, "y": 14}}
             ]
         },
         {
