@@ -125,24 +125,35 @@ int Game::getNumTotalLevels(){
 
 void Game::doHandleActions(gf::Window & window){
 	if(isPaused() || isHidden()){return;}
-		player.setWantToStatue(spaceAction.isActive());
+	
+	player.setWantToStatue(spaceAction.isActive());
 		
-	if(rightAction.isActive()){
+	if(rightAction.isActive() && upAction.isActive()){
+		player.addVelocity({1/sqrt(2),-1/sqrt(2)});
+		player.setdirectionPlayer(1);
+	}else if(rightAction.isActive() && downAction.isActive()){
+		player.addVelocity({1/sqrt(2),1/sqrt(2)});
+		player.setdirectionPlayer(1);
+	}else if(leftAction.isActive() && upAction.isActive()){
+		player.addVelocity({-1/sqrt(2),-1/sqrt(2)});
+		player.setdirectionPlayer(2);
+	}else if(leftAction.isActive() && downAction.isActive()){
+		player.addVelocity({-1/sqrt(2),1/sqrt(2)});
+		player.setdirectionPlayer(2);
+	}else if(rightAction.isActive()){
 		player.addVelocity({1,0});
 		player.setdirectionPlayer(1);
-	}
-	if(leftAction.isActive()){
+	}else if(leftAction.isActive()){
 		player.addVelocity({-1,0});
 		player.setdirectionPlayer(2);
-	}
-	if(upAction.isActive()){
+	}else if(upAction.isActive()){
 		player.addVelocity({0,-1});
 		player.setdirectionPlayer(3);
-	}
-	if(downAction.isActive()){
+	}else if(downAction.isActive()){
 		player.addVelocity({0,1});
 		player.setdirectionPlayer(4);
 	}
+
 	if(echapAction.isActive()){
 		pause();
 		managerLink.pushScene(managerLink.pauseScene);
