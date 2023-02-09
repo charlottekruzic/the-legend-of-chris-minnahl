@@ -46,6 +46,8 @@ class Level : public gf::Entity{
 		gf::Texture & m_faisceau_textureDown;
 		gf::Texture & m_faisceau_textureUp;
 		gf::Sprite m_faisceau_sprite;
+		gf::Texture & m_showcase_texture;
+		gf::Sprite m_showcase_sprite;
 		bool isGameOver;
 		bool isWin;
 		std::vector<Wall> foundObjects;

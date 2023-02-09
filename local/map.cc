@@ -18,6 +18,9 @@ void Map::set(gf::Vector2i pos, WallType type){
 		case WallType::STATUE:
 			statues.push_back(newWall);
 			break;
+		/*case WallType::SHOWCASE:
+			showcases.push_back(newWall);
+			break;*/
 		case WallType::START:
 			start = newWall;
 			break;
@@ -51,6 +54,9 @@ std::vector<Wall> & Map::getStatues(){
 }
 std::vector<Guard> & Map::getGuards(){
 	return guards;
+}
+std::vector<Wall> & Map::getShowcases(){
+	return showcases;
 }
 
 int Map::getHeight(){return height;}
@@ -120,6 +126,9 @@ void Map::load(std::string level_name){
 				break;
 			case '#':
 				tmp = WallType::SOLID;
+				break;
+			case 'v':
+				tmp = WallType::SHOWCASE;
 				break;
 		}
 		if(c=='\0'){break;}

@@ -11,6 +11,7 @@ class Map{
 		std::vector<std::vector<Wall>> data;
 		std::vector<Wall> objects;
 		std::vector<Wall> statues;
+		std::vector<Wall> showcases;
 		std::vector<Guard> guards;
 		Wall start,end;
 		int width,height;
@@ -24,6 +25,7 @@ class Map{
 		std::vector<Wall> & getObjects();
 		std::vector<Wall> & getStatues();
 		std::vector<Guard> & getGuards();
+		std::vector<Wall> & getShowcases();
 
 		int getHeight();
 		int getWidth();

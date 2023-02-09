@@ -47,6 +47,10 @@ bool Wall::setType(WallType type){
         	this->solid = false;
         	this->color = gf::Color::Blue;
         	break;
+        case WallType::SHOWCASE:
+        	this->solid = true;
+        	this->color = gf::Color::Orange;
+        	break;
         default:
             return false;
     }
