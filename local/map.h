@@ -17,7 +17,7 @@ class Map{
 		int width,height;
 	public :
 		Map();
-		void load(std::string);
+		void load(gf::Path level_name);
 		void set(gf::Vector2i position,WallType type);	
 		Wall & get(int x, int y);
 		Wall & getStart();

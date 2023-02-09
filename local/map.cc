@@ -65,7 +65,7 @@ int Map::getWidth(){return width;}
 
 
 //path 
-void Map::load(std::string level_name){
+void Map::load(gf::Path level_path){
 	objects = {};
 	statues = {};
 	guards = {};
@@ -74,9 +74,9 @@ void Map::load(std::string level_name){
 	end = Wall({1*WALL_SIZE.x,1*WALL_SIZE.y},WallType::END);
 
 	data = {};
-	FILE* f = fopen((level_name+".txt").c_str(),"r");
+	FILE* f = fopen((level_path).c_str(),"r");
 	if (f == nullptr){
-		std::cout << "Couldn't open "<< (level_name+".txt").c_str() << std::endl;
+		std::cout << "Couldn't open "<< (level_path).c_str() << std::endl;
 		exit(1);
 		return;
 	}
@@ -143,9 +143,11 @@ void Map::load(std::string level_name){
 
 
 	//Load guards
-    std::ifstream jsonFile(level_name +".json");
+	gf::Path guards_path = level_path.replace_extension(".json");
+
+    std::ifstream jsonFile(guards_path);
     if(!jsonFile){
-		std::cout << "Couldn't open "<<level_name +".json" << std::endl;
+		std::cout << "Couldn't open "<<guards_path << std::endl;
     	return;
     }
 	std::string jsonString((std::istreambuf_iterator<char>(jsonFile)),

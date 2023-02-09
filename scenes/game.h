@@ -6,6 +6,7 @@
 #include <gf/Action.h>
 #include <gf/Views.h>
 #include <gf/Widgets.h>
+#include <gf/Font.h>
 #include <gf/WidgetContainer.h>
 #include <gf/Coordinates.h>
 #include <gf/Vector.h>

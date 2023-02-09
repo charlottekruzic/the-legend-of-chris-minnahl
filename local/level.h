@@ -6,7 +6,6 @@
 #include <gf/RenderWindow.h>
 #include <gf/ResourceManager.h>
 #include <gf/Text.h>
-#include <gf/Font.h>
 #include <gf/Widgets.h>
 #include <algorithm>
 #include <string.h>

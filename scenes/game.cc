@@ -102,7 +102,9 @@ void Game::setCounterLevel(int var){
 void Game::changeLevel(){
 	
 	std::cout << "compteur game " << compteur_niveau << std::endl;
-	map.load("data/TheLegendOfChrisMinnahl/levels/"+std::to_string(compteur_niveau));
+	gf::Path path("levels/"+std::to_string(compteur_niveau)+".txt");
+	map.load(managerLink.resources.getAbsolutePath(path));
+
 	//map.load("data/TheLegendOfChrisMinnahl/levels/2");
 	level.reset();
 	compteur_niveau++;

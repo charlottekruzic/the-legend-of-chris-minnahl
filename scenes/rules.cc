@@ -29,7 +29,7 @@ Rules::Rules(gf::Vector2i size,Manager& link)
     m_widgets.addWidget(this->m_returnButton);
 
     //Rules
-    std::ifstream rulesFile ("data/TheLegendOfChrisMinnahl/game_rules.txt");
+    std::ifstream rulesFile (m_managerLink.resources.getAbsolutePath("game_rules.txt"));
     std::string rules;
 
     if (rulesFile.is_open()) {
@@ -69,7 +69,7 @@ void Rules::renderButton(gf::RenderTarget &target){
 
 void Rules::renderRules(gf::RenderTarget &target){
     gf::Coordinates coords(target);
-    this->m_rules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.03f, 0.03f)).x);
+    this->m_rules.setCharacterSize(coords.getRelativeSize(gf::Vector2f(0.02f, 0.02f)).x);
     this->m_rules.setPosition(coords.getRelativePoint({ 0.5f, 0.4f }));
     this->m_rules.setParagraphWidth(coords.getRelativeSize(gf::Vector2f(0.9f, 0.9f) - 0.05f).x);
     this->m_rules.setAnchor(gf::Anchor::TopCenter);

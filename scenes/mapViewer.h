@@ -6,6 +6,7 @@
 #include <gf/Coordinates.h>
 #include <gf/Widgets.h>
 #include <gf/WidgetContainer.h>
+#include <gf/Font.h>
 
 #include "../local/minimap.h"
 #include "../local/player.h"
