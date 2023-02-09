@@ -118,10 +118,13 @@ void Minimap::render(gf::RenderTarget & target, const gf::RenderStates & states)
 				m_wall_sprite.setTexture(m_wall_texture);
 				target.draw(m_wall_sprite);
 			}
+
+			if(row == m_player.getGridPosY()){
+				m_player.render(target,states);
+			}
 		}
 	}
 
-	m_player.render(target, states);
 }
 
 
