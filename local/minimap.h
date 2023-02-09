@@ -34,6 +34,8 @@ class Minimap : public gf::Entity{
 		gf::Sprite m_start_sprite;
 		gf::Texture & m_end_texture;
 		gf::Sprite m_end_sprite;
+		gf::Texture & m_showcase_texture;
+		gf::Sprite m_showcase_sprite;
 		
 	public:
 		Minimap(Game& game, gf::ResourceManager & resources) ;

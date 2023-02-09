@@ -11,7 +11,7 @@ constexpr gf::Vector2f WALL_SIZE = {32.0,32.0};
 /** 
  * @brief Abstract class for all types of walls
 */
-enum class WallType {SOLID,EMPTY,START,END,OBJECT,STATUE};
+enum class WallType {SOLID,EMPTY,START,END,OBJECT,STATUE,SHOWCASE};
 
 class Wall{
     protected:

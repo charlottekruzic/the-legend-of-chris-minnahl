@@ -19,6 +19,7 @@ Level::Level(Player & playerLink,Map & mapLink, gf::ResourceManager & resources)
 , m_faisceau_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe000.png")))
 , m_faisceau_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe003.png")))
 , m_faisceau_textureUp(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe002.png")))
+, m_showcase_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/vitrine.png")))
 {
 
 	reset();
@@ -108,6 +109,14 @@ gf::RectF Level::findCollider(){
 				return tmp;
 			}	
 	}
+	//showcase collision
+	std::vector<Wall> showcasesList = map.getShowcases();
+	for(Wall & showcase:showcasesList){
+			gf::RectF tmp = testCollision(showcase);
+			if(!tmp.isEmpty()){
+				return tmp;
+			}	
+	}
 	gf::RectF tmp = testCollision(map.getEnd());
 	if(!tmp.isEmpty()){
 		return tmp;
@@ -127,7 +136,7 @@ gf::RectF Level::testCollision(Wall & wall){
 	if(wallRect.intersects(playerRect)){
 		//Custom collision code
 		doWhenCollide(wall);
-		if(wall.getType() == WallType::SOLID){
+		if(wall.getType() == WallType::SOLID || wall.getType() == WallType::SHOWCASE){
 			return wallRect;
 		}
 		return gf::RectF::empty();
@@ -155,6 +164,8 @@ void Level::doWhenCollide(Wall & wall){
 			}else{
 				player.setStatue(false);
 			}
+			break;
+		case WallType::SHOWCASE:
 			break;
 		case WallType::START:
 			break;
@@ -197,6 +208,13 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				m_floor_sprite.setPosition(sprite_position);
 				m_floor_sprite.setTexture(m_floor_texture);
 				target.draw(m_floor_sprite);
+			}
+			if(wall.getType()==WallType::SHOWCASE){
+				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
+				m_showcase_sprite.setTexture(m_showcase_texture);
+				m_showcase_sprite.setScale({0.16,0.2});
+				target.draw(m_showcase_sprite);
 			}
 
 			//object not found
@@ -265,22 +283,34 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 					m_wall_sprite.setTexture(m_wall_texture);
 					target.draw(m_wall_sprite);
 				}				
-			};
+			};		
 
 			if(row == player.getGridPosY()){
 				player.render(target,states);
 			}
 
 		}
+		
+		//a mettre dans la boucle
+		/*std::vector<Wall> showcasesList = map.getShowcases();
+		for(Wall & showcase : showcasesList){
+			m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
+			gf::Vector2f sprite_position_show_case = {showcase.getPosition().x, showcase.getPosition().y+WALL_SIZE.y};
+			m_showcase_sprite.setPosition(sprite_position_show_case);
+			m_showcase_sprite.setTexture(m_showcase_texture);
+			m_showcase_sprite.setScale(0.16);
+			target.draw(m_showcase_sprite);
+			
+		}*/
 	}
 
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
-		gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
-		gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
-		gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
-		gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
-		gf::Vector2f faisceau_position_up = {guard.getPosition().x, guard.getPosition().y};
+		const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
+		const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
+		const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
+		const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
+		const gf::Vector2f faisceau_position_up = {guard.getPosition().x, guard.getPosition().y};
 
 		m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
 		m_guard_sprite.setPosition(sprite_position);

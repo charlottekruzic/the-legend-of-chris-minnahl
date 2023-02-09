@@ -17,6 +17,7 @@ Minimap::Minimap(Game& game, gf::ResourceManager & resources)
 , m_statue_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/socle_statue.png")))
 , m_start_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/start.png")))
 , m_end_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/end.png")))
+, m_showcase_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/vitrine.png")))
 {
 	m_minimap_size={m_map.getWidth()*WALL_SIZE.x,m_map.getHeight()*WALL_SIZE.y};
 }
@@ -48,6 +49,13 @@ void Minimap::render(gf::RenderTarget & target, const gf::RenderStates & states)
 				m_floor_sprite.setPosition(sprite_position);
 				m_floor_sprite.setTexture(m_floor_texture);
 				target.draw(m_floor_sprite);
+			}
+			if(wall.getType()==WallType::SHOWCASE){
+				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
+				m_showcase_sprite.setTexture(m_showcase_texture);
+				m_showcase_sprite.setScale({0.16,0.2});
+				target.draw(m_showcase_sprite);
 			}
 
 			//object not found
