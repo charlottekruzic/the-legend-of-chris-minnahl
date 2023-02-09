@@ -7,14 +7,15 @@
 Title::Title(gf::Vector2i size,Manager& link) 
 : Scene(link.getRenderer().getSize())
 , managerLink(link)
-, buttonStart("Start", managerLink.resources.getFont("font/arial.ttf"), 30.0)
-, buttonRules("Rules", managerLink.resources.getFont("font/arial.ttf"), 30.0)
-, buttonQuit("Quit", managerLink.resources.getFont("font/arial.ttf"), 30.0)
+, m_font(managerLink.resources.getFont("font/arial.ttf"))
+, buttonStart("Start", m_font, 30.0)
+, buttonRules("Rules", m_font, 30.0)
+, buttonQuit("Quit", m_font, 30.0)
 {
 	setClearColor(gf::Color::Gray(0.1f));
 	
 	//Title
-	this->titleMenu = gf::Text("The Legend Of Chris Minnahl", managerLink.resources.getFont("font/arial.ttf")); 
+	this->titleMenu = gf::Text("The Legend Of Chris Minnahl", m_font); 
     this->titleMenu.setColor(gf::Color::White);
 
 	

@@ -6,9 +6,10 @@
 End::End(gf::Vector2i size,Manager& link)
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
-, m_menuButton("Menu", m_managerLink.resources.getFont("font/arial.ttf"), 20.0)
-, m_restartButton("Restart", m_managerLink.resources.getFont("font/arial.ttf"), 20.0)
-, m_nextButton("Next", m_managerLink.resources.getFont("font/arial.ttf"), 20.0)
+, m_font(m_managerLink.resources.getFont("font/arial.ttf"))
+, m_menuButton("Menu", m_font, 20.0)
+, m_restartButton("Restart", m_font, 20.0)
+, m_nextButton("Next", m_font, 20.0)
 , m_level(m_managerLink.gameScene.getLevel())
 {
     setClearColor(gf::Color::Gray(0.3f));
@@ -16,10 +17,10 @@ End::End(gf::Vector2i size,Manager& link)
     m_won = false;
 
     //Initialization texts
-    this->m_text_win = gf::Text("You won !!", m_managerLink.resources.getFont("font/arial.ttf")); 
+    this->m_text_win = gf::Text("You won !!", m_font); 
     this->m_text_win.setColor(gf::Color::White);
 
-    this->m_text_lose = gf::Text("Game over", m_managerLink.resources.getFont("font/arial.ttf")); 
+    this->m_text_lose = gf::Text("Game over", m_font); 
     this->m_text_lose.setColor(gf::Color::White);
 
 

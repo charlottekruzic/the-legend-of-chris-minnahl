@@ -7,13 +7,14 @@
 Rules::Rules(gf::Vector2i size,Manager& link) 
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
-, m_returnButton("Return", m_managerLink.resources.getFont("font/arial.ttf"), 20.0)
+, m_font(m_managerLink.resources.getFont("font/arial.ttf"))
+, m_returnButton("Return", m_font, 20.0)
 {
 	setClearColor(gf::Color::Gray(0.1f));
 
 
     //Title
-	this->m_title = gf::Text("Rules", m_managerLink.resources.getFont("font/arial.ttf")); 
+	this->m_title = gf::Text("Rules", m_font); 
     this->m_title.setColor(gf::Color::White);
 
 
@@ -43,7 +44,7 @@ Rules::Rules(gf::Vector2i size,Manager& link)
     }
 
     this->m_rules.setString(rules);
-    this->m_rules.setFont(m_managerLink.resources.getFont("font/arial.ttf"));
+    this->m_rules.setFont(m_font);
     this->m_rules.setColor(gf::Color::White);
     this->m_rules.setAlignment(gf::Alignment::Left);
 }

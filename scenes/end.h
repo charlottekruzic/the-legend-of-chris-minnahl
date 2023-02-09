@@ -17,6 +17,7 @@ class End : public gf::Scene {
 	private:
 		Manager& m_managerLink;
         bool m_won;
+        gf::Font& m_font;
         gf::Text m_text_win;
         gf::Text m_text_lose;
         gf::TextButtonWidget m_menuButton;

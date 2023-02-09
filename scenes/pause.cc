@@ -6,16 +6,17 @@
 Pause::Pause(gf::Vector2i size,Manager& link) 
 : Scene(link.getRenderer().getSize())
 , managerLink(link)
-, buttonRestart("Restart", managerLink.resources.getFont("font/arial.ttf"))
-, buttonResume("Resume", managerLink.resources.getFont("font/arial.ttf"))
-, buttonRules("Rules", managerLink.resources.getFont("font/arial.ttf"))
-, buttonMenu("Menu", managerLink.resources.getFont("font/arial.ttf")){
+, m_font(managerLink.resources.getFont("font/arial.ttf"))
+, buttonRestart("Restart", m_font)
+, buttonResume("Resume", m_font)
+, buttonRules("Rules", m_font)
+, buttonMenu("Menu", m_font){
 	setClearColor(gf::Color::Black);
 
     this->pause=false;
 
 	//Title
-	this->titleMenu = gf::Text("Pause", managerLink.resources.getFont("font/arial.ttf")); 
+	this->titleMenu = gf::Text("Pause", m_font); 
     this->titleMenu.setColor(gf::Color::White);
 
 	

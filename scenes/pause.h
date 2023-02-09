@@ -18,6 +18,7 @@ struct Manager;
 class Pause : public gf::Scene {
 	private: 
 	Manager& managerLink;
+	gf::Font& m_font;
 	gf::Text titleMenu;
 	gf::WidgetContainer buttons;
 	gf::TextButtonWidget buttonRestart;

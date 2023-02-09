@@ -17,6 +17,7 @@ struct Manager;
 class MapViewer : public gf::Scene {
 	private:
 		Manager& m_managerLink;
+		gf::Font& m_font;
 		Minimap m_miniMap;
         gf::Action m_mAction;
 		gf::TextWidget m_closeMap;

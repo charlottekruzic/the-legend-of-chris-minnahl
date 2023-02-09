@@ -18,6 +18,7 @@ struct Manager;
 class Title : public gf::Scene {
 	private: 
 	Manager& managerLink;
+	gf::Font &m_font;
 	gf::Text titleMenu;
 	gf::WidgetContainer buttons;
 	gf::TextButtonWidget buttonStart;

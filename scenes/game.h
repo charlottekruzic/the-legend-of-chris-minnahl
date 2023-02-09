@@ -23,6 +23,7 @@ class Game : public gf::Scene {
 		gf::Action echapAction,spaceAction, mAction,rightAction,
 		leftAction,upAction,downAction; 
 		Manager& managerLink;
+		gf::Font& m_font;
 		Map map;
 		Player player;
 		std::vector<std::string> level_list;

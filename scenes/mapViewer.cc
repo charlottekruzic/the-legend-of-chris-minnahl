@@ -4,10 +4,11 @@
 MapViewer::MapViewer(gf::Vector2i size,Manager& link)
 : Scene(link.getRenderer().getSize())
 , m_managerLink(link)
+, m_font(m_managerLink.resources.getFont("font/arial.ttf"))
 , m_miniMap(m_managerLink.gameScene, m_managerLink.resources)
 , m_mAction("Close map")
-, m_closeMap("Close map", m_managerLink.resources.getFont("font/arial.ttf"), 25)
-, m_buttonGame("M", m_managerLink.resources.getFont("font/arial.ttf"), 25)
+, m_closeMap("Close map", m_font, 25)
+, m_buttonGame("M", m_font, 25)
 {
     
     setClearColor(gf::Color::Gray(0.2f));

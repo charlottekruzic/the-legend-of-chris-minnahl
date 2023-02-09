@@ -13,11 +13,12 @@ Game::Game(gf::Vector2i size,Manager& link)
 , upAction("Go up")
 , downAction("Go down")
 , managerLink(link)
-,player(managerLink.resources)
+, m_font(managerLink.resources.getFont("font/arial.ttf"))
+, player(managerLink.resources)
 , level(player,map, managerLink.resources)
-, m_score("0/0", managerLink.resources.getFont("font/arial.ttf"), 25)
-, m_openMap("Open map", managerLink.resources.getFont("font/arial.ttf"), 25)
-, m_buttonMap("M", managerLink.resources.getFont("font/arial.ttf"), 25)
+, m_score("0/0", m_font, 25)
+, m_openMap("Open map", m_font, 25)
+, m_buttonMap("M", m_font, 25)
 {
 	setClearColor(gf::Color::Black);
 	compteur_niveau=1;

@@ -22,6 +22,7 @@ struct Manager;
 class Rules : public gf::Scene {
 	private:
 		Manager& m_managerLink;
+		gf::Font& m_font;
 		gf::Text m_title; 
     	gf::Text m_rules;
 		gf::TextButtonWidget m_returnButton;
