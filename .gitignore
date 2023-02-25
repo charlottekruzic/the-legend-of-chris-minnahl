@@ -1,8 +1,10 @@
-build/CMakeFiles
-build/cmake_install.cmake
-build/CMakeCache.txt
-build/config.h
-build/install_manifest.txt
-build/Makefile
-build/TheLegendOfChrisMinnahl
+build
 .vscode/settings.json
+CMakeFiles
+install_manifest.txt
+Commando
+CMakeCache.txt
+cmake_install.cmake
+config.h
+.gitignore
+Makefile
