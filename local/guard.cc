@@ -94,6 +94,12 @@ int Guard::getdirectionGuard(){
 	return dirGuard;
 }
 
+int Guard::getGridPosY(){
+	float y_pos;
+	y_pos = position.y + GUARD_SIZE.y - 0.1;
+	return (int) y_pos / WALL_SIZE.y;
+}
+
 void Guard::update(gf::Time time){
 	float dt = time.asSeconds();
 	gf::Vector2f target;
@@ -186,7 +192,7 @@ void Guard::update(gf::Time time){
 }
 
 void Guard::render(gf::RenderTarget& target){
-//    target.draw(detectorShape);
+	target.draw(detectorShape);
     //target.draw(detectorShape);
 
     //target.draw(shape);

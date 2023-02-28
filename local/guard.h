@@ -45,6 +45,7 @@ class Guard : public gf::Entity{
 		void nextAction();
         gf::Vector2f getPosition()const;
         int getdirectionGuard();
+        int getGridPosY();
         void setRoute(std::vector<struct RouteAction > route);
         virtual void update(gf::Time time);
         virtual void render(gf::RenderTarget& target);

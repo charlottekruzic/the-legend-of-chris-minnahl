@@ -16,32 +16,32 @@
         {
             "position": {"x": 26, "y": 24},
             "route": [
-                {"type":"GO","time":0.83,"position": {"x": 26, "y": 19}},
-                {"type":"WAIT","time":1,"position": {"x": 26, "y": 19}},
-                {"type":"GO","time":0.83,"position": {"x": 26, "y": 24}},
+                {"type":"GO","time":0.67,"position": {"x": 26, "y": 20}},
+                {"type":"WAIT","time":1,"position": {"x": 26, "y": 20}},
+                {"type":"GO","time":0.67,"position": {"x": 26, "y": 24}},
                 {"type":"WAIT","time":1,"position": {"x": 26, "y": 24}}
             ]
         },
         {
-            "position": {"x": 20, "y": 19},
+            "position": {"x": 20, "y": 20},
             "route": [
-                {"type":"GO","time":0.83,"position": {"x": 20, "y": 24}},
+                {"type":"GO","time":0.67,"position": {"x": 20, "y": 24}},
                 {"type":"WAIT","time":1,"position": {"x": 20, "y": 24}},
-                {"type":"GO","time":0.83,"position": {"x": 20, "y": 19}},
-                {"type":"WAIT","time":1,"position": {"x": 20, "y": 19}}
+                {"type":"GO","time":0.67,"position": {"x": 20, "y": 20}},
+                {"type":"WAIT","time":1,"position": {"x": 20, "y": 20}}
             ]
         },
         {
-            "position": {"x": 10, "y": 19},
+            "position": {"x": 10, "y": 20},
             "route": [
-                {"type":"GO","time":0.67,"position": {"x": 10, "y": 23}},
+                {"type":"GO","time":0.5,"position": {"x": 10, "y": 23}},
                 {"type":"WAIT","time":1,"position": {"x": 10, "y": 23}},
                 {"type":"GO","time":0.83,"position": {"x": 15, "y": 23}},
                 {"type":"WAIT","time":1,"position": {"x": 15, "y": 23}},
                 {"type":"GO","time":0.83,"position": {"x": 10, "y": 23}},
                 {"type":"WAIT","time":1,"position": {"x": 10, "y": 23}},
-                {"type":"GO","time":0.67,"position": {"x": 10, "y": 19}},
-                {"type":"WAIT","time":1,"position": {"x": 10, "y": 19}}
+                {"type":"GO","time":0.5,"position": {"x": 10, "y": 20}},
+                {"type":"WAIT","time":1,"position": {"x": 10, "y": 20}}
             ]
         },
         {

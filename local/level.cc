@@ -189,32 +189,62 @@ bool Level::checkGuards(){
 	return false;
 }
 void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
-	
-	bool find = false;
-	
+		
 	//render wall
 	int y = map.getHeight();
 	int x = map.getWidth();
 	for(int row = 0 ; row < y; row++ ){
 		for (int col = 0; col<x ; col++){
-			find = false;
 			Wall wall = map.get(col,row);
 			WallType type = wall.getType();
 			gf::Vector2f sprite_position = {wall.getPosition().x, wall.getPosition().y+WALL_SIZE.y};
 
-			//ground
+			//floor
 			if(wall.getType()==WallType::EMPTY){
 				m_floor_sprite.setAnchor(gf::Anchor::BottomLeft);
 				m_floor_sprite.setPosition(sprite_position);
 				m_floor_sprite.setTexture(m_floor_texture);
 				target.draw(m_floor_sprite);
 			}
+
+			//showcase
 			if(wall.getType()==WallType::SHOWCASE){
 				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
 				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
 				m_showcase_sprite.setTexture(m_showcase_texture);
 				m_showcase_sprite.setScale({0.16,0.2});
 				target.draw(m_showcase_sprite);
+			}
+
+			//start
+			if(map.getStart().getPosition()==wall.getPosition()){
+				m_start_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_start_sprite.setPosition(sprite_position);
+				m_start_sprite.setTexture(m_start_texture);
+				m_start_sprite.setScale(1);
+				target.draw(m_start_sprite);
+			}				
+			
+			//end
+			if(map.getEnd().getPosition()==wall.getPosition()){
+				m_end_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_end_sprite.setPosition(sprite_position);
+				m_end_sprite.setTexture(m_end_texture);
+				m_end_sprite.setScale(1);
+				target.draw(m_end_sprite);
+			}
+
+			//wall
+			if(wall.getType()==WallType::SOLID){
+				m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_wall_sprite.setPosition(sprite_position);
+				m_wall_sprite.setTexture(m_wall_texture);
+				target.draw(m_wall_sprite);
+			}	
+			
+			//player
+			if(row == player.getGridPosY()){
+				player.render(target,states);
 			}
 
 			//object not found
@@ -225,92 +255,74 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 					m_object_not_found_sprite.setTexture(m_object_not_found_texture);
 					m_object_not_found_sprite.setScale(1);
 					target.draw(m_object_not_found_sprite);
-					find=true;
 				}
 			}
 
 			//statue
-			if(!find){
-				std::vector<Wall> statuesList = map.getStatues();
-				for(Wall & statue : statuesList){
-					if(statue.getPosition()==wall.getPosition()){
-						m_statue_sprite.setAnchor(gf::Anchor::BottomLeft);
-						m_statue_sprite.setPosition(sprite_position);
-						m_statue_sprite.setTexture(m_statue_texture);
-						m_statue_sprite.setScale(1);
-						target.draw(m_statue_sprite);
-						find=true;
+			std::vector<Wall> statuesList = map.getStatues();
+			for(Wall & statue : statuesList){
+				if(statue.getPosition()==wall.getPosition()){
+					m_statue_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_statue_sprite.setPosition(sprite_position);
+					m_statue_sprite.setTexture(m_statue_texture);
+					m_statue_sprite.setScale(1);
+					target.draw(m_statue_sprite);
+				}
+			}
+		
+			//guard
+			/*for(Guard & guard : map.getGuards()){
+				if(row == guard.getGridPosY()){
+					guard.render(target);
+					const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
+					const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
+					const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
+					const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
+					const gf::Vector2f faisceau_position_up = {guard.getPosition()};
+
+					m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_guard_sprite.setPosition(sprite_position);
+					m_guard_sprite.setScale(0.8);
+					m_faisceau_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_faisceau_sprite.setScale(0.15);
+					if(guard.getdirectionGuard()==1){
+						m_guard_sprite.setTexture(m_guard_textureRight);
+						m_faisceau_sprite.setTexture(m_faisceau_textureRight);
+						m_faisceau_sprite.setPosition(faisceau_position_right);
+						target.draw(m_guard_sprite);
+						target.draw(m_faisceau_sprite);
+					}else if(guard.getdirectionGuard()==2){
+						m_guard_sprite.setTexture(m_guard_textureLeft);
+						m_faisceau_sprite.setTexture(m_faisceau_textureLeft);
+						m_faisceau_sprite.setPosition(faisceau_position_left);
+						target.draw(m_guard_sprite);
+						target.draw(m_faisceau_sprite);
+					}else if(guard.getdirectionGuard()==3){
+						m_guard_sprite.setTexture(m_guard_textureDown);
+						m_faisceau_sprite.setTexture(m_faisceau_textureDown);
+						m_faisceau_sprite.setPosition(faisceau_position_down);
+						target.draw(m_guard_sprite);
+						target.draw(m_faisceau_sprite);
+					}else if(guard.getdirectionGuard()==4){
+						m_faisceau_sprite.setTexture(m_faisceau_textureUp);
+						m_faisceau_sprite.setPosition(faisceau_position_up);
+						target.draw(m_faisceau_sprite);
+						m_guard_sprite.setTexture(m_guard_textureUp);
+						target.draw(m_guard_sprite);	
 					}
 				}
-
-			};
-
-
-			//start
-			if(!find){
-				if(map.getStart().getPosition()==wall.getPosition()){
-					m_start_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_start_sprite.setPosition(sprite_position);
-					m_start_sprite.setTexture(m_start_texture);
-					m_start_sprite.setScale(1);
-					target.draw(m_start_sprite);
-					find=true;
-				}				
-			};
-
-
-
-
-			//end
-			if(!find){
-				if(map.getEnd().getPosition()==wall.getPosition()){
-					m_end_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_end_sprite.setPosition(sprite_position);
-					m_end_sprite.setTexture(m_end_texture);
-					m_end_sprite.setScale(1);
-					target.draw(m_end_sprite);
-					find=true;
-				}				
-			};
-
-		
-
-			//wall
-			if(!find){
-				if(wall.getType()==WallType::SOLID){
-					m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_wall_sprite.setPosition(sprite_position);
-					m_wall_sprite.setTexture(m_wall_texture);
-					target.draw(m_wall_sprite);
-				}				
-			};		
-
-			if(row == player.getGridPosY()){
-				player.render(target,states);
-			}
-
+			}*/
 		}
-		
-		//a mettre dans la boucle
-		/*std::vector<Wall> showcasesList = map.getShowcases();
-		for(Wall & showcase : showcasesList){
-			m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
-			gf::Vector2f sprite_position_show_case = {showcase.getPosition().x, showcase.getPosition().y+WALL_SIZE.y};
-			m_showcase_sprite.setPosition(sprite_position_show_case);
-			m_showcase_sprite.setTexture(m_showcase_texture);
-			m_showcase_sprite.setScale(0.16);
-			target.draw(m_showcase_sprite);
-			
-		}*/
 	}
 
+	//guard
 	for(Guard & guard : map.getGuards()){
 		guard.render(target);
 		const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
 		const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
 		const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
 		const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
-		const gf::Vector2f faisceau_position_up = {guard.getPosition().x, guard.getPosition().y};
+		const gf::Vector2f faisceau_position_up = {guard.getPosition()};
 
 		m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
 		m_guard_sprite.setPosition(sprite_position);
@@ -340,16 +352,9 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 			m_faisceau_sprite.setPosition(faisceau_position_up);
 			target.draw(m_faisceau_sprite);
 			m_guard_sprite.setTexture(m_guard_textureUp);
-			target.draw(m_guard_sprite);
-			
+			target.draw(m_guard_sprite);	
 		}
-		
-		
-		
 	}
-
-
-
 }
 
 
