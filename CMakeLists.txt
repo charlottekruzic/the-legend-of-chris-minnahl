@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(MANAGER_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/TheLegendOfChrisMinnahl")               
+include(GNUInstallDirs)
+
+set(MANAGER_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/games/TheLegendOfChrisMinnahl")               
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
 project(TheLegendOfChrisMinnahl
   VERSION 0.1.0
 )
-
-include(GNUInstallDirs)
  
 find_package(gf REQUIRED)
 find_package(Box2D REQUIRED)
