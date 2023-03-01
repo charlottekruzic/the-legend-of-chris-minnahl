@@ -100,7 +100,16 @@ int Guard::getGridPosY(){
 	return (int) y_pos / WALL_SIZE.y;
 }
 
+bool Guard::isPrint(){
+	return print;
+}
+
+void Guard::setPrint(){
+	print=true;
+}
+
 void Guard::update(gf::Time time){
+	print=false;
 	float dt = time.asSeconds();
 	gf::Vector2f target;
 	float time_proportion,deltaX,deltaY,upper,lower;
