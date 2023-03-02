@@ -232,11 +232,6 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				m_end_sprite.setScale(1);
 				target.draw(m_end_sprite);
 			}
-			
-			//player
-			if(row == player.getGridPosY()){
-				player.render(target,states);
-			}
 
 			//object not found
 			for(Wall & obj : notFoundObjects){
@@ -269,6 +264,11 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 			Wall wall = map.get(col,row);
 			WallType type = wall.getType();
 			gf::Vector2f sprite_position = {wall.getPosition().x, wall.getPosition().y+WALL_SIZE.y};
+
+			//player
+			if(row == player.getGridPosY()){
+				player.render(target,states);
+			}
 		
 			//render guard
 			for(Guard & guard : map.getGuards()){
