@@ -189,8 +189,7 @@ bool Level::checkGuards(){
 	return false;
 }
 void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
-		
-	//render wall
+
 	int y = map.getHeight();
 	int x = map.getWidth();
 	for(int row = 0 ; row < y; row++ ){
@@ -234,19 +233,6 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				target.draw(m_end_sprite);
 			}
 
-			//wall
-			if(wall.getType()==WallType::SOLID){
-				m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
-				m_wall_sprite.setPosition(sprite_position);
-				m_wall_sprite.setTexture(m_wall_texture);
-				target.draw(m_wall_sprite);
-			}	
-			
-			//player
-			if(row == player.getGridPosY()){
-				player.render(target,states);
-			}
-
 			//object not found
 			for(Wall & obj : notFoundObjects){
 				if(obj.getPosition()==wall.getPosition()){
@@ -269,41 +255,55 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 					target.draw(m_statue_sprite);
 				}
 			}
+		}
+	}
+
+	
+	for(int row = 0 ; row < y; row++ ){
+		for (int col = 0; col<x ; col++){
+			Wall wall = map.get(col,row);
+			WallType type = wall.getType();
+			gf::Vector2f sprite_position = {wall.getPosition().x, wall.getPosition().y+WALL_SIZE.y};
+
+			//player
+			if(row == player.getGridPosY()){
+				player.render(target,states);
+			}
 		
-			//guard
-			/*for(Guard & guard : map.getGuards()){
-				if(row == guard.getGridPosY()){
+			//render guard
+			for(Guard & guard : map.getGuards()){
+				if(row == guard.getGridPosY() && guard.isPrint()==false){
+					guard.setPrint();
 					guard.render(target);
 					const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
-					const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
-					const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
-					const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
-					const gf::Vector2f faisceau_position_up = {guard.getPosition()};
-
 					m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
 					m_guard_sprite.setPosition(sprite_position);
 					m_guard_sprite.setScale(0.8);
 					m_faisceau_sprite.setAnchor(gf::Anchor::BottomLeft);
 					m_faisceau_sprite.setScale(0.15);
 					if(guard.getdirectionGuard()==1){
+						const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
 						m_guard_sprite.setTexture(m_guard_textureRight);
 						m_faisceau_sprite.setTexture(m_faisceau_textureRight);
 						m_faisceau_sprite.setPosition(faisceau_position_right);
 						target.draw(m_guard_sprite);
 						target.draw(m_faisceau_sprite);
 					}else if(guard.getdirectionGuard()==2){
+						const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
 						m_guard_sprite.setTexture(m_guard_textureLeft);
 						m_faisceau_sprite.setTexture(m_faisceau_textureLeft);
 						m_faisceau_sprite.setPosition(faisceau_position_left);
 						target.draw(m_guard_sprite);
 						target.draw(m_faisceau_sprite);
 					}else if(guard.getdirectionGuard()==3){
+						const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
 						m_guard_sprite.setTexture(m_guard_textureDown);
 						m_faisceau_sprite.setTexture(m_faisceau_textureDown);
 						m_faisceau_sprite.setPosition(faisceau_position_down);
 						target.draw(m_guard_sprite);
 						target.draw(m_faisceau_sprite);
 					}else if(guard.getdirectionGuard()==4){
+						const gf::Vector2f faisceau_position_up = {guard.getPosition()};
 						m_faisceau_sprite.setTexture(m_faisceau_textureUp);
 						m_faisceau_sprite.setPosition(faisceau_position_up);
 						target.draw(m_faisceau_sprite);
@@ -311,48 +311,15 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 						target.draw(m_guard_sprite);	
 					}
 				}
-			}*/
-		}
-	}
+			}
 
-	//guard
-	for(Guard & guard : map.getGuards()){
-		guard.render(target);
-		const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
-		const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
-		const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
-		const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
-		const gf::Vector2f faisceau_position_up = {guard.getPosition()};
-
-		m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
-		m_guard_sprite.setPosition(sprite_position);
-		m_guard_sprite.setScale(0.8);
-		m_faisceau_sprite.setAnchor(gf::Anchor::BottomLeft);
-		m_faisceau_sprite.setScale(0.15);
-		if(guard.getdirectionGuard()==1){
-			m_guard_sprite.setTexture(m_guard_textureRight);
-			m_faisceau_sprite.setTexture(m_faisceau_textureRight);
-			m_faisceau_sprite.setPosition(faisceau_position_right);
-			target.draw(m_guard_sprite);
-			target.draw(m_faisceau_sprite);
-		}else if(guard.getdirectionGuard()==2){
-			m_guard_sprite.setTexture(m_guard_textureLeft);
-			m_faisceau_sprite.setTexture(m_faisceau_textureLeft);
-			m_faisceau_sprite.setPosition(faisceau_position_left);
-			target.draw(m_guard_sprite);
-			target.draw(m_faisceau_sprite);
-		}else if(guard.getdirectionGuard()==3){
-			m_guard_sprite.setTexture(m_guard_textureDown);
-			m_faisceau_sprite.setTexture(m_faisceau_textureDown);
-			m_faisceau_sprite.setPosition(faisceau_position_down);
-			target.draw(m_guard_sprite);
-			target.draw(m_faisceau_sprite);
-		}else if(guard.getdirectionGuard()==4){
-			m_faisceau_sprite.setTexture(m_faisceau_textureUp);
-			m_faisceau_sprite.setPosition(faisceau_position_up);
-			target.draw(m_faisceau_sprite);
-			m_guard_sprite.setTexture(m_guard_textureUp);
-			target.draw(m_guard_sprite);	
+			//render wall
+			if(wall.getType()==WallType::SOLID){
+				m_wall_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_wall_sprite.setPosition(sprite_position);
+				m_wall_sprite.setTexture(m_wall_texture);
+				target.draw(m_wall_sprite);
+			}
 		}
 	}
 }

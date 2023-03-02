@@ -39,8 +39,11 @@ class Guard : public gf::Entity{
         gf::RectF detectorRect;
         gf::RectangleShape detectorShape;
         int dirGuard;
+        bool print;
     public:
         Guard(gf::Vector2i grid_pos);
+        bool isPrint();
+        void setPrint();
         void reset();
 		void nextAction();
         gf::Vector2f getPosition()const;
