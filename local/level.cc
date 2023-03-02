@@ -206,14 +206,7 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				target.draw(m_floor_sprite);
 			}
 
-			//showcase
-			if(wall.getType()==WallType::SHOWCASE){
-				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
-				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
-				m_showcase_sprite.setTexture(m_showcase_texture);
-				m_showcase_sprite.setScale({0.16,0.2});
-				target.draw(m_showcase_sprite);
-			}
+			
 
 			//start
 			if(map.getStart().getPosition()==wall.getPosition()){
@@ -311,6 +304,14 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 						target.draw(m_guard_sprite);	
 					}
 				}
+			}
+			//showcase
+			if(wall.getType()==WallType::SHOWCASE){
+				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
+				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
+				m_showcase_sprite.setTexture(m_showcase_texture);
+				m_showcase_sprite.setScale({0.16,0.2});
+				target.draw(m_showcase_sprite);
 			}
 
 			//render wall
