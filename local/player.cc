@@ -2,10 +2,10 @@
 #include <iostream>
 Player::Player(gf::ResourceManager& resources)
 :resources(resources)
-,textureRight(resources.getTexture(resources.getAbsolutePath("sprites/player/player_left.png")))
+,textureRight(resources.getTexture(resources.getAbsolutePath("sprites/player/player_right.png")))
 ,textureLeft(resources.getTexture(resources.getAbsolutePath("sprites/player/player_left.png")))
-,textureUp(resources.getTexture(resources.getAbsolutePath("sprites/player/player_left.png")))
-,textureDown(resources.getTexture(resources.getAbsolutePath("sprites/player/player_left.png")))
+,textureUp(resources.getTexture(resources.getAbsolutePath("sprites/player/player_up.png")))
+,textureDown(resources.getTexture(resources.getAbsolutePath("sprites/player/player_down.png")))
 ,textureStatue(resources.getTexture(resources.getAbsolutePath("sprites/player/statue.png")))
 {
 	setPosition({0,0});
@@ -81,7 +81,7 @@ void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	//target.draw(shape);
 	sprite.setAnchor(gf::Anchor::BottomLeft);
 	sprite.setPosition({getPosition().x, getPosition().y+PLAYER_SIZE.y});
-	sprite.setScale(0.08);
+	sprite.setScale(1);
 	if(isAStatue()==true){
 		sprite.setTexture(textureStatue);
 		sprite.setScale(0.1);
