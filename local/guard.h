@@ -12,37 +12,46 @@ constexpr gf::Vector2i DETECTOR_SIZE = {80,80};
 
 enum class actionType{GO,WAIT};
 
-struct RouteAction{
-	actionType type;
-	float time;
-	float cumulated_time;
-	gf::Vector2i grid_position;
-	
+
+struct RouteAction {
+  actionType type;
+  float time;
+  float cumulated_time;
+  gf::Vector2i grid_position;
+  RouteAction (actionType type,float time,float cumulated_time,gf::Vector2i grid_position):type(type),time(time),grid_position(grid_position) {}
 };
 
-struct RouteAction * generateRouteAction(actionType type,float time,gf::Vector2i position);
+//RouteAction dummy = RouteAction(actionType::WAIT,1,0,{0,0});
+
+struct RouteAction newRoute(actionType type,float time,gf::Vector2i position);
 
 class Guard : public gf::Entity{
 
     private:
-    	std::vector<struct RouteAction *> route;
+    	std::vector<struct RouteAction> route;
     	int route_index;
     	
         gf::Vector2f position, last_position, spawn_position;
         double speed;
-        gf::RectI rect;
+        gf::RectF rect;
         gf::RectangleShape shape;
         gf::Color4f color;
-        gf::RectI detectorRect;
+        gf::RectF detectorRect;
         gf::RectangleShape detectorShape;
-        struct RouteAction * currentAction;
+        int dirGuard;
+        bool print;
     public:
         Guard(gf::Vector2i grid_pos);
+        bool isPrint();
+        void setPrint();
         void reset();
 		void nextAction();
-        void setRoute(std::vector<struct RouteAction *> route);
-        virtual void update(float dt);
+        gf::Vector2f getPosition()const;
+        int getdirectionGuard();
+        int getGridPosY();
+        void setRoute(std::vector<struct RouteAction > route);
+        virtual void update(gf::Time time);
         virtual void render(gf::RenderTarget& target);
-        gf::RectI * getRect();
+        gf::RectF * getRect();
 };
 #endif

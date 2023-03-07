@@ -4,86 +4,71 @@
 #include <gf/Sprite.h>
 #include <gf/Shapes.h>
 #include <gf/RenderWindow.h>
+#include <gf/ResourceManager.h>
 #include <gf/Text.h>
-#include <gf/Font.h>
-#include <string>
+#include <gf/Widgets.h>
+#include <algorithm>
+#include <string.h>
+#include <iostream>
 #include "wall.h"
 #include "player.h"
 #include "guard.h"
-
-class Level{
-    private:
-        std::vector<std::vector<Wall>> map;
-        gf::Vector2i start,end,object,statue;
-        int width,height;
-        Player* player;
-        bool win, loose;
-        std::vector<Guard*> guards;
-        gf::RectangleShape background;
-        std::string level_path;
-        int numberTotalOfObject=0;
-    public:
-        Level(Player* player,std::string path);
-        /**
-         * @brief Adds a wall to the level at the given position
-         * @param position grid position of the wall
-         * @return true if a wall was created
-        */
-
-        
-        bool addWall(gf::Vector2i position);
-
-		/**
-		*@brief Load a level from a text file.
-		*@param path to the text file from root directory
-		*/
-		void load(std::string path);
-
-        gf::Vector2f getSize();
-
-        float getWidth();
-
-        float getHeight();
-
-		Guard * addGuard(gf::Vector2i grid_pos,std::vector<RouteAction *> route);
-
-        void reset();
-
-        bool isWin();
-
-        bool isLoose();
+#include "map.h"
 
 
-        bool removeWall(gf::Vector2i position);
+class Level : public gf::Entity{
+	private:
+		Map& map;
+		Player& player;
+		gf::ResourceManager & m_resources;
+		gf::Texture & m_wall_texture;
+		gf::Sprite m_wall_sprite;
+		gf::Texture & m_object_not_found_texture;
+		gf::Sprite m_object_not_found_sprite;
+		//gf::Texture & m_object_found_texture;
+		//gf::Sprite m_object_found_sprite;
+		gf::Texture & m_floor_texture;
+		gf::Sprite m_floor_sprite;
+		gf::Texture & m_statue_texture;
+		gf::Sprite m_statue_sprite;
+		gf::Texture & m_start_texture;
+		gf::Sprite m_start_sprite;
+		gf::Texture & m_end_texture;
+		gf::Sprite m_end_sprite;
+		gf::Texture & m_guard_textureRight;
+		gf::Texture & m_guard_textureLeft;
+		gf::Texture & m_guard_textureDown;
+		gf::Texture & m_guard_textureUp;
+		gf::Sprite m_guard_sprite;
+		gf::Texture & m_faisceau_textureRight;
+		gf::Texture & m_faisceau_textureLeft;
+		gf::Texture & m_faisceau_textureDown;
+		gf::Texture & m_faisceau_textureUp;
+		gf::Sprite m_faisceau_sprite;
+		gf::Texture & m_showcase_texture;
+		gf::Sprite m_showcase_sprite;
+		bool isGameOver;
+		bool isWin;
+		std::vector<Wall> foundObjects;
+		std::vector<Wall> notFoundObjects;
+		std::vector<Guard> guards;
+	public:
+		Level(Player & player, Map & map, gf::ResourceManager & resources);
+		void reset();
+		virtual void render(gf::RenderTarget & target,
+		const gf::RenderStates & states);	
+		void addGuard(gf::Vector2i pos,std::vector<struct RouteAction > route);
+		void update(gf::Time time);
+		//find collider rect
+		gf::RectF findCollider();
+		//custom code to do once collided with a non empty wall
+		void doWhenCollide(Wall & wall);
+		bool checkGuards();
+		bool checkGameOver();
+		bool checkWin();
+		std::vector<Wall> & getFoundObjects();
+		std::vector<Wall> & getNotFoundObjects();
 
-        void prettyPrint();
-
-        Wall* checkCollisions();
-
-        bool checkWin();
-
-        bool checkLoose();
-
-
-        void checkTakeObject();
-
-        void checkStatue();
-
-        bool isFreeSpace(gf::Vector2i position);
-
-        bool setStart(gf::Vector2i position);
-
-        bool setEnd(gf::Vector2i position);
-
-        bool setObject(gf::Vector2i pos);
-
-        bool setStatue(gf::Vector2i pos);
-
-        void update(float dt);
-
-        void render(gf::RenderTarget& target, bool isMinimap);
-
-        void renderScore(gf::RenderTarget& target, gf::Vector2f size);
-
-};
+		gf::RectF testCollision(Wall & wall);
+};		
 #endif

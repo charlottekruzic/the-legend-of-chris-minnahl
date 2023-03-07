@@ -3,7 +3,7 @@
 Wall::Wall(gf::Vector2f position,WallType type){
     this->m_position = position;
     //Set up the collider rect
-    this->rect = gf::RectI().fromPositionSize(this->m_position,WALL_SIZE);
+    this->rect = gf::RectF().fromPositionSize(this->m_position,WALL_SIZE);
 
 	//Set up the shape (visual representation of the player)
     this->shape.setAnchor(gf::Anchor::TopLeft);
@@ -17,11 +17,15 @@ WallType Wall::getType()const{
 	return this->type;
 }
 
+bool Wall::equals(const Wall & other)const{
+	return (other.getType() == getType()) && (other.getPosition() == getPosition());
+}
+
 bool Wall::setType(WallType type){
     switch(type){
         case WallType::EMPTY:
             this->solid = false;
-            this->color = gf::Color::Red;
+            this->color = gf::Color::Gray(0.2f);
             break;
         case WallType::SOLID:
             this->solid = true;
@@ -33,7 +37,7 @@ bool Wall::setType(WallType type){
         	break;
         case WallType::END:
         	this->solid = false;
-        	this->color = gf::Color::White;
+        	this->color = gf::Color::Magenta;
         	break;
         case WallType::OBJECT:
         	this->solid = false;
@@ -43,21 +47,24 @@ bool Wall::setType(WallType type){
         	this->solid = false;
         	this->color = gf::Color::Blue;
         	break;
+        case WallType::SHOWCASE:
+        	this->solid = true;
+        	this->color = gf::Color::Orange;
+        	break;
         default:
             return false;
     }
     this->shape.setColor(this->color);
 
     this->type = type;
-
     return true;
 }
 
-gf::RectI Wall::getRect(){
+gf::RectF Wall::getRect(){
     return this->rect;
 }
 
-gf::Vector2f Wall::getPosition(){
+gf::Vector2f Wall::getPosition()const{
     return this->m_position;
 }
 
