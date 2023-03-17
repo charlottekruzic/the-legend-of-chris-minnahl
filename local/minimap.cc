@@ -55,7 +55,7 @@ void Minimap::render(gf::RenderTarget & target, const gf::RenderStates & states)
 				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
 				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
 				m_showcase_sprite.setTexture(m_showcase_texture);
-				m_showcase_sprite.setScale({1.6});
+				m_showcase_sprite.setScale({1.095});
 				target.draw(m_showcase_sprite);
 			}
 
