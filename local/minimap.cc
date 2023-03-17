@@ -50,23 +50,25 @@ void Minimap::render(gf::RenderTarget & target, const gf::RenderStates & states)
 				m_floor_sprite.setTexture(m_floor_texture);
 				target.draw(m_floor_sprite);
 			}
+			//showcase
 			if(wall.getType()==WallType::SHOWCASE){
 				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
 				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
 				m_showcase_sprite.setTexture(m_showcase_texture);
-				m_showcase_sprite.setScale({0.16,0.2});
+				m_showcase_sprite.setScale({1.6});
 				target.draw(m_showcase_sprite);
 			}
 
 			//object not found
 			for(Wall & obj : m_not_found_objects){
 				if(obj.getPosition()==wall.getPosition()){
+					
 					m_object_not_found_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_object_not_found_sprite.setPosition(sprite_position);
+					m_object_not_found_sprite.setPosition({wall.getPosition().x+(WALL_SIZE.x*0.17), wall.getPosition().y+WALL_SIZE.y});
 					m_object_not_found_sprite.setTexture(m_object_not_found_texture);
-					m_object_not_found_sprite.setScale(1);
+					m_object_not_found_sprite.setScale(0.7);
 					target.draw(m_object_not_found_sprite);
-					find=true;
+					
 				}
 			}
 

@@ -105,7 +105,7 @@ void Game::changeLevel(){
 	std::cout << "compteur game " << compteur_niveau << std::endl;
 	gf::Path path("levels/"+std::to_string(compteur_niveau)+".txt");
 	map.load(managerLink.resources.getAbsolutePath(path));
-	//map.load(managerLink.resources.getAbsolutePath("levels/"+std::to_string(1)+".txt"));
+	//map.load(managerLink.resources.getAbsolutePath("levels/"+std::to_string(2)+".txt"));
 
 	
 	level.reset();

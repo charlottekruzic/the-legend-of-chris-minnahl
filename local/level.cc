@@ -309,11 +309,13 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 			//object not found
 			for(Wall & obj : notFoundObjects){
 				if(obj.getPosition()==wall.getPosition()){
+					
 					m_object_not_found_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_object_not_found_sprite.setPosition(sprite_position);
+					m_object_not_found_sprite.setPosition({wall.getPosition().x+(WALL_SIZE.x*0.17), wall.getPosition().y+WALL_SIZE.y});
 					m_object_not_found_sprite.setTexture(m_object_not_found_texture);
-					m_object_not_found_sprite.setScale(1);
+					m_object_not_found_sprite.setScale(0.7);
 					target.draw(m_object_not_found_sprite);
+					
 				}
 			}
 			//showcase
