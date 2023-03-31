@@ -81,7 +81,7 @@ void Player::render(gf::RenderTarget & target, const gf::RenderStates & states){
 	//target.draw(shape);
 	sprite.setAnchor(gf::Anchor::BottomLeft);
 	sprite.setPosition({getPosition().x, getPosition().y+PLAYER_SIZE.y});
-	sprite.setScale(1);
+	sprite.setScale(0.8);
 	if(isAStatue()==true){
 		sprite.setTexture(textureStatue);
 		sprite.setScale(0.1);

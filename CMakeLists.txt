@@ -10,7 +10,6 @@ project(TheLegendOfChrisMinnahl
 )
  
 find_package(gf REQUIRED)
-find_package(Box2D REQUIRED)
 
 add_executable(TheLegendOfChrisMinnahl
   main.cc
@@ -41,7 +40,6 @@ target_include_directories(TheLegendOfChrisMinnahl
 target_link_libraries(TheLegendOfChrisMinnahl
   PRIVATE
     gf::graphics
-    Box2D
 )
 
 install(

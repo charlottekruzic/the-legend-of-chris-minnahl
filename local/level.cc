@@ -11,10 +11,10 @@ Level::Level(Player & playerLink,Map & mapLink, gf::ResourceManager & resources)
 , m_statue_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/socle_statue.png")))
 , m_start_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/start.png")))
 , m_end_texture(m_resources.getTexture(m_resources.getAbsolutePath("sprites/wall/end.png")))
-, m_guard_textureRight(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile020.png")))
-, m_guard_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile010.png")))
-, m_guard_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile011.png")))
-, m_guard_textureUp(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/tile009.png")))
+, m_guard_textureRight(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/guard_right.png")))
+, m_guard_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/guard_left.png")))
+, m_guard_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/guard_down.png")))
+, m_guard_textureUp(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/guard_up.png")))
 , m_faisceau_textureRight(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe001.png")))
 , m_faisceau_textureLeft(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe000.png")))
 , m_faisceau_textureDown(m_resources.getTexture(m_resources.getAbsolutePath("sprites/guard/lampe003.png")))
@@ -226,16 +226,7 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				target.draw(m_end_sprite);
 			}
 
-			//object not found
-			for(Wall & obj : notFoundObjects){
-				if(obj.getPosition()==wall.getPosition()){
-					m_object_not_found_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_object_not_found_sprite.setPosition(sprite_position);
-					m_object_not_found_sprite.setTexture(m_object_not_found_texture);
-					m_object_not_found_sprite.setScale(1);
-					target.draw(m_object_not_found_sprite);
-				}
-			}
+			
 
 			//statue
 			std::vector<Wall> statuesList = map.getStatues();
@@ -268,41 +259,63 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				if(row == guard.getGridPosY() && guard.isPrint()==false){
 					guard.setPrint();
 					guard.render(target);
-					const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+GUARD_SIZE.y};
-					m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
-					m_guard_sprite.setPosition(sprite_position);
+					
 					m_guard_sprite.setScale(0.8);
 					m_faisceau_sprite.setAnchor(gf::Anchor::BottomLeft);
 					m_faisceau_sprite.setScale(0.15);
 					if(guard.getdirectionGuard()==1){
+						const gf::Vector2f sprite_position = {guard.getPosition().x, guard.getPosition().y+(GUARD_SIZE.y*1.5)};
+						m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
+						m_guard_sprite.setPosition(sprite_position);
 						const gf::Vector2f faisceau_position_right = {guard.getPosition().x+20, guard.getPosition().y+20};
 						m_guard_sprite.setTexture(m_guard_textureRight);
 						m_faisceau_sprite.setTexture(m_faisceau_textureRight);
 						m_faisceau_sprite.setPosition(faisceau_position_right);
 						target.draw(m_guard_sprite);
-						target.draw(m_faisceau_sprite);
+						//target.draw(m_faisceau_sprite);
 					}else if(guard.getdirectionGuard()==2){
+						const gf::Vector2f sprite_position = {guard.getPosition().x-(GUARD_SIZE.x*1.5), guard.getPosition().y+(GUARD_SIZE.y*1.5)};
+						m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
+						m_guard_sprite.setPosition(sprite_position);
 						const gf::Vector2f faisceau_position_left = {guard.getPosition().x-55, guard.getPosition().y+55};
 						m_guard_sprite.setTexture(m_guard_textureLeft);
 						m_faisceau_sprite.setTexture(m_faisceau_textureLeft);
 						m_faisceau_sprite.setPosition(faisceau_position_left);
 						target.draw(m_guard_sprite);
-						target.draw(m_faisceau_sprite);
+						//target.draw(m_faisceau_sprite);
 					}else if(guard.getdirectionGuard()==3){
+						const gf::Vector2f sprite_position = {guard.getPosition().x-(GUARD_SIZE.x*0.8), guard.getPosition().y+(GUARD_SIZE.y*1.9)};
+						m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
+						m_guard_sprite.setPosition(sprite_position);
 						const gf::Vector2f faisceau_position_down = {guard.getPosition().x, guard.getPosition().y+90};
 						m_guard_sprite.setTexture(m_guard_textureDown);
 						m_faisceau_sprite.setTexture(m_faisceau_textureDown);
 						m_faisceau_sprite.setPosition(faisceau_position_down);
 						target.draw(m_guard_sprite);
-						target.draw(m_faisceau_sprite);
+						//target.draw(m_faisceau_sprite);
 					}else if(guard.getdirectionGuard()==4){
+						const gf::Vector2f sprite_position = {guard.getPosition().x-(GUARD_SIZE.x*0.8), guard.getPosition().y+GUARD_SIZE.y};
+						m_guard_sprite.setAnchor(gf::Anchor::BottomLeft);
+						m_guard_sprite.setPosition(sprite_position);
 						const gf::Vector2f faisceau_position_up = {guard.getPosition()};
 						m_faisceau_sprite.setTexture(m_faisceau_textureUp);
 						m_faisceau_sprite.setPosition(faisceau_position_up);
-						target.draw(m_faisceau_sprite);
+						//target.draw(m_faisceau_sprite);
 						m_guard_sprite.setTexture(m_guard_textureUp);
 						target.draw(m_guard_sprite);	
 					}
+				}
+			}
+			//object not found
+			for(Wall & obj : notFoundObjects){
+				if(obj.getPosition()==wall.getPosition()){
+					
+					m_object_not_found_sprite.setAnchor(gf::Anchor::BottomLeft);
+					m_object_not_found_sprite.setPosition({wall.getPosition().x+(WALL_SIZE.x*0.17), wall.getPosition().y+WALL_SIZE.y});
+					m_object_not_found_sprite.setTexture(m_object_not_found_texture);
+					m_object_not_found_sprite.setScale(0.7);
+					target.draw(m_object_not_found_sprite);
+					
 				}
 			}
 			//showcase
@@ -310,9 +323,10 @@ void Level::render(gf::RenderTarget & target, const gf::RenderStates & states){
 				m_showcase_sprite.setAnchor(gf::Anchor::BottomLeft);
 				m_showcase_sprite.setPosition({sprite_position.x-3,sprite_position.y});
 				m_showcase_sprite.setTexture(m_showcase_texture);
-				m_showcase_sprite.setScale({0.16,0.2});
+				m_showcase_sprite.setScale({1.095});
 				target.draw(m_showcase_sprite);
 			}
+			
 
 			//render wall
 			if(wall.getType()==WallType::SOLID){

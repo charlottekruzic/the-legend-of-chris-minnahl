@@ -201,7 +201,7 @@ void Guard::update(gf::Time time){
 }
 
 void Guard::render(gf::RenderTarget& target){
-	target.draw(detectorShape);
+	//target.draw(detectorShape);
     //target.draw(detectorShape);
 
     //target.draw(shape);

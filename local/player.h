@@ -12,7 +12,7 @@
 #include <gf/Sprite.h>
 #include "wall.h"
 
-constexpr gf::Vector2f PLAYER_SIZE = {32.0,16.0};
+constexpr gf::Vector2f PLAYER_SIZE = {26.0,16.0};
 
 
 class Player: public gf::Entity{
