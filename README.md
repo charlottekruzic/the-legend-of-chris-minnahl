@@ -1,49 +1,54 @@
 # The Legend Of Chris Minnahl
-
-**Jeu d'infiltration stratégique développé en Licence 3 Informatique à l'Université de Franche-Comté, encadré par Julien Bernard, maître de conférences.**
+[![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-The Legend Of Chris Minnahl est un jeu vidéo d'infiltration stratégique où le joueur doit naviguer discrètement à travers un musée pour voler des diamants tout en évitant les gardes. Le jeu est développé en C++ et utilise la bibliothèque [GameDev Framework](https://gamedevframework.github.io/).
+The Legend Of Chris Minnahl is a strategic infiltration game developed during our Bachelor's degree in Computer Science at the University of Franche-Comté, and supervised by associate professor Julien Bernard, where players take on the role of a thief who must navigate through a museum, steal diamonds, and escape without being caught by guards. Developed in C++ using the [GameDev Framework](https://gamedevframework.github.io/) (gf) library, the game combines stealth mechanics with strategic planning.
 
-## Membres de l'équipe
-- Gurnaud Jade
-- Turan Baturay
-- Kruzic Charlotte
+##  Game features
+- Navigate through museum levels with top-down perspective
+- Steal diamonds and reach the exit without being spotted by patrolling guards
+- Transform into a statue on special pedestals to avoid detection
+- Access a mini-map (press M) to view the entire level (guards not visible)
+- Multiple levels with increasing difficulty
+- Guards with predefined patrol routes and vision cones
 
-## Fonctionnalités
-- Déplacement du joueur à travers diverses salles du musée.
-- Éviter les gardes en utilisant des gadgets et des transformations en statue.
-- Collecte de diamants pour compléter chaque niveau.
-- Visualisation via une mini-carte, sans révéler la position des gardes.
+## Controls
+- **Arrow keys**: Move the player character
+- **Space**: Transform into a statue (when standing on a pedestal)
+- **M**: View mini-map
+- **Escape**: Pause game
 
-## Architecture du jeu
-- GameManager : Gère les transitions entre les différentes scènes du jeu et le cycle de vie global de l'application.
-- Scènes : Multiples scènes comme la scène du jeu, la scène de pause, et la scène de visualisation de la mini-carte.
-- ResourceManager : Gestion optimisée des ressources telles que textures, sons et polices.
-- Classes spécifiques : Player, Guard, Wall et d'autres classes modélisant les éléments interactifs du jeu.
 
-## Installation
-Pour jouer à The Legend Of Chris Minnahl, suivez ces étapes :
+## Project structure
+The game is built with a scene-based architecture:
 
-1. Clonez le dépôt GitHub :
+- **GameManager**: Controls scene transitions and manages game resources
+- **Scene System:** Includes title screen, rules, gameplay, pause menu, map viewer, and end screens
+- **ResourceManager**: Handles game assets including textures, fonts, level data, and JSON files
+- **Entity Classes**: Player, Guard, Wall and other classes that model the game's interactive elements.
+
+## Building the project
+
+1. Make sure you have the [GameDev Framework](https://gamedevframework.github.io/) installed.
+2. Clone the repository:
    ```bash
-   git clone https://github.com/charlottekruzic/TheLegendOfChrisMinnahl.git
+   git clone https://github.com/charlottekruzic/the-legend-of-chris-minnahl.git
    ```
-2. Naviguez dans le dossier du projet et compilez le code :
+3. Build the project:
    ```bash
-   cd TheLegendOfChrisMinnahl
-   mkdir build
-   cd build
+   mkdir build && cd build
    cmake ..
    make
    ```
-3. Exécutez le jeu :
+4. Run the game:
    ```bash
    ./TheLegendOfChrisMinnahl
    ```
 
-## Utilisation
-Utilisez les touches directionnelles pour déplacer le joueur. Appuyez sur la touche `Espace` pour vous transformer en statue et sur `M` pour afficher la mini-carte.
+## 📑 Full documentation
+For more detailed information about the game's design and implementation, please refer to the [full project report (in french)](project-report-fr.pdf) included in the repository.
 
-## Documentation additionnelle
-Pour plus de détails sur la conception et l'architecture du jeu, veuillez consulter le rapport complet fourni dans les ressources du projet ou accessible via [ce lien](https://github.com/charlottekruzic/TheLegendOfChrisMinnahl/blob/main/rapport_gurnaud_turan_kruzic.pdf).
+## 👷 Contributors
+- GURNAUD Jade
+- TURAN Baturay
+- KRUZIC Charlotte
