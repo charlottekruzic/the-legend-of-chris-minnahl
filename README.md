@@ -46,7 +46,7 @@ The game is built with a scene-based architecture:
    ```
 
 ## 📑 Full documentation
-For more detailed information about the game's design and implementation, please refer to the [full project report (in french)](./ressources/project-report-fr.pdf) included in the repository.
+For more detailed information about the game's design and implementation, please refer to the [full project report (in french)](./resources/project-report-fr.pdf) included in the repository.
 
 ## 👷 Contributors
 - GURNAUD Jade
